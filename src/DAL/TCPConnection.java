@@ -10,13 +10,18 @@ public class TCPConnection extends Thread {
 
     private Socket clientSocket;
 
-    public static TCPConnection getInstance(String host, int port) {
+    public static TCPConnection getInstance() {
         if(ourInstance == null)
-            ourInstance = new TCPConnection(host, port);
+            ourInstance = new TCPConnection();
         return ourInstance;
     }
 
-    private TCPConnection(String host, int port) {
+    private TCPConnection() {
+
+    }
+
+    public void initializeConnection(String host, int port)
+    {
         try {
             this.clientSocket = new Socket(host,port);
         } catch (IOException e) {

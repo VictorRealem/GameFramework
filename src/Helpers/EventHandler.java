@@ -1,8 +1,22 @@
 package Helpers;
 
+import Controllers.DataController;
+import Controllers.TicTacToeController;
+import Models.GameType;
+
 public class EventHandler {
+
+    private DataController dataController;
+    private GameType gameType;
+
+    public EventHandler()
+    {
+        this.dataController = DataController.getInstance();
+    }
+
     public void HandleCommand(String response)
     {
+
         String command = response.split(" ")[0];
         switch(command)
         {
@@ -26,7 +40,8 @@ public class EventHandler {
                 System.out.println("Your turn.");
                 break;
             case "MOVE" :
-                System.out.println("A move has been set by a player.");
+                //System.out.println("A move has been set by a player.");
+                this.MoveHandler(response);
                 break;
             case "CHALLENGE" :
                 System.out.println("You have been challeged.");
@@ -48,5 +63,22 @@ public class EventHandler {
     private void GameHandler(String response)
     {
 
+    }
+
+    private void MoveHandler(String response)
+    {
+        int move = 1;
+        int player = 1;
+
+        this.gameType = dataController.getGameType();
+
+        if(this.gameType == GameType.Reversi){
+
+        }
+
+        if(this.gameType == GameType.Tictactoe){
+            TicTacToeController contr = new TicTacToeController();
+            contr.update(move, player);
+        }
     }
 }
