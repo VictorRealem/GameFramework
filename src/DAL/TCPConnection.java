@@ -20,13 +20,9 @@ public class TCPConnection extends Thread {
 
     }
 
-    public void initializeConnection(String host, int port)
+    public void initializeConnection(String host, int port) throws Exception
     {
-        try {
-            this.clientSocket = new Socket(host,port);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.clientSocket = new Socket(host,port);
     }
 
     public void sentCommand(String command)

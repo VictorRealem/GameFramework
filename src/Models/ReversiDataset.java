@@ -5,6 +5,6 @@ public class ReversiDataset extends  Dataset {
     {
         gameData = new int[64];
         gameType = GameType.Reversi;
-        aI = false;
+        AI = false;
     }
 }
