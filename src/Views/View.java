@@ -1,5 +1,6 @@
 package Views;
 
+/*
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ public class View extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         this.primaryStage = primaryStage;
 
         grid = new GridPane();
@@ -33,8 +35,11 @@ public class View extends Application{
 
     }
 
+
     public void LaunchView(String args[])
     {
         launch(args);
     }
-}
+
+}*/
+
