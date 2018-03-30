@@ -8,7 +8,15 @@ public class Main {
     public static void main(String args[])
     {
         SetupController setupController = new SetupController();
-        setupController.InitializeLogin(args);
+        setupController.login("arjen2" , "Localhost", "7789");
+        TCPConnection connection = TCPConnection.getInstance();
+        connection.sentCommand("subscribe Tic-tac-toe");
+        connection.sentCommand("MOVE 2");
+
+        while(true)
+        {
+
+        }
 
     }
 }

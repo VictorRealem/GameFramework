@@ -89,6 +89,21 @@ public class DataController {
         this.dataset.YourTurn = turn;
     }
 
+    public void setPlayerOne(boolean playerOne)
+    {
+        this.dataset.PlayerOne = playerOne;
+    }
+
+    public void setPlayerName(String name)
+    {
+        this.dataset.PlayerName = name;
+    }
+
+    public void setOpponentName(String name)
+    {
+        this.dataset.OpponentName = name;
+    }
+
     /***
      * Returns the game data
      * @return Game data
@@ -134,5 +149,18 @@ public class DataController {
         return this.dataset.YourTurn;
     }
 
+    public boolean getPlayerOne()
+    {
+        return this.dataset.PlayerOne;
+    }
 
+    public String getPlayerName()
+    {
+        return this.dataset.PlayerName;
+    }
+
+    public String getOpponentName()
+    {
+        return this.dataset.OpponentName;
+    }
 }

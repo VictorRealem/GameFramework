@@ -5,4 +5,7 @@ public class Dataset {
     public GameType gameType;
     public boolean AI;
     public boolean YourTurn;
+    public boolean PlayerOne;
+    public String PlayerName;
+    public String OpponentName;
 }

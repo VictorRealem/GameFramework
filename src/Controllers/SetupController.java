@@ -13,9 +13,8 @@ public class SetupController {
 
     public void InitializeLogin(String args[])
     {
-        //this.args = args;
-        //new LoginView(args);
-        login("arjen" , "Localhost", "7789");
+        this.args = args;
+        new LoginView(args);
     }
 
     public boolean login(String name, String host, String port)
@@ -33,7 +32,7 @@ public class SetupController {
         connection.sentCommand("login " + name);
 
         // open setup screen
-        this.InitializeSetupView();
+        //this.InitializeSetupView();
 
         //returning true will close the login screen.
         return true;
