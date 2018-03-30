@@ -5,6 +5,6 @@ public class TicTacToeDataset extends Dataset {
     {
         gameData = new int[9];
         gameType = GameType.Tictactoe;
-        aI = false;
+        AI = false;
     }
 }
