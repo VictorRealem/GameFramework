@@ -93,6 +93,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+/**
+ * Class LoginView
+ * This class manages the login scene
+ * Its controller is the SetupController
+ */
 public class LoginView {
     private TextField name, serverUrl, port ;
     private Button login;
@@ -102,6 +107,10 @@ public class LoginView {
         this.controller = controller;
     }
 
+    /**
+     * Makes a gridpane and calls the setters methods in this class to set the labels/textfields etc...
+     * @return the scene of the login screen
+     */
     public Scene getLoginScene() {
         GridPane gridPane = new GridPane();
         setLabels(gridPane);
@@ -111,6 +120,10 @@ public class LoginView {
         return new Scene(gridPane,600,300);
     }
 
+    /**
+     * Ties the login button to the login function in the SetupController
+     * Gives appropiate error msgs
+     */
     private void setEventHandlers() {
         this.login.setOnAction((ActionEvent e) -> {
             if(controller.checkName(name.getText())) {
@@ -133,14 +146,18 @@ public class LoginView {
 
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("WARNING");
-                alert.setHeaderText("Name contains a 'space' ");
-                alert.setContentText("Your player name can't contain spaces");
+                alert.setHeaderText("Name error");
+                alert.setContentText("Your player name can't contain spaces and must at least be 1 character long");
 
                 alert.showAndWait();
             }
         });
     }
 
+    /**
+     * Sets the labels name/serverURl and port
+     * @param grid the grid to which the labels need to be added
+     */
     private void setLabels(GridPane grid)
     {
         Label nameLabel = new Label("Name:");
@@ -151,6 +168,10 @@ public class LoginView {
         grid.add(portLabel, 0, 2);
     }
 
+    /**
+     * Sets the textboxes name, server address and port
+     * @param grid the grid to which the textfields need to be added
+     */
     private void setTextboxes(GridPane grid)
     {
         name = new TextField();
@@ -175,6 +196,10 @@ public class LoginView {
         grid.getChildren().add(port);
     }
 
+    /**
+     * Sets the button the logs the user in on the grid
+     * @param grid the grid to which the button need to be added
+     */
     private void setbutton(GridPane grid)
     {
         login = new Button("Login");

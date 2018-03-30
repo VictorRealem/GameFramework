@@ -23,7 +23,7 @@ public class SetupController {
 
     public boolean login(String name, String host, String port)
     {
-
+        if(host.equals("") || port.equals("")) { return false; }
         // Initialize server connection
         TCPConnection connection = TCPConnection.getInstance();
         try {
@@ -43,6 +43,7 @@ public class SetupController {
     }
 
     public boolean checkName(String name) {
+        if(name.equals("")) { return false; }
         for (Character c: name.toCharArray()) {
             if(c.equals(' ')) {
                 return false;
