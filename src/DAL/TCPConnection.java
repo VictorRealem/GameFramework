@@ -6,9 +6,21 @@ import java.io.*;
 import java.net.Socket;
 
 public class TCPConnection extends Thread {
+
+    /***
+     * Class instance for SingleTon.
+     */
     private static TCPConnection ourInstance = null;
 
+    /***
+     * socket for server connection
+     */
     private Socket clientSocket;
+
+    /***
+     * Static method for getting the object instance
+     * @return TCPConnection
+     */
 
     public static TCPConnection getInstance() {
         if(ourInstance == null)
@@ -16,14 +28,33 @@ public class TCPConnection extends Thread {
         return ourInstance;
     }
 
+
+    /***
+     * Initializing class with private constructor for SingleTon.
+     */
+
     private TCPConnection() {
 
     }
+
+
+    /***
+     * Initializing connection with the server
+     * @param host serverurl
+     * @param port serverport
+     * @throws Exception if it can't start a connection / server not found.
+     */
 
     public void initializeConnection(String host, int port) throws Exception
     {
         this.clientSocket = new Socket(host,port);
     }
+
+
+    /***
+     * Send command to the server
+     * @param command
+     */
 
     public void sentCommand(String command)
     {
@@ -34,6 +65,13 @@ public class TCPConnection extends Thread {
             e.printStackTrace();
         }
     }
+
+
+    /***
+     * Recieves messages from the server.
+     * sents the messages to the eventHandler
+     * @throws Exception
+     */
 
     public void Listen() throws Exception
     {
@@ -49,6 +87,11 @@ public class TCPConnection extends Thread {
             handler.HandleCommand(response);
         }
     }
+
+
+    /***
+     * Starts running the listen Thread.
+     */
 
     @Override
     public void run()
