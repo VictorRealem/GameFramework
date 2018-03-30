@@ -13,8 +13,9 @@ public class SetupController {
 
     public void InitializeLogin(String args[])
     {
-        this.args = args;
-        new LoginView(args);
+        //this.args = args;
+        //new LoginView(args);
+        login("arjen" , "Localhost", "7789");
     }
 
     public boolean login(String name, String host, String port)
