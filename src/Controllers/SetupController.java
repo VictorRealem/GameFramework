@@ -4,17 +4,22 @@ import DAL.TCPConnection;
 import Views.LoginView;
 import Views.SetupView;
 
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+//import Views.SetupView;
+
 public class SetupController {
     String args[];
-    public SetupController()
+    private Stage primaryStage;
+    public SetupController(Stage primaryStage)
     {
-
+        this.primaryStage = primaryStage;
     }
 
-    public void InitializeLogin(String args[])
+    public Scene InitializeLogin()
     {
-        this.args = args;
-        new LoginView(args);
+        return new LoginView(this).getLoginScene();
     }
 
     public boolean login(String name, String host, String port)
@@ -32,14 +37,30 @@ public class SetupController {
         connection.sentCommand("login " + name);
 
         // open setup screen
-        //this.InitializeSetupView();
+        this.InitializeSetupView();
 
         //returning true will close the login screen.
         return true;
     }
 
-    public void InitializeSetupView()
+    public boolean checkName(String name) {
+        for (Character c: name.toCharArray()) {
+            if(c.equals(' ')) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void setScene(Scene sceneToSet) {
+        synchronized (primaryStage) {
+            primaryStage.setScene(sceneToSet);
+        }
+    }
+
+    public Scene InitializeSetupView()
     {
-        SetupView setupView = new SetupView(this.args);
+        return new SetupView().getSetupScene();
+
     }
 }
