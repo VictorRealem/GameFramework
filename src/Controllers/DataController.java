@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.*;
 
+
 /***
  *  SingleTon class for handling all dataObjects for the application.
  */
@@ -16,9 +17,11 @@ public class DataController {
      * Static method for getting the instance
      * @return DataController
      */
+
     public static DataController getInstance() {
         return ourInstance;
     }
+
 
     /***
      *  generic Game datasets
@@ -29,15 +32,18 @@ public class DataController {
     /***
      * Initializing the class
      */
+
     private DataController() {
         pmDataset = new PossibleMovesDataset();
     }
+
 
     /***
      * Sets the DatasetType and creates the corresponding dataset.
      * This method is required to start a game!
      * @param type gametype
      */
+
     public void setDatasetType(GameType type)
     {
         if(type == GameType.Reversi) {
@@ -49,7 +55,6 @@ public class DataController {
             this.dataset = new TicTacToeDataset();
             this.dataset.gameType = type;
         }
-
         this.dataset.YourTurn = false;
     }
 
@@ -57,28 +62,34 @@ public class DataController {
      * Saves the data of the game.
      * @param boardData game data
      */
+
     public void setData(int[] boardData)
     {
         this.dataset.gameData = boardData;
     }
 
+
     /***
      * Saves the option for using the AI
      * @param AI
      */
+
     public void setAI(boolean AI)
     {
         this.dataset.AI = AI;
     }
 
+
     /***
      * Saves the possible moves after these are calculated.
      * @param boardData
      */
+
     public void setPossibleMoves(int[] boardData)
     {
         this.pmDataset.Dataset = boardData;
     }
+
 
     /***
      * Saves yourturn boolean.
@@ -93,37 +104,45 @@ public class DataController {
      * Returns the game data
      * @return Game data
      */
+
     public int[] getData()
     {
         return this.dataset.gameData;
     }
 
+
     /***
      * Returns the game type
      * @return GameType
      */
+
     public GameType getGameType()
     {
         return this.dataset.gameType;
     }
 
+
     /***
      * Returns AI option
      * @return AI
      */
+
     public boolean getAI()
     {
         return this.dataset.AI;
     }
 
+
     /***
      * Returns the possible moves dataset
      * @return Possible moves
      */
+
     public int[] getPossibleMoves()
     {
         return this.pmDataset.Dataset;
     }
+
 
     /***
      * Return Yourturn boolean
@@ -133,6 +152,5 @@ public class DataController {
     {
         return this.dataset.YourTurn;
     }
-
 
 }

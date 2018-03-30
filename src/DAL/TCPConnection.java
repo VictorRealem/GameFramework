@@ -21,18 +21,22 @@ public class TCPConnection extends Thread {
      * Static method for getting the object instance
      * @return TCPConnection
      */
+
     public static TCPConnection getInstance() {
         if(ourInstance == null)
             ourInstance = new TCPConnection();
         return ourInstance;
     }
 
+
     /***
      * Initializing class with private constructor for SingleTon.
      */
+
     private TCPConnection() {
 
     }
+
 
     /***
      * Initializing connection with the server
@@ -40,15 +44,18 @@ public class TCPConnection extends Thread {
      * @param port serverport
      * @throws Exception if it can't start a connection / server not found.
      */
+
     public void initializeConnection(String host, int port) throws Exception
     {
         this.clientSocket = new Socket(host,port);
     }
 
+
     /***
      * Send command to the server
      * @param command
      */
+
     public void sentCommand(String command)
     {
         try {
@@ -59,11 +66,13 @@ public class TCPConnection extends Thread {
         }
     }
 
+
     /***
      * Recieves messages from the server.
      * sents the messages to the eventHandler
      * @throws Exception
      */
+
     public void Listen() throws Exception
     {
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -79,9 +88,11 @@ public class TCPConnection extends Thread {
         }
     }
 
+
     /***
      * Starts running the listen Thread.
      */
+
     @Override
     public void run()
     {
