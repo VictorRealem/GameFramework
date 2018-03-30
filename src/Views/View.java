@@ -1,13 +1,21 @@
 package Views;
 
-/*public class View extends Application{
+/*
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+public class View extends Application{
 
     protected Stage primaryStage;
-    protected GridPane grid;
-    private Scene scene;
+    GridPane grid;
+    Scene scene;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+
         this.primaryStage = primaryStage;
 
         grid = new GridPane();
@@ -22,9 +30,16 @@ package Views;
         primaryStage.show();
     }
 
+    public void ShowView()
+    {
+
+    }
+
 
     public void LaunchView(String args[])
     {
         launch(args);
     }
+
 }*/
+

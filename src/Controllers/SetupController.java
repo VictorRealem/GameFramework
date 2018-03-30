@@ -3,6 +3,7 @@ package Controllers;
 import DAL.TCPConnection;
 import Views.LoginView;
 import Views.SetupView;
+
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -60,5 +61,6 @@ public class SetupController {
     public Scene InitializeSetupView()
     {
         return new SetupView().getSetupScene();
+
     }
 }

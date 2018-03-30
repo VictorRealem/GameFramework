@@ -1,6 +1,8 @@
 package Views;
 
-/*public class SetupView extends View {
+/*
+public class SetupView extends View {
+
     public SetupView(String args[])
     {
         super.LaunchView(args);
@@ -29,4 +31,5 @@ public class SetupView {
         }
         return new Scene(box,600,300);
     }
+
 }

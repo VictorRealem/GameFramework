@@ -1,23 +1,38 @@
 package Views;
+/*
 
-/*public class LoginView extends View {
+import Controllers.SetupController;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
-    private TextField name, serverUrl, port ;
-    private Button Login;
+
+public class LoginView extends View {
+
+    TextField name, serverUrl, port ;
+    Button Login;
 
     public LoginView (String args[])
     {
-        launch(args);
+        super.LaunchView(args);
+
+        this.setLabels(grid);
+        this.setTextboxes(grid);
+        this.setbutton(grid);
+        this.setEventHandlers();
+
+        super.ShowView();
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        super.start(primaryStage);
-        this.setLabels(super.grid);
-        this.setTextboxes(super.grid);
-        this.setbutton(super.grid);
-        this.setEventHandlers();
-    }
 
     private void setEventHandlers() {
         this.Login.setOnAction(new EventHandler<ActionEvent>() {
@@ -37,15 +52,16 @@ package Views;
 
     private void setLabels(GridPane grid)
     {
-        Platform.runLater( () -> {
-            Label namelable = new Label("Name:");
-            grid.add(namelable, 0, 0);
 
-            Label serverUrlLabel = new Label("Server address:");
-            grid.add(serverUrlLabel, 0, 1);
+        Label namelable = new Label("Name:");
+        grid.add(namelable, 0, 0);
 
-            Label portLabel = new Label("Port:");
-            grid.add(portLabel, 0, 2);});
+        Label serverUrlLabel = new Label("Server address:");
+        grid.add(serverUrlLabel, 0, 1);
+
+        Label portLabel = new Label("Port:");
+        grid.add(portLabel, 0, 2);
+
     }
 
     private void setTextboxes(GridPane grid)
@@ -80,6 +96,7 @@ package Views;
         hbBtn.getChildren().add(Login);
         grid.add(hbBtn, 1, 3);
     }
+
 }*/
 
 import Controllers.SetupController;
