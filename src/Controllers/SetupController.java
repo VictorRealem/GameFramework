@@ -1,16 +1,18 @@
 package Controllers;
 
 import DAL.TCPConnection;
+import Models.GameType;
 import Views.LoginView;
 import Views.SetupView;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.xml.crypto.Data;
+
 //import Views.SetupView;
 
 public class SetupController {
-    String args[];
     private Stage primaryStage;
     public SetupController(Stage primaryStage)
     {
@@ -35,9 +37,10 @@ public class SetupController {
         }
 
         connection.sentCommand("login " + name);
-
-        // open setup screen
-        this.InitializeSetupView();
+        connection.sentCommand("get gamelist");
+        DataController dataController = DataController.getInstance();
+        dataController.setDatasetType(GameType.Tictactoe);
+        connection.sentCommand("subscribe Tic-tac-toe");
 
         //returning true will close the login screen.
         return true;
@@ -61,6 +64,5 @@ public class SetupController {
     public Scene InitializeSetupView()
     {
         return new SetupView().getSetupScene();
-
     }
 }

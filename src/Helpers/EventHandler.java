@@ -10,7 +10,6 @@ import java.util.HashMap;
 public class EventHandler {
 
     private DataController dataController;
-    private GameType gameType;
 
     public EventHandler()
     {
@@ -43,7 +42,15 @@ public class EventHandler {
         if("HELP".equals(command))
         {
             System.out.println("Server gave help information:");
-            System.out.println(command);
+            System.out.println(response);
+        }
+        if("PLAYERLIST".equals(command))
+        {
+            this.PlayerlistHandler(response.substring(11));
+        }
+        if("GAMELIST".equals(command))
+        {
+            this.GamelistHandler(response.substring(9));
         }
         if("GAME".equals(command))
         {
@@ -59,20 +66,19 @@ public class EventHandler {
                     this.TurnHandler(response.substring(9));
                     break;
                 case "MOVE" :
-                    //System.out.println("A move has been set by a player.");
-                    //this.MoveHandler();
+                    this.MoveHandler(response.substring(5));
                     break;
                 case "CHALLENGE" :
-                    System.out.println("You have been challeged.");
+                    this.ChallengeHandler(response.substring(10));
                     break;
                 case "WIN" :
-                    System.out.println("You have won!");
+                    this.EndGameHandler(response.substring(4), "WIN");
                     break;
                 case "LOSS" :
-                    System.out.println("better luck next time.");
+                    this.EndGameHandler(response.substring(5), "LOSS");
                     break;
                 case "DRAW" :
-                    System.out.println("it's a draw.");
+                    this.EndGameHandler(response.substring(5), "DRAW");
                     break;
                 default:
                     break;
@@ -80,6 +86,30 @@ public class EventHandler {
         }
 
     }
+    private void PlayerlistHandler(String response)
+    {
+        response = response.replaceAll(" ", "");
+        response = response.substring(1, response.length() - 1);
+        dataController.clearPlayerlist();
+        for(String name : response.split(","))
+        {
+            name = name.substring(1, name.length() - 1);
+            dataController.addPlayerlistItem(name);
+        }
+
+    }
+
+    private void GamelistHandler(String response) {
+        response = response.replaceAll(" ", "");
+        response = response.substring(1, response.length() - 1);
+        dataController.clearGamelist();
+        for(String game : response.split(","))
+        {
+            game = game.substring(1,game.length() - 1);
+            dataController.addGamelistItem(game);
+        }
+    }
+
     private void TurnHandler(String response)
     {
         HashMap<String, String> parameters = this.parameterConvert(response);
@@ -119,8 +149,7 @@ public class EventHandler {
 
     private void MoveHandler(String response)
     {
-        int move = 0;
-        int player = 0;
+        int move, player;
 
         HashMap<String, String> parameters = this.parameterConvert(response);
         String PlayerName = parameters.get("PLAYER");
@@ -145,23 +174,33 @@ public class EventHandler {
         }
 
         move = Integer.parseInt(parameters.get("MOVE"));
-        this.gameType = dataController.getGameType();
+        GameType gameType = dataController.getGameType();
 
-        if(this.gameType == GameType.Reversi){
+        if(gameType == GameType.Reversi){
             ReversiController contr = new ReversiController();
             contr.update(move, player);
         }
 
-        if(this.gameType == GameType.Tictactoe){
+        if(gameType == GameType.Tictactoe){
             TicTacToeController contr = new TicTacToeController();
             contr.update(move, player);
         }
     }
 
+    private void ChallengeHandler(String response)
+    {
+
+    }
+
+    private void EndGameHandler(String response, String state)
+    {
+
+    }
+
     private HashMap<String, String> parameterConvert(String parameters)
     {
-        parameters.trim();
-        parameters.substring(1, parameters.length() -1);
+        parameters = parameters.replaceAll(" ", "");
+        parameters = parameters.substring(1, parameters.length() -1);
         String[] params = parameters.split(",");
 
         HashMap<String, String> parameterValues = new HashMap<>();
