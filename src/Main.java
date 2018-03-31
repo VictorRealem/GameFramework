@@ -24,15 +24,8 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
-    public void LaunchView(String args[])
+    public static void main(String args[])
     {
         launch(args);
     }
-
-    /*public static void main(String args[])
-    {
-        SetupController setupController = new SetupController();
-        setupController.InitializeLogin(args);
-    }*/
 }

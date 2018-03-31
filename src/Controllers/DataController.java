@@ -2,6 +2,9 @@ package Controllers;
 
 import Models.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /***
  *  SingleTon class for handling all dataObjects for the application.
@@ -28,6 +31,8 @@ public class DataController {
      */
     private Dataset dataset;
     private PossibleMovesDataset pmDataset;
+    public List<String> gamelist;
+    public List<String> playerlist;
 
     /***
      * Initializing the class
@@ -35,6 +40,8 @@ public class DataController {
 
     private DataController() {
         pmDataset = new PossibleMovesDataset();
+        this.gamelist = new ArrayList<>();
+        this.playerlist = new ArrayList<>();
     }
 
 
@@ -100,6 +107,31 @@ public class DataController {
         this.dataset.YourTurn = turn;
     }
 
+    public void setPlayerOne(boolean playerOne)
+    {
+        this.dataset.PlayerOne = playerOne;
+    }
+
+    public void setPlayerName(String name)
+    {
+        this.dataset.PlayerName = name;
+    }
+
+    public void setOpponentName(String name)
+    {
+        this.dataset.OpponentName = name;
+    }
+
+    public void addGamelistItem(String game)
+    {
+        this.gamelist.add(game);
+    }
+
+    public void addPlayerlistItem(String name)
+    {
+        this.playerlist.add(name);
+    }
+
     /***
      * Returns the game data
      * @return Game data
@@ -153,4 +185,38 @@ public class DataController {
         return this.dataset.YourTurn;
     }
 
+    public boolean getPlayerOne()
+    {
+        return this.dataset.PlayerOne;
+    }
+
+    public String getPlayerName()
+    {
+        return this.dataset.PlayerName;
+    }
+
+    public String getOpponentName()
+    {
+        return this.dataset.OpponentName;
+    }
+
+    public List<String> getGamelist()
+    {
+        return this.gamelist;
+    }
+
+    public List<String> getPlayerList()
+    {
+        return this.playerlist;
+    }
+
+    public void clearGamelist()
+    {
+        this.gamelist.clear();
+    }
+
+    public void clearPlayerlist()
+    {
+        this.playerlist.clear();
+    }
 }
