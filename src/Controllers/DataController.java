@@ -31,8 +31,8 @@ public class DataController {
      */
     private Dataset dataset;
     private PossibleMovesDataset pmDataset;
-    public List<String> gamelist;
-    public List<String> playerlist;
+    private List<String> gamelist;
+    private List<String> playerlist;
 
     /***
      * Initializing the class

@@ -7,9 +7,8 @@ import Views.SetupView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
 import java.util.ArrayList;
-import javax.xml.crypto.Data;
+import java.util.List;
 
 
 //import Views.SetupView;
@@ -18,6 +17,7 @@ public class SetupController {
     private Stage primaryStage;
     private String host;
     private String port;
+    private TCPConnection connection;
 
     public SetupController(Stage primaryStage)
     {
@@ -33,7 +33,7 @@ public class SetupController {
     {
         if(host.equals("") || port.equals("")) { return false; }
         // Initialize server connection
-        TCPConnection connection = TCPConnection.getInstance();
+        connection = TCPConnection.getInstance();
         this.host = host;
         this.port = port;
         try {
@@ -43,7 +43,7 @@ public class SetupController {
             return false;
         }
 
-        //connection.sentCommand("login " + name);
+        connection.sentCommand("login " + name);
 
         /*connection.sentCommand("get gamelist");
         DataController dataController = DataController.getInstance();
@@ -55,18 +55,65 @@ public class SetupController {
         return true;
     }
 
-    public ArrayList<String> getGameList() {
-        ArrayList<String> gameList = new ArrayList<>();
+    public void setAI(boolean value) {
+        DataController dataController = DataController.getInstance();
+        dataController.setAI(value);
 
-        TCPConnection connection = TCPConnection.getInstance();
-        try {
-            connection.initializeConnection(host, Integer.parseInt(port));
-            connection.start();
-        } catch (Exception e) {
-            return gameList;
+    }
+
+    public void setGameType(String game) {
+        System.out.println("Switcher game to " + game);
+        DataController dataController = DataController.getInstance();
+        switch (game) {
+            case "Reversi": {
+                dataController.setDatasetType(GameType.Reversi);
+                break;
+            }
+            case "Tic-tac-toe": {
+                dataController.setDatasetType(GameType.Tictactoe);
+                break;
+            }
         }
-        connection.sentCommand("get gamelist");
-        return gameList;
+    }
+
+    public List<String> getDataList(int type) {
+        List<String> dataList;
+        switch(type) {
+            case 0: {
+                connection.sentCommand("get gamelist");
+                break;
+            }
+            case 1: {
+                connection.sentCommand("get playerlist");
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        DataController dataController = DataController.getInstance();
+        //give the server time to respond
+        try {
+            Thread.sleep(20);
+        } catch(InterruptedException ex) {
+            System.out.println(ex.getMessage());
+        }
+        switch(type) {
+            case 0: {
+                dataList = dataController.getGamelist();
+                break;
+            }
+            case 1: {
+                dataList = dataController.getPlayerList();
+                break;
+            }
+            default: {
+                dataList = new ArrayList<>();
+                break;
+            }
+        }
+
+        return dataList;
     }
 
     public boolean checkName(String name) {
@@ -87,7 +134,6 @@ public class SetupController {
 
     public Scene InitializeSetupView()
     {
-        ArrayList<String> gameList = getGameList();
-        return new SetupView().getSetupScene();
+        return new SetupView(this).getSetupScene();
     }
 }

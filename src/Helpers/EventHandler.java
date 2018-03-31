@@ -18,7 +18,14 @@ public class EventHandler {
 
     public void HandleCommand(String response)
     {
-
+        if(response == null) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {
+                System.out.println(ex.getMessage());
+            }
+            return;
+        }
         String command = response.split(" ")[0];
         switch(command)
         {
@@ -100,6 +107,7 @@ public class EventHandler {
     }
 
     private void GamelistHandler(String response) {
+        //System.out.println("In gamelist handler");
         response = response.replaceAll(" ", "");
         response = response.substring(1, response.length() - 1);
         dataController.clearGamelist();

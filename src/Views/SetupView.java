@@ -9,68 +9,123 @@ public class SetupView extends View {
     }
 }*/
 
+import Controllers.SetupController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SetupView {
-    public SetupView() {
-
+    private SetupController controller;
+    private GridPane optionsBox;
+    private Label selected;
+    public SetupView(SetupController controller) {
+        this.controller = controller;
     }
 
     public Scene getSetupScene() {
-        VBox gameBox = new VBox();
-        //gameBox.setBackground(new Background(new BackgroundFill(Color.web("green"), CornerRadii.EMPTY, Insets.EMPTY)));
-
-        VBox playBox = new VBox();
-        //playBox.setBackground(new Background(new BackgroundFill(Color.web("blue"), CornerRadii.EMPTY, Insets.EMPTY)));
+        BorderPane pane = new BorderPane();
 
         HBox sceneBox = new HBox();
-        //sceneBox.setBackground(new Background(new BackgroundFill(Color.web("red"), CornerRadii.EMPTY, Insets.EMPTY)));
+        optionsBox = new GridPane();
 
-        ArrayList<String> gameList = new ArrayList<>();
-        ArrayList<String> playList = new ArrayList<>();
+        sceneBox.setMinWidth(400);
+        optionsBox.setMinWidth(150);
 
-        gameList.add("Reversie");
-        gameList.add("Tic Tac Toe");
+        sceneBox.setPadding(new Insets(20,20,20,20));
+        sceneBox.setSpacing(10);
 
-        playList.add("Player 1");
-        playList.add("Player 2");
+        optionsBox.setPadding(new Insets(20,20,20,20));
+        optionsBox.setHgap(10);
+
+
+        setupGameList(sceneBox);
+        setupSpacer(sceneBox);
+        setupPlayList(sceneBox);
+
+        optionsBox.add(new Label("OPTIONS"), 0,0);
+        setupAIOption(optionsBox);
+        setupSelected(optionsBox);
+
+        pane.setCenter(sceneBox);
+        pane.setRight(optionsBox);
+        return new Scene(pane,600,300);
+    }
+    private void setupAIOption(GridPane OBox) {
+        ComboBox<String> playOptions = new ComboBox<>();
+        playOptions.getItems().addAll("Player", "AI");
+        playOptions.setEditable(false);
+        playOptions.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.equals("AI")) {
+                    controller.setAI(true);
+                } else {
+                    controller.setAI(false);
+                }
+            }
+        });
+        OBox.add(new Label("Player or AI"),0,1);
+        OBox.add(playOptions,1,1);
+    }
+
+    private void setupSelected(GridPane OBox) {
+        controller.setGameType("Tic-tac-toe");
+        selected = new Label("Tic-tac-toe");
+        Label selLabel = new Label("SELECTED");
+        OBox.add(selLabel,0,2);
+        OBox.add(selected,1,2);
+    }
+
+
+    private void setupGameList(HBox scnBox) {
+        VBox gameBox = new VBox();
+        gameBox.getChildren().add(new Label("GAMES"));
+        List<String> gameList = controller.getDataList(0);
 
         for (String game: gameList) {
-            gameBox.getChildren().add(new Label(game));
+            Label l = new Label(game);
+            l.setOnMouseClicked((MouseEvent) -> {
+                controller.setGameType(l.getText());
+                selected.setText(l.getText());
+            });
+            gameBox.getChildren().add(l);
         }
-        for (String name: playList) {
-            playBox.getChildren().add(new Label(name));
-        }
+
         gameBox.setMinWidth(100);
         gameBox.setPrefWidth(100);
         gameBox.setMaxWidth(100);
+
+        scnBox.getChildren().add(gameBox);
+    }
+
+    private void setupPlayList(HBox scnBox) {
+        VBox playBox = new VBox();
+        playBox.getChildren().add(new Label("PLAYERS"));
+        List<String> playList = controller.getDataList(1);
+
+        for (String name: playList) {
+            playBox.getChildren().add(new Label(name));
+        }
 
         playBox.setMinWidth(100);
         playBox.setPrefWidth(100);
         playBox.setMaxWidth(100);
 
+        scnBox.getChildren().add(playBox);
+    }
+
+    private void setupSpacer(HBox scnBox) {
         Region spacer = new Region();
-        spacer.setPrefWidth(375);
+        spacer.setPrefWidth(100);
         HBox.setHgrow(spacer,Priority.ALWAYS);
 
-        sceneBox.getChildren().add(gameBox);
-        sceneBox.getChildren().add(spacer);
-        sceneBox.getChildren().add(playBox);
-
-        sceneBox.setPrefWidth(600);
-
-
-        sceneBox.setPadding(new Insets(20,20,20,20));
-        sceneBox.setSpacing(10);
-        return new Scene(sceneBox,600,300);
+        scnBox.getChildren().add(spacer);
     }
 
 }
