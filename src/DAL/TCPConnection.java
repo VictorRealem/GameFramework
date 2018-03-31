@@ -82,7 +82,7 @@ public class TCPConnection extends Thread {
             String response = inFromServer.readLine();
 
             // For testing purposes.
-            System.out.println("server: " + response);
+            //System.out.println("server: " + response);
 
             handler.HandleCommand(response);
         }
