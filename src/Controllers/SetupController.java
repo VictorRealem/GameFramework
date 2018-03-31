@@ -45,24 +45,24 @@ public class SetupController {
 
         connection.sentCommand("login " + name);
 
-        /*connection.sentCommand("get gamelist");
-        DataController dataController = DataController.getInstance();
-        dataController.setDatasetType(GameType.Tictactoe);
-        connection.sentCommand("subscribe Tic-tac-toe");*/
-
-
-        //returning true will close the login screen.
         return true;
     }
 
+    /**
+     * Asks the datacontroller to change its AI boolean
+     * @param value true if AI selected, false if not
+     */
     public void setAI(boolean value) {
         DataController dataController = DataController.getInstance();
         dataController.setAI(value);
 
     }
 
+    /**
+     * Tells the data contoller to change the gametype
+     * @param game the game name
+     */
     public void setGameType(String game) {
-        System.out.println("Switcher game to " + game);
         DataController dataController = DataController.getInstance();
         switch (game) {
             case "Reversi": {
@@ -76,6 +76,11 @@ public class SetupController {
         }
     }
 
+    /**
+     * Asks the datacontroller for either the gamelist or player list depening on the value of type
+     * @param type 0 = gamelist, 1 = playerlist
+     * @return a list containing the required data
+     */
     public List<String> getDataList(int type) {
         List<String> dataList;
         switch(type) {
@@ -98,6 +103,7 @@ public class SetupController {
         } catch(InterruptedException ex) {
             System.out.println(ex.getMessage());
         }
+
         switch(type) {
             case 0: {
                 dataList = dataController.getGamelist();
@@ -116,6 +122,11 @@ public class SetupController {
         return dataList;
     }
 
+    /**
+     * Checks the entered player name for spaces
+     * @param name the entered player name
+     * @return false if the name contains a space, true if not
+     */
     public boolean checkName(String name) {
         if(name.equals("")) { return false; }
         for (Character c: name.toCharArray()) {
@@ -126,6 +137,10 @@ public class SetupController {
         return true;
     }
 
+    /**
+     * Sets the scene on the primary stage
+     * @param sceneToSet The scene that needs to be set
+     */
     public void setScene(Scene sceneToSet) {
         synchronized (primaryStage) {
             primaryStage.setScene(sceneToSet);

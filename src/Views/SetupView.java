@@ -1,14 +1,5 @@
 package Views;
 
-/*
-public class SetupView extends View {
-
-    public SetupView(String args[])
-    {
-        super.LaunchView(args);
-    }
-}*/
-
 import Controllers.SetupController;
 import DAL.TCPConnection;
 import javafx.beans.value.ChangeListener;
@@ -24,14 +15,24 @@ import javafx.scene.layout.*;
 
 import java.util.List;
 
+/**
+ * This view is the view in which you can select the game you want to play, and if possible to player you want to challenge.
+ */
 public class SetupView {
     private SetupController controller;
-    //private GridPane optionsBox;
     private Label selectedGame;
     public SetupView(SetupController controller) {
         this.controller = controller;
     }
 
+    /**
+     * Sets up the setup scene
+     * The scene is a borderPane
+     * The center is the main part with the 3 list (games, player)
+     * The right is options part
+     * The bottom is the start game button
+     * @return the setup scene
+     */
     public Scene getSetupScene() {
         BorderPane pane = new BorderPane();
 
@@ -67,6 +68,11 @@ public class SetupView {
 
         return new Scene(pane,700,300);
     }
+
+    /**
+     * Sets up the bottom of the borderPane with a start game button
+     * @param BBox the HBox in the bottom
+     */
     private void setupBottomBox(HBox BBox) {
         Button start = new Button("Start game");
         start.setOnAction( (ActionEvent e) -> {
@@ -76,6 +82,11 @@ public class SetupView {
         start.setDisable(true);
         BBox.getChildren().add(start);
     }
+
+    /**
+     * Adds the comboBox containing player or AI options to the gridpane and sets up the event to handle the selection
+     * @param OBox The gridpane containing all the options
+     */
     private void setupAIOption(GridPane OBox) {
         ComboBox<String> playOptions = new ComboBox<>();
         playOptions.getItems().addAll("Player", "AI");
@@ -94,6 +105,10 @@ public class SetupView {
         OBox.add(playOptions,1,1);
     }
 
+    /**
+     * Adds the selectedGame label to the options gridpane and the selected game
+     * @param OBox The options gridpane
+     */
     private void setupSelected(GridPane OBox) {
         controller.setGameType("Tic-tac-toe");
         selectedGame = new Label("Tic-tac-toe");
@@ -102,7 +117,11 @@ public class SetupView {
         OBox.add(selectedGame,1,2);
     }
 
-
+    /**
+     * Adds a VBox containing all the games on the server to the center HBox, uses the setupController to retrieve all the games
+     * It alse sets up the mouse click event to change the selected game
+     * @param scnBox the center HBox
+     */
     private void setupGameList(HBox scnBox) {
         VBox gameBox = new VBox();
         gameBox.getChildren().add(new Label("GAMES"));
@@ -124,6 +143,10 @@ public class SetupView {
         scnBox.getChildren().add(gameBox);
     }
 
+    /**
+     * Similair to setupGameList, retrieves all the players via SetupController, puts them in a VBox and adds this to the center HBox
+     * @param scnBox the Center HBox
+     */
     private void setupPlayList(HBox scnBox) {
         VBox playBox = new VBox();
         playBox.getChildren().add(new Label("PLAYERS"));
@@ -140,6 +163,11 @@ public class SetupView {
         scnBox.getChildren().add(playBox);
     }
 
+    /**
+     * Adds the spacer to the center HBox
+     * This spacer makes it so there is some room between the games- and player list
+     * @param scnBox the center HBox
+     */
     private void setupSpacer(HBox scnBox) {
         Region spacer = new Region();
         spacer.setPrefWidth(100);
