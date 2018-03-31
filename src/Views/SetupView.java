@@ -10,10 +10,14 @@ public class SetupView extends View {
 }*/
 
 import Controllers.SetupController;
+import DAL.TCPConnection;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -22,8 +26,8 @@ import java.util.List;
 
 public class SetupView {
     private SetupController controller;
-    private GridPane optionsBox;
-    private Label selected;
+    //private GridPane optionsBox;
+    private Label selectedGame;
     public SetupView(SetupController controller) {
         this.controller = controller;
     }
@@ -32,7 +36,8 @@ public class SetupView {
         BorderPane pane = new BorderPane();
 
         HBox sceneBox = new HBox();
-        optionsBox = new GridPane();
+        GridPane optionsBox = new GridPane();
+        HBox bottomBox = new HBox();
 
         sceneBox.setMinWidth(400);
         optionsBox.setMinWidth(150);
@@ -43,6 +48,8 @@ public class SetupView {
         optionsBox.setPadding(new Insets(20,20,20,20));
         optionsBox.setHgap(10);
 
+        bottomBox.setPadding(new Insets(10,10,10,10));
+        bottomBox.setAlignment(Pos.CENTER);
 
         setupGameList(sceneBox);
         setupSpacer(sceneBox);
@@ -52,9 +59,22 @@ public class SetupView {
         setupAIOption(optionsBox);
         setupSelected(optionsBox);
 
+        setupBottomBox(bottomBox);
+
         pane.setCenter(sceneBox);
         pane.setRight(optionsBox);
-        return new Scene(pane,600,300);
+        pane.setBottom(bottomBox);
+
+        return new Scene(pane,700,300);
+    }
+    private void setupBottomBox(HBox BBox) {
+        Button start = new Button("Start game");
+        start.setOnAction( (ActionEvent e) -> {
+            TCPConnection connection = TCPConnection.getInstance();
+            connection.sentCommand("challenge ");
+        });
+        start.setDisable(true);
+        BBox.getChildren().add(start);
     }
     private void setupAIOption(GridPane OBox) {
         ComboBox<String> playOptions = new ComboBox<>();
@@ -76,10 +96,10 @@ public class SetupView {
 
     private void setupSelected(GridPane OBox) {
         controller.setGameType("Tic-tac-toe");
-        selected = new Label("Tic-tac-toe");
-        Label selLabel = new Label("SELECTED");
+        selectedGame = new Label("Tic-tac-toe");
+        Label selLabel = new Label("SELECTED GAME");
         OBox.add(selLabel,0,2);
-        OBox.add(selected,1,2);
+        OBox.add(selectedGame,1,2);
     }
 
 
@@ -92,7 +112,7 @@ public class SetupView {
             Label l = new Label(game);
             l.setOnMouseClicked((MouseEvent) -> {
                 controller.setGameType(l.getText());
-                selected.setText(l.getText());
+                selectedGame.setText(l.getText());
             });
             gameBox.getChildren().add(l);
         }
