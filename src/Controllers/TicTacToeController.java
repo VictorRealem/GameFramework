@@ -32,4 +32,14 @@ public class TicTacToeController extends GameController {
 
         // UpdateView
     }
+
+    @Override
+    public void turn() {
+        //notify user or start ai.
+    }
+
+    @Override
+    public void sentMove(int move) {
+        this.connection.sentCommand("MOVE " + move);
+    }
 }
