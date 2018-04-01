@@ -1,4 +1,5 @@
 import Controllers.SetupController;
+import DAL.TCPConnection;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
@@ -22,6 +23,13 @@ public class Main extends Application {
 
         primaryStage.setTitle("Project 2.3");
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() {
+        //log out on exit
+        TCPConnection connection = TCPConnection.getInstance();
+        connection.sentCommand("logout");
     }
 
     public static void main(String args[])
