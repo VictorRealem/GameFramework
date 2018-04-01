@@ -17,6 +17,7 @@ public class SetupController {
     private Stage primaryStage;
     private String host;
     private String port;
+    private String name;
     private TCPConnection connection;
 
     public SetupController(Stage primaryStage)
@@ -43,9 +44,14 @@ public class SetupController {
             return false;
         }
 
+        this.name = name;
         connection.sentCommand("login " + name);
 
         return true;
+    }
+
+    public String getUserName() {
+        return name;
     }
 
     /**
