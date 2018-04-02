@@ -1,7 +1,9 @@
 package Views;
 
+import Controllers.DataController;
 import Controllers.SetupController;
 import DAL.TCPConnection;
+import Models.GameType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -12,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -21,6 +24,8 @@ import java.util.List;
 public class SetupView {
     private SetupController controller;
     private Label selectedGame;
+    private Label selectedPlayer;
+    private Button start;
     public SetupView(SetupController controller) {
         this.controller = controller;
     }
@@ -74,10 +79,10 @@ public class SetupView {
      * @param BBox the HBox in the bottom
      */
     private void setupBottomBox(HBox BBox) {
-        Button start = new Button("Start game");
+        start = new Button("Start game");
         start.setOnAction( (ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
-            connection.sentCommand("challenge ");
+            connection.sentCommand("challenge " + selectedPlayer.getText());
         });
         start.setDisable(true);
         BBox.getChildren().add(start);
@@ -94,10 +99,11 @@ public class SetupView {
         playOptions.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                DataController dataController = DataController.getInstance();
                 if(newValue.equals("AI")) {
-                    controller.setAI(true);
+                    dataController.setAI(true);
                 } else {
-                    controller.setAI(false);
+                    dataController.setAI(false);
                 }
             }
         });
@@ -110,11 +116,19 @@ public class SetupView {
      * @param OBox The options gridpane
      */
     private void setupSelected(GridPane OBox) {
-        controller.setGameType("Tic-tac-toe");
+        DataController dataController = DataController.getInstance();
+        dataController.setDatasetType(GameType.Tictactoe);
         selectedGame = new Label("Tic-tac-toe");
+
+        selectedPlayer = new Label("");
         Label selLabel = new Label("SELECTED GAME");
+        Label selPlayer = new Label ("SELECTED PLAYER");
+
         OBox.add(selLabel,0,2);
+        OBox.add(selPlayer,0,3);
+
         OBox.add(selectedGame,1,2);
+        OBox.add(selectedPlayer,1,3);
     }
 
     /**
@@ -130,8 +144,23 @@ public class SetupView {
         for (String game: gameList) {
             Label l = new Label(game);
             l.setOnMouseClicked((MouseEvent) -> {
-                controller.setGameType(l.getText());
+                DataController dataController = DataController.getInstance();
+                switch (game) {
+                    case "Tic-tac-toe": {
+                        dataController.setDatasetType(GameType.Tictactoe);
+                        break;
+                    }
+                    case "Reversi": {
+                        dataController.setDatasetType(GameType.Reversi);
+                        break;
+                    }
+                    default: {
+                        System.out.println("This game is not supported by this application");
+                    }
+                }
                 selectedGame.setText(l.getText());
+                TCPConnection connection = TCPConnection.getInstance();
+                connection.sentCommand("subscribe " + game);
             });
             gameBox.getChildren().add(l);
         }
@@ -153,7 +182,17 @@ public class SetupView {
         List<String> playList = controller.getDataList(1);
 
         for (String name: playList) {
-            playBox.getChildren().add(new Label(name));
+            Label l = new Label(name);
+            if(!name.equals(controller.getUserName())) {
+                l.setOnMouseClicked((MouseEvent) -> {
+                    selectedPlayer.setText(name);
+                    start.setDisable(false);
+                });
+            } else {
+                l.setBorder(new Border(new BorderStroke(Color.BLACK,
+                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            }
+            playBox.getChildren().add(l);
         }
 
         playBox.setMinWidth(100);
@@ -162,6 +201,7 @@ public class SetupView {
 
         scnBox.getChildren().add(playBox);
     }
+
 
     /**
      * Adds the spacer to the center HBox

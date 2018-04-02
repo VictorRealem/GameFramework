@@ -1,7 +1,6 @@
 package Controllers;
 
 import DAL.TCPConnection;
-import Models.GameType;
 import Views.LoginView;
 import Views.SetupView;
 import javafx.scene.Scene;
@@ -17,6 +16,7 @@ public class SetupController {
     private Stage primaryStage;
     private String host;
     private String port;
+    private String name;
     private TCPConnection connection;
 
     public SetupController(Stage primaryStage)
@@ -43,38 +43,21 @@ public class SetupController {
             return false;
         }
 
+        this.name = name;
         connection.sentCommand("login " + name);
 
         return true;
+    }
+
+    public String getUserName() {
+        return name;
     }
 
     /**
      * Asks the datacontroller to change its AI boolean
      * @param value true if AI selected, false if not
      */
-    public void setAI(boolean value) {
-        DataController dataController = DataController.getInstance();
-        dataController.setAI(value);
 
-    }
-
-    /**
-     * Tells the data contoller to change the gametype
-     * @param game the game name
-     */
-    public void setGameType(String game) {
-        DataController dataController = DataController.getInstance();
-        switch (game) {
-            case "Reversi": {
-                dataController.setDatasetType(GameType.Reversi);
-                break;
-            }
-            case "Tic-tac-toe": {
-                dataController.setDatasetType(GameType.Tictactoe);
-                break;
-            }
-        }
-    }
 
     /**
      * Asks the datacontroller for either the gamelist or player list depening on the value of type
