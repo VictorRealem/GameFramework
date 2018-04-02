@@ -1,7 +1,9 @@
 package Views;
 
+import Controllers.DataController;
 import Controllers.SetupController;
 import DAL.TCPConnection;
+import Models.GameType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -97,10 +99,11 @@ public class SetupView {
         playOptions.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                DataController dataController = DataController.getInstance();
                 if(newValue.equals("AI")) {
-                    controller.setAI(true);
+                    dataController.setAI(true);
                 } else {
-                    controller.setAI(false);
+                    dataController.setAI(false);
                 }
             }
         });
@@ -113,7 +116,8 @@ public class SetupView {
      * @param OBox The options gridpane
      */
     private void setupSelected(GridPane OBox) {
-        controller.setGameType("Tic-tac-toe");
+        DataController dataController = DataController.getInstance();
+        dataController.setDatasetType(GameType.Tictactoe);
         selectedGame = new Label("Tic-tac-toe");
 
         selectedPlayer = new Label("");
@@ -140,8 +144,23 @@ public class SetupView {
         for (String game: gameList) {
             Label l = new Label(game);
             l.setOnMouseClicked((MouseEvent) -> {
-                controller.setGameType(l.getText());
+                DataController dataController = DataController.getInstance();
+                switch (game) {
+                    case "Tic-tac-toe": {
+                        dataController.setDatasetType(GameType.Tictactoe);
+                        break;
+                    }
+                    case "Reversi": {
+                        dataController.setDatasetType(GameType.Reversi);
+                        break;
+                    }
+                    default: {
+                        System.out.println("This game is not supported by this application");
+                    }
+                }
                 selectedGame.setText(l.getText());
+                TCPConnection connection = TCPConnection.getInstance();
+                connection.sentCommand("subscribe " + game);
             });
             gameBox.getChildren().add(l);
         }
