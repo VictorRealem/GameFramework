@@ -16,8 +16,8 @@ public class TicTacToeController extends GameController {
 
     public void initializeGame()
     {
-        connection.sentCommand("subscribe tictactoe");
-        dataController.setDatasetType(GameType.Tictactoe);
+        //connection.sentCommand("subscribe tictactoe");
+        //dataController.setDatasetType(GameType.Tictactoe);
 
         //initializeView.
     }
