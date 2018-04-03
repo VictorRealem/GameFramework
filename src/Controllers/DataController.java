@@ -1,6 +1,9 @@
 package Controllers;
 
 import Models.*;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,7 @@ import java.util.List;
  *  SingleTon class for handling all dataObjects for the application.
  */
 public class DataController {
+    private Stage primaryStage;
 
     /***
      *  SingleTon instancie for the data controller
@@ -23,6 +27,14 @@ public class DataController {
 
     public static DataController getInstance() {
         return ourInstance;
+    }
+
+    public void setPrimayStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    public void setScene(Scene scene) {
+        Platform.runLater( () -> {primaryStage.setScene(scene);});
     }
 
 

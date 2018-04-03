@@ -128,6 +128,9 @@ public class SetupController {
     public void setScene(Scene sceneToSet) {
         synchronized (primaryStage) {
             primaryStage.setScene(sceneToSet);
+            DataController dataController = DataController.getInstance();
+            dataController.setPrimayStage(primaryStage);
+            dataController.setScene(sceneToSet);
         }
     }
 

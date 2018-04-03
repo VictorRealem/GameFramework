@@ -3,7 +3,6 @@ package Controllers;
 import DAL.TCPConnection;
 import Models.GameType;
 import Views.GameBoardView;
-import javafx.scene.Scene;
 
 
 public class TicTacToeController extends GameController {
@@ -19,13 +18,13 @@ public class TicTacToeController extends GameController {
         this.connection = TCPConnection.getInstance();
     }
 
-    public Scene initializeGame() {
+    public void initializeGame() {
 
-        //connection.sentCommand("subscribe tictactoe");
         dataController.setDatasetType(GameType.Tictactoe);
 
-        return new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene();
+        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene());
     }
+
 
     @Override
     public void turn() {

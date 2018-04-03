@@ -29,10 +29,12 @@ public class GameBoardView{
 
     }
 
+    public void setScene(Scene scene) {
+
+    }
 
 
     public Scene createBoardScene(){
-
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(new TopPane(turn));
         borderPane.setBottom(new BottomPane());
