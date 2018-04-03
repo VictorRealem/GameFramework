@@ -18,6 +18,9 @@ public class TicTacToeController extends GameController {
         this.connection = TCPConnection.getInstance();
     }
 
+    /**
+     * Initialize the gameboard by using the datacontroller to set the scene
+     */
     public void initializeGame() {
 
         dataController.setDatasetType(GameType.Tictactoe);

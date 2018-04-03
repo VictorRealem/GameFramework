@@ -33,6 +33,10 @@ public class DataController {
         this.primaryStage = primaryStage;
     }
 
+    /**
+     * Sets the scene on the primary stage
+     * @param scene
+     */
     public void setScene(Scene scene) {
         Platform.runLater( () -> {primaryStage.setScene(scene);});
     }

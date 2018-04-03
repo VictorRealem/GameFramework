@@ -29,10 +29,6 @@ public class GameBoardView{
 
     }
 
-    public void setScene(Scene scene) {
-
-    }
-
 
     public Scene createBoardScene(){
         BorderPane borderPane = new BorderPane();
@@ -144,7 +140,7 @@ class CenterPane extends GridPane {
     }
 }
 
-class LeftPane extends VBox{
+class LeftPane extends VBox {
 
     private Label p1 = new Label("Player 1 \n  score");
     private Label score = new Label("3");
