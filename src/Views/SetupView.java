@@ -88,7 +88,8 @@ public class SetupView {
 
         start.setOnAction( (ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
-            connection.sentCommand("challenge " + selectedPlayer.getText() + selectedGame);
+            System.out.println("challenge " + selectedPlayer.getText() + " " + selectedGame.getText());
+            connection.sentCommand("challenge " + selectedPlayer.getText() + " " + selectedGame.getText());
         });
         start.setDisable(true);
 
