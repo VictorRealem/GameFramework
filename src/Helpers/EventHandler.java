@@ -177,7 +177,6 @@ public class EventHandler {
         String PlayerName = parameters.get("PLAYER");
         String OpponentName = dataController.getOpponentName();
         boolean PlayerOne = dataController.getPlayerOne();
-
         if(PlayerName.equals(OpponentName))
         {
             player = 1;

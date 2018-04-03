@@ -1,5 +1,6 @@
 package Views;
 
+import Controllers.DataController;
 import Controllers.GameController;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -15,11 +16,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+
 public class GameBoardView{
 
     private GameController controller;
     private int boardSize;
     boolean turn;
+    private ArrayList<Tile> board;
 
 
     public GameBoardView(GameController controller,int boardSize,boolean turn) {
@@ -30,16 +34,24 @@ public class GameBoardView{
     }
 
 
-    public Scene createBoardScene(){
+    public Scene createBoardScene(int[] dataSet){
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(new TopPane(turn));
         borderPane.setBottom(new BottomPane());
-        borderPane.setCenter(new CenterPane(boardSize));
+        CenterPane centerPane = new CenterPane(boardSize,controller, dataSet);
+        board = centerPane.getBoard();
+        borderPane.setCenter(centerPane);
         borderPane.setLeft(new LeftPane());
         borderPane.setRight(new RightPane());
 
         return new Scene(borderPane,1000,900);
     }
+
+    public ArrayList<Tile> getBoard() {
+        System.out.println("get board " + board);
+        return board;
+    }
+
 
 }
 
@@ -105,33 +117,44 @@ class TopPane extends HBox {
 class CenterPane extends GridPane {
 
     int boardSize;
+    ArrayList<Tile> board;
+    GameController controller;
 
-    public CenterPane(int boardSize) {
+    public CenterPane(int boardSize, GameController controller, int[] dataSet) {
 
         this.boardSize = boardSize;
+        this.controller = controller;
 
         boardSize =  (int) Math.sqrt(boardSize);
-        createBoard(boardSize);
+        drawBoard(boardSize, dataSet);
         //setStylingPane();
         setLayout();
 
     }
 
-
-    private void createBoard(int boardSize) {
+    private void drawBoard(int boardSize, int[] dataset) {
         int count = 0;
         setAlignment(Pos.CENTER);
-
         for (int i = 0; i < boardSize; i++) {
-            count++;
             for (int j = 0; j < boardSize; j++) {
-                Tile tile = new Tile();
+                Tile tile = new Tile(controller,count);
                 //tile.setTranslateX(j * 80);
                 tile.setTranslateY(i * -15);
+                DataController dataController = DataController.getInstance();
+                int val = dataset[count];
+                if(val == 1) {
+                    tile.getTextField().setText("x");
+                } else if(val == 2) {
+                    tile.getTextField().setText("o");
+                }
                 add(tile, j, i);
                 count++;
             }
         }
+    }
+
+    public ArrayList<Tile> getBoard() {
+        return board;
     }
 
     private void setLayout(){
@@ -203,13 +226,15 @@ class RightPane extends VBox{
     }
 
 }
-
-
 class Tile extends StackPane {
     private Text text = new Text();
+    private boolean turnX = true;
+    private GameController controller;
+    private int index;
 
-
-    public Tile() {
+    public Tile(GameController controller, int count) {
+        this.controller = controller;
+        index = count;
         Rectangle border = new Rectangle(80, 80);
         border.setFill(null);
         border.setStroke(Color.BLACK);
@@ -224,21 +249,15 @@ class Tile extends StackPane {
                 return;*/
 
             if (event.getButton() == MouseButton.PRIMARY) {
-                /*if (!turnX)
-                    return;*/
+                if (!turnX)
+                    return;
 
-                drawX();
-                //turnX = false;
+                controller.drawPlayer1(text);
+                controller.sentMove(index);
+                turnX = false;
                 // checkState();
             }
-            else if (event.getButton() == MouseButton.SECONDARY) {
-                /*if (turnX)
-                    return;*/
 
-                drawO();
-                //turnX = true;
-                // checkState();
-            }
         });
     }
 
@@ -250,12 +269,12 @@ class Tile extends StackPane {
         return getTranslateY();
     }
 
-    public String getValue() {
-        return text.getText();
+    public Text getTextField() {
+        return text;
     }
 
-    private void drawX() {
-        text.setText("X");
+    public String getValue() {
+        return text.getText();
     }
 
     private void drawO() {
