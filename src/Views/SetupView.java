@@ -44,6 +44,8 @@ public class SetupView {
         BorderPane pane = new BorderPane();
 
         scnBox = new HBox();
+        playBox = new VBox();
+
         GridPane optionsBox = new GridPane();
         HBox bottomBox = new HBox();
 
@@ -86,12 +88,11 @@ public class SetupView {
 
         start.setOnAction( (ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
-            connection.sentCommand("challenge " + selectedPlayer.getText());
+            connection.sentCommand("challenge " + selectedPlayer.getText() + selectedGame);
         });
         start.setDisable(true);
 
         updatePlayList.setOnAction( (ActionEvent e) -> {
-            playBox.getChildren().clear();
             setupPlayList();
         });
         BBox.getChildren().add(updatePlayList);
@@ -185,8 +186,9 @@ public class SetupView {
      * Similair to setupGameList, retrieves all the players via SetupController, puts them in a VBox and adds this to the center HBox
      */
     private void setupPlayList() {
-        playBox = new VBox();
+        playBox.getChildren().clear();
         playBox.getChildren().add(new Label("PLAYERS"));
+
         List<String> playList = controller.getDataList(1);
 
         for (String name: playList) {
@@ -207,6 +209,7 @@ public class SetupView {
         playBox.setPrefWidth(100);
         playBox.setMaxWidth(100);
 
+        scnBox.getChildren().remove(playBox);
         scnBox.getChildren().add(playBox);
     }
 

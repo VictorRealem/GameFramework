@@ -72,8 +72,11 @@ public class TCPConnection extends Thread {
         try {
             PrintWriter outToServer = new PrintWriter(clientSocket.getOutputStream(), true);
             outToServer.println(command);
+            Thread.sleep(100);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
     }
 
