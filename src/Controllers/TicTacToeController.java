@@ -38,7 +38,7 @@ public class TicTacToeController extends GameController {
         if(AI){
             //run AI code.
         }else{
-            dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene());
+            dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
         }
     }
 
@@ -56,7 +56,6 @@ public class TicTacToeController extends GameController {
                 if(i == move){
                     dataController.setYourTurn(false);
                     this.connection.sentCommand("MOVE " + move);
-                    dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene());
                     break;
                 }
             }
