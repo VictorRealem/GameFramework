@@ -11,7 +11,7 @@ public class ReversiController extends GameController {
     {
         this.dataController = DataController.getInstance();
         this.connection = TCPConnection.getInstance();
-    }
+
 
     @Override
     public void update(int move, int player) {
@@ -176,7 +176,7 @@ public class ReversiController extends GameController {
     }
 
     @Override
+
     public void sentMove(int move) {
         this.connection.sentCommand("MOVE " + move);
     }
-}
