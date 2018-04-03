@@ -252,7 +252,6 @@ class Tile extends StackPane {
                 if (!turnX)
                     return;
 
-                controller.drawPlayer1(text);
                 controller.sentMove(index);
                 turnX = false;
                 // checkState();
