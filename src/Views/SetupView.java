@@ -77,7 +77,7 @@ public class SetupView {
     }
 
     /**
-     * Sets up the bottom of the borderPane with a start game button
+     * Sets up the bottom of the borderPane with a start game button and the update players button
      * @param BBox the HBox in the bottom
      */
     private void setupBottomBox(HBox BBox) {

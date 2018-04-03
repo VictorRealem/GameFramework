@@ -28,11 +28,22 @@ public class TCPConnection extends Thread {
         return ourInstance;
     }
 
+    public boolean checkConnection() {
+        return !clientSocket.isClosed();
+    }
+
+    public void logout() {
+        sentCommand("logout");
+        try {
+            clientSocket.close();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 
     /***
      * Initializing class with private constructor for SingleTon.
      */
-
     private TCPConnection() {
 
     }
@@ -77,10 +88,8 @@ public class TCPConnection extends Thread {
     {
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         EventHandler handler = new EventHandler();
-
-        while (true) {
+        while (checkConnection()) {
             String response = inFromServer.readLine();
-
             // For testing purposes.
             //System.out.println("server: " + response);
 
