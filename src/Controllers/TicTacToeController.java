@@ -31,19 +31,24 @@ public class TicTacToeController extends GameController {
 
     @Override
     public void turn() {
+        boolean AI = dataController.getAI();
 
+        if(AI){
+            //run AI code.
+        }else{
+            dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene());
+        }
     }
 
     @Override
     public boolean sentMove(int move) {
-
-        DataController dataController = DataController.getInstance();
         int[] pm = dataController.getPossibleMoves();
         if(dataController.getYourTurn()){
             for(int i : pm){
                 if(i == move){
                     dataController.setYourTurn(false);
                     this.connection.sentCommand("MOVE " + move);
+                    dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene());
                     break;
                 }
             }

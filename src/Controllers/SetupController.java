@@ -46,6 +46,7 @@ public class SetupController {
 
         this.name = name;
         connection.sentCommand("login " + name);
+        DataController.getInstance().setPlayerName(name);
 
         try {
             Thread.sleep(10);
