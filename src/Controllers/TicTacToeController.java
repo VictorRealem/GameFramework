@@ -3,7 +3,6 @@ package Controllers;
 import DAL.TCPConnection;
 import Models.GameType;
 import Views.GameBoardView;
-import javafx.scene.Scene;
 
 
 public class TicTacToeController extends GameController {
@@ -19,13 +18,16 @@ public class TicTacToeController extends GameController {
         this.connection = TCPConnection.getInstance();
     }
 
-    public Scene initializeGame() {
+    /**
+     * Initialize the gameboard by using the datacontroller to set the scene
+     */
+    public void initializeGame() {
 
-        //connection.sentCommand("subscribe tictactoe");
         dataController.setDatasetType(GameType.Tictactoe);
 
-        return new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene();
+        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene());
     }
+
 
     @Override
     public void turn() {
@@ -33,13 +35,22 @@ public class TicTacToeController extends GameController {
     }
 
     @Override
-    public void sentMove(int move) {
+    public boolean sentMove(int move) {
 
         DataController dataController = DataController.getInstance();
+        int[] pm = dataController.getPossibleMoves();
+        boolean validMove = false;
         if(dataController.getYourTurn()){
-            this.connection.sentCommand("MOVE " + move);
+            for(int i : pm){
+                if(i == move){
+                    validMove = true;
+                    this.connection.sentCommand("MOVE " + move);
+                    break;
+                }
+            }
         }
 
+        return validMove;
     }
 
     @Override
@@ -49,7 +60,17 @@ public class TicTacToeController extends GameController {
 
         dataController.setData(dataSet);
 
-        // UpdateView
+        int[] possibleMoves = new int[dataSet.length];
+
+        for(int i = 0; i < dataSet.length; i++){
+            possibleMoves[i] = 1;
+            if(dataSet[i] != 0){
+                possibleMoves[i] = 0 ;
+            }
+        }
+
+        dataController.setPossibleMoves(possibleMoves);
+
     }
 }
 
