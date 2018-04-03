@@ -2,6 +2,10 @@ package Controllers;
 
 import Models.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 /***
  *  SingleTon class for handling all dataObjects for the application.
  */
@@ -16,28 +20,37 @@ public class DataController {
      * Static method for getting the instance
      * @return DataController
      */
+
     public static DataController getInstance() {
         return ourInstance;
     }
+
 
     /***
      *  generic Game datasets
      */
     private Dataset dataset;
     private PossibleMovesDataset pmDataset;
+    private List<String> gamelist;
+    private List<String> playerlist;
 
     /***
      * Initializing the class
      */
+
     private DataController() {
         pmDataset = new PossibleMovesDataset();
+        this.gamelist = new ArrayList<>();
+        this.playerlist = new ArrayList<>();
     }
+
 
     /***
      * Sets the DatasetType and creates the corresponding dataset.
      * This method is required to start a game!
      * @param type gametype
      */
+
     public void setDatasetType(GameType type)
     {
         if(type == GameType.Reversi) {
@@ -49,7 +62,6 @@ public class DataController {
             this.dataset = new TicTacToeDataset();
             this.dataset.gameType = type;
         }
-
         this.dataset.YourTurn = false;
     }
 
@@ -57,28 +69,34 @@ public class DataController {
      * Saves the data of the game.
      * @param boardData game data
      */
+
     public void setData(int[] boardData)
     {
         this.dataset.gameData = boardData;
     }
 
+
     /***
      * Saves the option for using the AI
      * @param AI
      */
+
     public void setAI(boolean AI)
     {
         this.dataset.AI = AI;
     }
 
+
     /***
      * Saves the possible moves after these are calculated.
      * @param boardData
      */
+
     public void setPossibleMoves(int[] boardData)
     {
         this.pmDataset.Dataset = boardData;
     }
+
 
     /***
      * Saves yourturn boolean.
@@ -89,41 +107,74 @@ public class DataController {
         this.dataset.YourTurn = turn;
     }
 
+    public void setPlayerOne(boolean playerOne)
+    {
+        this.dataset.PlayerOne = playerOne;
+    }
+
+    public void setPlayerName(String name)
+    {
+        this.dataset.PlayerName = name;
+    }
+
+    public void setOpponentName(String name)
+    {
+        this.dataset.OpponentName = name;
+    }
+
+    public void addGamelistItem(String game)
+    {
+        this.gamelist.add(game);
+    }
+
+    public void addPlayerlistItem(String name)
+    {
+        this.playerlist.add(name);
+    }
+
     /***
      * Returns the game data
      * @return Game data
      */
+
     public int[] getData()
     {
         return this.dataset.gameData;
     }
 
+
     /***
      * Returns the game type
      * @return GameType
      */
+
     public GameType getGameType()
     {
         return this.dataset.gameType;
     }
 
+
     /***
      * Returns AI option
      * @return AI
      */
+
     public boolean getAI()
     {
         return this.dataset.AI;
     }
 
+
     /***
      * Returns the possible moves dataset
      * @return Possible moves
      */
+
     public int[] getPossibleMoves()
     {
         return this.pmDataset.Dataset;
     }
+
 
     /***
      * Return Yourturn boolean
@@ -134,5 +185,38 @@ public class DataController {
         return this.dataset.YourTurn;
     }
 
+    public boolean getPlayerOne()
+    {
+        return this.dataset.PlayerOne;
+    }
 
+    public String getPlayerName()
+    {
+        return this.dataset.PlayerName;
+    }
+
+    public String getOpponentName()
+    {
+        return this.dataset.OpponentName;
+    }
+
+    public List<String> getGamelist()
+    {
+        return this.gamelist;
+    }
+
+    public List<String> getPlayerList()
+    {
+        return this.playerlist;
+    }
+
+    public void clearGamelist()
+    {
+        this.gamelist.clear();
+    }
+
+    public void clearPlayerlist()
+    {
+        this.playerlist.clear();
+    }
 }

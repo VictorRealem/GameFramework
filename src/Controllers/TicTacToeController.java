@@ -16,8 +16,8 @@ public class TicTacToeController extends GameController {
 
     public void initializeGame()
     {
-        connection.sentCommand("subscribe tictactoe");
-        dataController.setDatasetType(GameType.Tictactoe);
+        //connection.sentCommand("subscribe tictactoe");
+        //dataController.setDatasetType(GameType.Tictactoe);
 
         //initializeView.
     }
@@ -31,5 +31,15 @@ public class TicTacToeController extends GameController {
         dataController.setData(dataSet);
 
         // UpdateView
+    }
+
+    @Override
+    public void turn() {
+        //notify user or start ai.
+    }
+
+    @Override
+    public void sentMove(int move) {
+        this.connection.sentCommand("MOVE " + move);
     }
 }
