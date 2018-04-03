@@ -2,6 +2,10 @@ package Controllers;
 
 public class ReversiController extends GameController {
 
+    public void initializeGame(){
+
+    }
+
     @Override
     public void update(int move, int player) {
 
