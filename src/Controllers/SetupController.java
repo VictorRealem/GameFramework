@@ -47,17 +47,17 @@ public class SetupController {
         this.name = name;
         connection.sentCommand("login " + name);
 
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException ex) {
+            System.out.println(ex.getMessage());
+        }
         return true;
     }
 
     public String getUserName() {
         return name;
     }
-
-    /**
-     * Asks the datacontroller to change its AI boolean
-     * @param value true if AI selected, false if not
-     */
 
 
     /**

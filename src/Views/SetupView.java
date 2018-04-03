@@ -26,6 +26,8 @@ public class SetupView {
     private Label selectedGame;
     private Label selectedPlayer;
     private Button start;
+    private VBox playBox;
+    private HBox scnBox;
     public SetupView(SetupController controller) {
         this.controller = controller;
     }
@@ -41,15 +43,17 @@ public class SetupView {
     public Scene getSetupScene() {
         BorderPane pane = new BorderPane();
 
-        HBox sceneBox = new HBox();
+        scnBox = new HBox();
+        playBox = new VBox();
+
         GridPane optionsBox = new GridPane();
         HBox bottomBox = new HBox();
 
-        sceneBox.setMinWidth(400);
+        scnBox.setMinWidth(400);
         optionsBox.setMinWidth(150);
 
-        sceneBox.setPadding(new Insets(20,20,20,20));
-        sceneBox.setSpacing(10);
+        scnBox.setPadding(new Insets(20,20,20,20));
+        scnBox.setSpacing(10);
 
         optionsBox.setPadding(new Insets(20,20,20,20));
         optionsBox.setHgap(10);
@@ -57,9 +61,9 @@ public class SetupView {
         bottomBox.setPadding(new Insets(10,10,10,10));
         bottomBox.setAlignment(Pos.CENTER);
 
-        setupGameList(sceneBox);
-        setupSpacer(sceneBox);
-        setupPlayList(sceneBox);
+        setupGameList();
+        setupSpacer();
+        setupPlayList();
 
         optionsBox.add(new Label("OPTIONS"), 0,0);
         setupAIOption(optionsBox);
@@ -67,7 +71,7 @@ public class SetupView {
 
         setupBottomBox(bottomBox);
 
-        pane.setCenter(sceneBox);
+        pane.setCenter(scnBox);
         pane.setRight(optionsBox);
         pane.setBottom(bottomBox);
 
@@ -75,16 +79,23 @@ public class SetupView {
     }
 
     /**
-     * Sets up the bottom of the borderPane with a start game button
+     * Sets up the bottom of the borderPane with a start game button and the update players button
      * @param BBox the HBox in the bottom
      */
     private void setupBottomBox(HBox BBox) {
         start = new Button("Start game");
+        Button updatePlayList = new Button("Update players");
+
         start.setOnAction( (ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
-            connection.sentCommand("challenge " + selectedPlayer.getText());
+            connection.sentCommand("challenge " + selectedPlayer.getText() + selectedGame);
         });
         start.setDisable(true);
+
+        updatePlayList.setOnAction( (ActionEvent e) -> {
+            setupPlayList();
+        });
+        BBox.getChildren().add(updatePlayList);
         BBox.getChildren().add(start);
     }
 
@@ -118,7 +129,7 @@ public class SetupView {
     private void setupSelected(GridPane OBox) {
         DataController dataController = DataController.getInstance();
         dataController.setDatasetType(GameType.Tictactoe);
-        selectedGame = new Label("Tic-tac-toe");
+        selectedGame = new Label("");
 
         selectedPlayer = new Label("");
         Label selLabel = new Label("SELECTED GAME");
@@ -134,9 +145,8 @@ public class SetupView {
     /**
      * Adds a VBox containing all the games on the server to the center HBox, uses the setupController to retrieve all the games
      * It alse sets up the mouse click event to change the selected game
-     * @param scnBox the center HBox
      */
-    private void setupGameList(HBox scnBox) {
+    private void setupGameList() {
         VBox gameBox = new VBox();
         gameBox.getChildren().add(new Label("GAMES"));
         List<String> gameList = controller.getDataList(0);
@@ -174,11 +184,11 @@ public class SetupView {
 
     /**
      * Similair to setupGameList, retrieves all the players via SetupController, puts them in a VBox and adds this to the center HBox
-     * @param scnBox the Center HBox
      */
-    private void setupPlayList(HBox scnBox) {
-        VBox playBox = new VBox();
+    private void setupPlayList() {
+        playBox.getChildren().clear();
         playBox.getChildren().add(new Label("PLAYERS"));
+
         List<String> playList = controller.getDataList(1);
 
         for (String name: playList) {
@@ -199,6 +209,7 @@ public class SetupView {
         playBox.setPrefWidth(100);
         playBox.setMaxWidth(100);
 
+        scnBox.getChildren().remove(playBox);
         scnBox.getChildren().add(playBox);
     }
 
@@ -206,9 +217,8 @@ public class SetupView {
     /**
      * Adds the spacer to the center HBox
      * This spacer makes it so there is some room between the games- and player list
-     * @param scnBox the center HBox
      */
-    private void setupSpacer(HBox scnBox) {
+    private void setupSpacer() {
         Region spacer = new Region();
         spacer.setPrefWidth(100);
         HBox.setHgrow(spacer,Priority.ALWAYS);
