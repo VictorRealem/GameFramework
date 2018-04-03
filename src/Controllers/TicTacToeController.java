@@ -86,14 +86,5 @@ public class TicTacToeController extends GameController {
         dataController.setPossibleMoves(possibleMoves);
 
     }
-
-
-    @Override
-    public void drawPlayer1(javafx.scene.text.Text text) {
-        Platform.runLater(()-> {
-            text.setText("x");
-        });
-
-    }
 }
 
