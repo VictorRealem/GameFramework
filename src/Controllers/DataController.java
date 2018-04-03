@@ -29,17 +29,7 @@ public class DataController {
         return ourInstance;
     }
 
-    public void setPrimayStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-    }
 
-    /**
-     * Sets the scene on the primary stage
-     * @param scene
-     */
-    public void setScene(Scene scene) {
-        Platform.runLater( () -> {primaryStage.setScene(scene);});
-    }
 
 
     /***
@@ -47,8 +37,7 @@ public class DataController {
      */
     private Dataset dataset;
     private PossibleMovesDataset pmDataset;
-    private List<String> gamelist;
-    private List<String> playerlist;
+    private UserData userData;
 
     /***
      * Initializing the class
@@ -56,8 +45,7 @@ public class DataController {
 
     private DataController() {
         pmDataset = new PossibleMovesDataset();
-        this.gamelist = new ArrayList<>();
-        this.playerlist = new ArrayList<>();
+        userData = new UserData();
     }
 
 
@@ -130,22 +118,22 @@ public class DataController {
 
     public void setPlayerName(String name)
     {
-        this.dataset.PlayerName = name;
+        this.userData.PlayerName = name;
     }
 
     public void setOpponentName(String name)
     {
-        this.dataset.OpponentName = name;
+        this.userData.OpponentName = name;
     }
 
     public void addGamelistItem(String game)
     {
-        this.gamelist.add(game);
+        this.userData.gamelist.add(game);
     }
 
     public void addPlayerlistItem(String name)
     {
-        this.playerlist.add(name);
+        this.userData.playerlist.add(name);
     }
 
     /***
@@ -208,31 +196,47 @@ public class DataController {
 
     public String getPlayerName()
     {
-        return this.dataset.PlayerName;
+        return this.userData.PlayerName;
     }
 
     public String getOpponentName()
     {
-        return this.dataset.OpponentName;
+        return this.userData.OpponentName;
     }
 
     public List<String> getGamelist()
     {
-        return this.gamelist;
+        return this.userData.gamelist;
     }
 
     public List<String> getPlayerList()
     {
-        return this.playerlist;
+        return this.userData.playerlist;
     }
 
     public void clearGamelist()
     {
-        this.gamelist.clear();
+        this.userData.gamelist.clear();
     }
 
     public void clearPlayerlist()
     {
-        this.playerlist.clear();
+        this.userData.playerlist.clear();
+    }
+
+    public void setPrimayStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    /**
+     * Sets the scene on the primary stage
+     * @param scene
+     */
+    public void setScene(Scene scene) {
+        Platform.runLater( () -> {primaryStage.setScene(scene);});
+    }
+
+    public Scene getScene(){
+        return primaryStage.getScene();
     }
 }
