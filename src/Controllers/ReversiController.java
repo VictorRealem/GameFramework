@@ -55,7 +55,7 @@ public class ReversiController extends GameController {
                 allowTurning = true;
             }
             if(allowTurning){
-                for(int counter = 1; counter <= down; counter++){
+                for(counter = 1; counter <= down; counter++){
                     if(dataSet[move - (8 * counter)] != player){
                         dataSet[move - (8 * counter)] = player;
                     }
@@ -71,7 +71,7 @@ public class ReversiController extends GameController {
                 allowTurning = true;
             }
             if(allowTurning){
-                for(int counter = 1; counter <= left; counter++){
+                for(counter = 1; counter <= left; counter++){
                     if(dataSet[move - counter] != player){
                         dataSet[move - counter] = player;
                     }
@@ -87,7 +87,7 @@ public class ReversiController extends GameController {
                 allowTurning = true;
             }
             if(allowTurning){
-                for(int counter = 1; counter <= right; counter++){
+                for(counter = 1; counter <= right; counter++){
                     if(dataSet[move + counter] != player){
                         dataSet[move + counter] = player;
                     }
@@ -103,7 +103,7 @@ public class ReversiController extends GameController {
                 allowTurning = true;
             }
             if(allowTurning){
-                for(int counter = 1; counter <= left && counter <= up; counter++){
+                for(counter = 1; counter <= left && counter <= up; counter++){
                     if(dataSet[move - (9 * counter)] != player){
                         dataSet[move - (9 * counter)] = player;
                     }
@@ -119,7 +119,7 @@ public class ReversiController extends GameController {
                 allowTurning = true;
             }
             if(allowTurning){
-                for(int counter = 1; counter <= left && counter <= up; counter++){
+                for(counter = 1; counter <= left && counter <= up; counter++){
                     if(dataSet[move - (7 * counter)] != player){
                         dataSet[move - (7 * counter)] = player;
                     }
@@ -135,7 +135,7 @@ public class ReversiController extends GameController {
                 allowTurning = true;
             }
             if(allowTurning){
-                for(int counter = 1; counter <= left && counter <= up; counter++){
+                for(counter = 1; counter <= left && counter <= up; counter++){
                     if(dataSet[move + (9 * counter)] != player){
                         dataSet[move + (9 * counter)] = player;
                     }
@@ -151,7 +151,7 @@ public class ReversiController extends GameController {
                 allowTurning = true;
             }
             if(allowTurning){
-                for(int counter = 1; counter <= left && counter <= up; counter++){
+                for(counter = 1; counter <= left && counter <= up; counter++){
                     if(dataSet[move + (7 * counter)] != player){
                         dataSet[move + (9 * counter)] = player;
                     }
