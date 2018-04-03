@@ -17,7 +17,7 @@ public class ReversiController extends GameController {
     }
 
     @Override
-    public void sentMove(int move) {
-
+    public boolean sentMove(int move) {
+        return true;
     }
 }
