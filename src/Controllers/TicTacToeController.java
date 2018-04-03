@@ -39,18 +39,17 @@ public class TicTacToeController extends GameController {
 
         DataController dataController = DataController.getInstance();
         int[] pm = dataController.getPossibleMoves();
-        boolean validMove = false;
         if(dataController.getYourTurn()){
             for(int i : pm){
                 if(i == move){
-                    validMove = true;
+                    dataController.setYourTurn(false);
                     this.connection.sentCommand("MOVE " + move);
                     break;
                 }
             }
         }
 
-        return validMove;
+        return !dataController.getYourTurn();
     }
 
     @Override
