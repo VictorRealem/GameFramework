@@ -35,6 +35,11 @@ public class TicTacToeController extends GameController {
     @Override
     public void sentMove(int move) {
 
+        DataController dataController = DataController.getInstance();
+        if(dataController.getYourTurn()){
+            this.connection.sentCommand("MOVE " + move);
+        }
+
     }
 
     @Override
