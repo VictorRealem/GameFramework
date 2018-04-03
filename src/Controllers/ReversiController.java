@@ -25,6 +25,6 @@ public class ReversiController extends GameController {
 
     @Override
     public void drawPlayer1(Text text) {
-
+        text.setText("x");
     }
 }

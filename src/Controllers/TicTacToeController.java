@@ -3,6 +3,7 @@ package Controllers;
 import DAL.TCPConnection;
 import Models.GameType;
 import Views.GameBoardView;
+import javafx.application.Platform;
 
 import javax.xml.soap.Text;
 
@@ -83,7 +84,10 @@ public class TicTacToeController extends GameController {
 
     @Override
     public void drawPlayer1(javafx.scene.text.Text text) {
-        text.setText("X");
+        Platform.runLater(()-> {
+            text.setText("x");
+        });
+
     }
 }
 

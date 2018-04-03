@@ -125,9 +125,9 @@ class CenterPane extends GridPane {
         setAlignment(Pos.CENTER);
 
         for (int i = 0; i < boardSize; i++) {
-            count++;
+
             for (int j = 0; j < boardSize; j++) {
-                Tile tile = new Tile(controller);
+                Tile tile = new Tile(controller,count);
                 //tile.setTranslateX(j * 80);
                 tile.setTranslateY(i * -15);
                 add(tile, j, i);
@@ -211,10 +211,11 @@ class Tile extends StackPane {
     private Text text = new Text();
     private boolean turnX = true;
     private GameController controller;
+    private int index;
 
-
-    public Tile(GameController controller) {
+    public Tile(GameController controller, int count) {
         this.controller = controller;
+        index = count;
         Rectangle border = new Rectangle(80, 80);
         border.setFill(null);
         border.setStroke(Color.BLACK);
@@ -233,17 +234,11 @@ class Tile extends StackPane {
                     return;
 
                 controller.drawPlayer1(text);
+                controller.sentMove(index);
                 turnX = false;
                 // checkState();
             }
-            else if (event.getButton() == MouseButton.SECONDARY) {
-                if (turnX)
-                    return;
 
-                drawO();
-                //turnX = true;
-                // checkState();
-            }
         });
     }
 
