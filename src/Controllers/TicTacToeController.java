@@ -33,13 +33,22 @@ public class TicTacToeController extends GameController {
     }
 
     @Override
-    public void sentMove(int move) {
+    public boolean sentMove(int move) {
 
         DataController dataController = DataController.getInstance();
+        int[] pm = dataController.getPossibleMoves();
+        boolean validMove = false;
         if(dataController.getYourTurn()){
-            this.connection.sentCommand("MOVE " + move);
+            for(int i : pm){
+                if(i == move){
+                    validMove = true;
+                    this.connection.sentCommand("MOVE " + move);
+                    break;
+                }
+            }
         }
 
+        return validMove;
     }
 
     @Override
@@ -49,7 +58,17 @@ public class TicTacToeController extends GameController {
 
         dataController.setData(dataSet);
 
-        // UpdateView
+        int[] possibleMoves = new int[dataSet.length];
+
+        for(int i = 0; i < dataSet.length; i++){
+            possibleMoves[i] = 1;
+            if(dataSet[i] != 0){
+                possibleMoves[i] = 0 ;
+            }
+        }
+
+        dataController.setPossibleMoves(possibleMoves);
+
     }
 }
 
