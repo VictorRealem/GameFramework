@@ -153,6 +153,20 @@ public class EventHandler {
         dataController.setYourTurn(Yourturn);
         dataController.setPlayerOne(PlayerOne);
         dataController.setOpponentName(opponent);
+
+        GameType type = dataController.getGameType();
+
+        if(type == GameType.Tictactoe)
+        {
+            TicTacToeController contr = new TicTacToeController();
+            contr.initializeGame();
+        }
+        if(type == GameType.Reversi)
+        {
+            ReversiController contr = new ReversiController();
+            contr.initializeGame();
+        }
+
     }
 
     private void MoveHandler(String response)
@@ -182,14 +196,14 @@ public class EventHandler {
         }
 
         move = Integer.parseInt(parameters.get("MOVE"));
-        GameType gameType = dataController.getGameType();
+        GameType type = dataController.getGameType();
 
-        if(gameType == GameType.Reversi){
+        if(type == GameType.Reversi){
             ReversiController contr = new ReversiController();
             contr.update(move, player);
         }
 
-        if(gameType == GameType.Tictactoe){
+        if(type == GameType.Tictactoe){
             TicTacToeController contr = new TicTacToeController();
             contr.update(move, player);
         }
