@@ -3,6 +3,9 @@ package Controllers;
 import DAL.TCPConnection;
 import Models.GameType;
 import Views.GameBoardView;
+import javafx.application.Platform;
+
+import javax.xml.soap.Text;
 
 
 public class TicTacToeController extends GameController {
@@ -33,6 +36,12 @@ public class TicTacToeController extends GameController {
     public void turn() {
 
     }
+
+    public boolean isTurnX(){
+        boolean turnX = dataController.getYourTurn();
+        return turnX;
+    }
+
 
     @Override
     public boolean sentMove(int move) {
@@ -69,6 +78,14 @@ public class TicTacToeController extends GameController {
         }
 
         dataController.setPossibleMoves(possibleMoves);
+
+    }
+
+    @Override
+    public void drawPlayer1(javafx.scene.text.Text text) {
+        Platform.runLater(()-> {
+            text.setText("x");
+        });
 
     }
 }
