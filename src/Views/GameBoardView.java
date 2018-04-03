@@ -1,5 +1,6 @@
 package Views;
 
+import Controllers.DataController;
 import Controllers.GameController;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -15,11 +16,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+
 public class GameBoardView{
 
     private GameController controller;
     private int boardSize;
     boolean turn;
+    private ArrayList<Tile> board;
 
 
     public GameBoardView(GameController controller,int boardSize,boolean turn) {
@@ -30,16 +34,24 @@ public class GameBoardView{
     }
 
 
-    public Scene createBoardScene(){
+    public Scene createBoardScene(int[] dataSet){
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(new TopPane(turn));
         borderPane.setBottom(new BottomPane());
-        borderPane.setCenter(new CenterPane(boardSize,controller));
+        CenterPane centerPane = new CenterPane(boardSize,controller, dataSet);
+        board = centerPane.getBoard();
+        borderPane.setCenter(centerPane);
         borderPane.setLeft(new LeftPane());
         borderPane.setRight(new RightPane());
 
         return new Scene(borderPane,1000,900);
     }
+
+    public ArrayList<Tile> getBoard() {
+        System.out.println("get board " + board);
+        return board;
+    }
+
 
 }
 
@@ -105,35 +117,44 @@ class TopPane extends HBox {
 class CenterPane extends GridPane {
 
     int boardSize;
+    ArrayList<Tile> board;
     GameController controller;
 
-    public CenterPane(int boardSize, GameController controller) {
+    public CenterPane(int boardSize, GameController controller, int[] dataSet) {
 
         this.boardSize = boardSize;
         this.controller = controller;
 
         boardSize =  (int) Math.sqrt(boardSize);
-        createBoard(boardSize);
+        drawBoard(boardSize, dataSet);
         //setStylingPane();
         setLayout();
 
     }
 
-
-    private void createBoard(int boardSize) {
+    private void drawBoard(int boardSize, int[] dataset) {
         int count = 0;
         setAlignment(Pos.CENTER);
-
         for (int i = 0; i < boardSize; i++) {
-
             for (int j = 0; j < boardSize; j++) {
                 Tile tile = new Tile(controller,count);
                 //tile.setTranslateX(j * 80);
                 tile.setTranslateY(i * -15);
+                DataController dataController = DataController.getInstance();
+                int val = dataset[count];
+                if(val == 1) {
+                    tile.getTextField().setText("x");
+                } else if(val == 2) {
+                    tile.getTextField().setText("o");
+                }
                 add(tile, j, i);
                 count++;
             }
         }
+    }
+
+    public ArrayList<Tile> getBoard() {
+        return board;
     }
 
     private void setLayout(){
@@ -205,8 +226,6 @@ class RightPane extends VBox{
     }
 
 }
-
-
 class Tile extends StackPane {
     private Text text = new Text();
     private boolean turnX = true;
@@ -248,6 +267,10 @@ class Tile extends StackPane {
 
     public double getCenterY() {
         return getTranslateY();
+    }
+
+    public Text getTextField() {
+        return text;
     }
 
     public String getValue() {
