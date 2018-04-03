@@ -7,7 +7,7 @@ public class ReversiController extends GameController {
     private DataController dataController;
     private TCPConnection connection;
 
-    public TicTacToeController()
+    public ReversiController()
     {
         this.dataController = DataController.getInstance();
         this.connection = TCPConnection.getInstance();
@@ -39,7 +39,7 @@ public class ReversiController extends GameController {
                 allowTurning = true;
             }
             if(allowTurning){
-                for(int counter = 1; counter <= up; counter++){
+                for(counter = 1; counter <= up; counter++){
                     if(dataSet[move + (8 * counter)] != player){
                         dataSet[move + (8 * counter)] = player;
                     }
