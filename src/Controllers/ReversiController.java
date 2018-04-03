@@ -1,5 +1,7 @@
 package Controllers;
 
+import javafx.scene.text.Text;
+
 public class ReversiController extends GameController {
 
     public void initializeGame(){
@@ -18,6 +20,11 @@ public class ReversiController extends GameController {
 
     @Override
     public void sentMove(int move) {
+
+    }
+
+    @Override
+    public void drawPlayer1(Text text) {
 
     }
 }

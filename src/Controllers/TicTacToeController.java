@@ -5,6 +5,8 @@ import Models.GameType;
 import Views.GameBoardView;
 import javafx.scene.Scene;
 
+import javax.xml.soap.Text;
+
 
 public class TicTacToeController extends GameController {
 
@@ -32,6 +34,12 @@ public class TicTacToeController extends GameController {
 
     }
 
+    public boolean isTurnX(){
+        boolean turnX = dataController.getYourTurn();
+        return turnX;
+    }
+
+
     @Override
     public void sentMove(int move) {
 
@@ -50,6 +58,11 @@ public class TicTacToeController extends GameController {
         dataController.setData(dataSet);
 
         // UpdateView
+    }
+
+    @Override
+    public void drawPlayer1(javafx.scene.text.Text text) {
+        text.setText("X");
     }
 }
 

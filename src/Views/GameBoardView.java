@@ -36,7 +36,7 @@ public class GameBoardView{
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(new TopPane(turn));
         borderPane.setBottom(new BottomPane());
-        borderPane.setCenter(new CenterPane(boardSize));
+        borderPane.setCenter(new CenterPane(boardSize,controller));
         borderPane.setLeft(new LeftPane());
         borderPane.setRight(new RightPane());
 
@@ -107,10 +107,12 @@ class TopPane extends HBox {
 class CenterPane extends GridPane {
 
     int boardSize;
+    GameController controller;
 
-    public CenterPane(int boardSize) {
+    public CenterPane(int boardSize, GameController controller) {
 
         this.boardSize = boardSize;
+        this.controller = controller;
 
         boardSize =  (int) Math.sqrt(boardSize);
         createBoard(boardSize);
@@ -127,7 +129,7 @@ class CenterPane extends GridPane {
         for (int i = 0; i < boardSize; i++) {
             count++;
             for (int j = 0; j < boardSize; j++) {
-                Tile tile = new Tile();
+                Tile tile = new Tile(controller);
                 //tile.setTranslateX(j * 80);
                 tile.setTranslateY(i * -15);
                 add(tile, j, i);
@@ -209,9 +211,12 @@ class RightPane extends VBox{
 
 class Tile extends StackPane {
     private Text text = new Text();
+    private boolean turnX = true;
+    private GameController controller;
 
 
-    public Tile() {
+    public Tile(GameController controller) {
+        this.controller = controller;
         Rectangle border = new Rectangle(80, 80);
         border.setFill(null);
         border.setStroke(Color.BLACK);
@@ -226,16 +231,16 @@ class Tile extends StackPane {
                 return;*/
 
             if (event.getButton() == MouseButton.PRIMARY) {
-                /*if (!turnX)
-                    return;*/
+                if (!turnX)
+                    return;
 
-                drawX();
-                //turnX = false;
+                controller.drawPlayer1(text);
+                turnX = false;
                 // checkState();
             }
             else if (event.getButton() == MouseButton.SECONDARY) {
-                /*if (turnX)
-                    return;*/
+                if (turnX)
+                    return;
 
                 drawO();
                 //turnX = true;
@@ -254,10 +259,6 @@ class Tile extends StackPane {
 
     public String getValue() {
         return text.getText();
-    }
-
-    private void drawX() {
-        text.setText("X");
     }
 
     private void drawO() {
