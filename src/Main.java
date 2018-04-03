@@ -29,7 +29,9 @@ public class Main extends Application {
     public void stop() {
         //log out on exit
         TCPConnection connection = TCPConnection.getInstance();
-        connection.sentCommand("logout");
+        if(connection.checkConnection()) {
+            connection.logout();
+        }
     }
 
     public static void main(String args[])
