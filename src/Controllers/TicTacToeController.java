@@ -5,13 +5,12 @@ import Models.GameType;
 import Views.GameBoardView;
 import javafx.application.Platform;
 
-import javax.xml.soap.Text;
-
 
 public class TicTacToeController extends GameController {
 
     private DataController dataController;
     private TCPConnection connection;
+    private GameBoardView gameBoard;
     private boolean playable = true;
     private boolean turnX = true;
 
@@ -27,14 +26,20 @@ public class TicTacToeController extends GameController {
     public void initializeGame() {
 
         dataController.setDatasetType(GameType.Tictactoe);
-
-        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene());
+        dataController.setPossibleMoves(new int[9]);
+        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
 
 
     @Override
     public void turn() {
+        boolean AI = dataController.getAI();
 
+        if(AI){
+            //run AI code.
+        }else{
+            dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
+        }
     }
 
     public boolean isTurnX(){
@@ -45,8 +50,6 @@ public class TicTacToeController extends GameController {
 
     @Override
     public boolean sentMove(int move) {
-
-        DataController dataController = DataController.getInstance();
         int[] pm = dataController.getPossibleMoves();
         if(dataController.getYourTurn()){
             for(int i : pm){
@@ -61,12 +64,15 @@ public class TicTacToeController extends GameController {
         return !dataController.getYourTurn();
     }
 
+
     @Override
     public void update(int move, int player) {
         int[] dataSet = dataController.getData();
         dataSet[move] = player;
 
         dataController.setData(dataSet);
+
+        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataSet));
 
         int[] possibleMoves = new int[dataSet.length];
 
@@ -78,14 +84,6 @@ public class TicTacToeController extends GameController {
         }
 
         dataController.setPossibleMoves(possibleMoves);
-
-    }
-
-    @Override
-    public void drawPlayer1(javafx.scene.text.Text text) {
-        Platform.runLater(()-> {
-            text.setText("x");
-        });
 
     }
 }
