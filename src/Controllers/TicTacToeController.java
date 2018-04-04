@@ -8,9 +8,6 @@ public class TicTacToeController extends GameController {
 
     private DataController dataController;
     private TCPConnection connection;
-    private GameBoardView gameBoard;
-    private boolean playable = true;
-    private boolean turnX = true;
 
 
     public TicTacToeController() {
