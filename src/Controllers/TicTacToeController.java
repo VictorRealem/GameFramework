@@ -53,7 +53,7 @@ public class TicTacToeController extends GameController {
         int[] pm = dataController.getPossibleMoves();
         if(dataController.getYourTurn()){
             for(int i : pm){
-                if(i == move){
+                if(pm[move] == move){
                     dataController.setYourTurn(false);
                     this.connection.sentCommand("MOVE " + move);
                     break;

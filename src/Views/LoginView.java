@@ -20,6 +20,7 @@ public class LoginView {
     private TextField name, serverUrl, port ;
     private Button login;
     private SetupController controller;
+    LoginView lv;
 
     public LoginView(SetupController controller) {
         this.controller = controller;
@@ -126,4 +127,6 @@ public class LoginView {
         hbBtn.getChildren().add(login);
         grid.add(hbBtn, 1, 3);
     }
+
+
 }
