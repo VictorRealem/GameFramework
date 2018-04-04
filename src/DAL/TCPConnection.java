@@ -94,7 +94,7 @@ public class TCPConnection extends Thread {
         while (checkConnection()) {
             String response = inFromServer.readLine();
             // For testing purposes.
-            //System.out.println("server: " + response);
+            System.out.println("server: " + response);
 
             handler.HandleCommand(response);
         }

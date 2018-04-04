@@ -143,15 +143,17 @@ public class EventHandler {
         String playertostart = parameters.get("PLAYERTOMOVE");
         String opponent = parameters.get("OPPONENT");
         boolean Yourturn = true;
-        boolean PlayerOne = true;
+        boolean playerOne = true;
         if(playertostart.equals(opponent))
         {
+            System.out.println("entering here");
             Yourturn = false;
-            PlayerOne = false;
+            playerOne = false;
         }
-
+        System.out.println("Setting yt: " + Yourturn);
         dataController.setYourTurn(Yourturn);
-        dataController.setPlayerOne(PlayerOne);
+        System.out.println("Setting p1: " + playerOne);
+        dataController.setPlayerOne(playerOne);
         dataController.setOpponentName(opponent);
 
         GameType type = dataController.getGameType();
@@ -174,25 +176,25 @@ public class EventHandler {
         int move, player;
 
         HashMap<String, String> parameters = this.parameterConvert(response);
-        String PlayerName = parameters.get("PLAYER");
-        String OpponentName = dataController.getOpponentName();
-        boolean PlayerOne = dataController.getPlayerOne();
-        if(PlayerName.equals(OpponentName))
-        {
+        String playerName = parameters.get("PLAYER");
+        String opponentName = dataController.getOpponentName();
+        System.out.println("Playername: " + playerName);
+        System.out.println("Opname: " + opponentName);
+
+        if(opponentName.equals(playerName)){
+            //opponent has set a move
             player = 1;
-            if(PlayerOne)
-            {
+            if(dataController.getPlayerOne() ) {
                 player = 2;
             }
-        }
-        else
-        {
+        } else {
             player = 2;
-            if(PlayerOne)
-            {
+            System.out.println("PlayerOne " + dataController.getPlayerOne());
+            if(dataController.getPlayerOne()) {
                 player = 1;
             }
         }
+
 
         move = Integer.parseInt(parameters.get("MOVE"));
         GameType type = dataController.getGameType();
