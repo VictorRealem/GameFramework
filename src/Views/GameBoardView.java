@@ -1,6 +1,5 @@
 package Views;
 
-import Controllers.DataController;
 import Controllers.GameController;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -8,7 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -17,6 +15,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameBoardView{
 
@@ -40,19 +39,14 @@ public class GameBoardView{
         borderPane.setBottom(new BottomPane());
         CenterPane centerPane = new CenterPane(boardSize,controller, dataSet);
         board = centerPane.getBoard();
+        centerPane.setHgap(10);
+        centerPane.setVgap(10);
         borderPane.setCenter(centerPane);
         borderPane.setLeft(new LeftPane());
         borderPane.setRight(new RightPane());
 
         return new Scene(borderPane,1000,900);
     }
-
-    public ArrayList<Tile> getBoard() {
-        System.out.println("get board " + board);
-        return board;
-    }
-
-
 }
 
 
@@ -138,10 +132,9 @@ class CenterPane extends GridPane {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 Tile tile = new Tile(controller,count);
-                //tile.setTranslateX(j * 80);
-                tile.setTranslateY(i * -15);
-                DataController dataController = DataController.getInstance();
+                tile.setTranslateY(i * -1);
                 int val = dataset[count];
+                System.out.println("val: " + val);
                 if(val == 1) {
                     tile.getTextField().setText("x");
                 } else if(val == 2) {
@@ -151,6 +144,7 @@ class CenterPane extends GridPane {
                 count++;
             }
         }
+        System.out.println("-----------");
     }
 
     public ArrayList<Tile> getBoard() {
@@ -228,12 +222,12 @@ class RightPane extends VBox{
 }
 class Tile extends StackPane {
     private Text text = new Text();
-    private boolean turnX = true;
     private GameController controller;
     private int index;
 
     public Tile(GameController controller, int count) {
         this.controller = controller;
+        Random random = new Random();
         index = count;
         Rectangle border = new Rectangle(80, 80);
         border.setFill(null);
@@ -244,18 +238,14 @@ class Tile extends StackPane {
         setAlignment(Pos.CENTER);
         getChildren().addAll(border, text);
 
-        setOnMouseClicked(event -> {
+        this.setOnMouseClicked(event -> {
             /*if (!playable)
                 return;*/
-
-            if (event.getButton() == MouseButton.PRIMARY) {
-                if (!turnX)
-                    return;
-
+                System.out.println("Sending move");
                 controller.sentMove(index);
-                turnX = false;
+                System.out.println("Move send");
+                //System.out.println("sending to server");
                 // checkState();
-            }
 
         });
     }
@@ -276,7 +266,4 @@ class Tile extends StackPane {
         return text.getText();
     }
 
-    private void drawO() {
-        text.setText("O");
-    }
 }
