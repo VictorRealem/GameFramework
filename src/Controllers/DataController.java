@@ -29,8 +29,6 @@ public class DataController {
     }
 
 
-
-
     /***
      *  generic Game datasets
      */
@@ -86,7 +84,7 @@ public class DataController {
 
     public void setAI(boolean AI)
     {
-        this.dataset.AI = AI;
+        this.userData.AI = AI;
     }
 
 
@@ -166,7 +164,7 @@ public class DataController {
 
     public boolean getAI()
     {
-        return this.dataset.AI;
+        return this.userData.AI;
     }
 
 

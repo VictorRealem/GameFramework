@@ -8,7 +8,6 @@ public class Dataset {
     }
     public int[] gameData;
     public GameType gameType;
-    public boolean AI;
     public boolean yourTurn;
     private boolean playerOne;
     public boolean getP1() {
