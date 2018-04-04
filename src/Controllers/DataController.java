@@ -65,7 +65,7 @@ public class DataController {
             this.dataset = new TicTacToeDataset();
             this.dataset.gameType = type;
         }
-        this.dataset.YourTurn = false;
+        this.dataset.yourTurn = false;
     }
 
     /***
@@ -107,14 +107,14 @@ public class DataController {
      */
     public void setYourTurn(boolean turn)
     {
-        this.dataset.YourTurn = turn;
+        this.dataset.yourTurn = turn;
     }
 
     public void setPlayerOne(boolean playerOne)
     {
         System.out.println("Setting p1 in dataset: " + playerOne);
-        this.dataset.playerOne = playerOne;
-        System.out.println("Getting p1 from dataset: " + this.dataset.playerOne);
+        this.dataset.setP1(playerOne);
+        System.out.println("Getting p1 from dataset: " + this.dataset.getP1());
     }
 
     public void setPlayerName(String name)
@@ -187,12 +187,13 @@ public class DataController {
      */
     public boolean getYourTurn()
     {
-        return this.dataset.YourTurn;
+        return this.dataset.yourTurn;
     }
 
     public boolean getPlayerOne()
     {
-        return this.dataset.playerOne;
+        System.out.println("getting p1 from datacontroller: " + this.dataset.getP1());
+        return this.dataset.getP1();
     }
 
     public String getPlayerName()
