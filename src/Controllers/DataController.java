@@ -110,9 +110,7 @@ public class DataController {
 
     public void setPlayerOne(boolean playerOne)
     {
-        System.out.println("Setting p1 in dataset: " + playerOne);
-        this.dataset.setP1(playerOne);
-        System.out.println("Getting p1 from dataset: " + this.dataset.getP1());
+        this.dataset.playerOne = playerOne;
     }
 
     public void setPlayerName(String name)
@@ -190,8 +188,7 @@ public class DataController {
 
     public boolean getPlayerOne()
     {
-        System.out.println("getting p1 from datacontroller: " + this.dataset.getP1());
-        return this.dataset.getP1();
+        return this.dataset.playerOne;
     }
 
     public String getPlayerName()
