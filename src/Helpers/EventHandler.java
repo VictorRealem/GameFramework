@@ -4,6 +4,8 @@ import Controllers.DataController;
 import Controllers.ReversiController;
 import Controllers.TicTacToeController;
 import Models.GameType;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import java.util.HashMap;
 
@@ -217,7 +219,33 @@ public class EventHandler {
 
     private void EndGameHandler(String response, String state)
     {
+        String headerText = "";
+        String contentText = "" ;
 
+        switch(state)
+        {
+            case "WIN":
+                headerText = "Congratulations!";
+                contentText = "You have won!";
+                break;
+            case "DRAW":
+                headerText = "Better luck next time";
+                contentText = "At least you did not lose";
+                break;
+            case "LOSS":
+                headerText = "Noob";
+                contentText = "You have lost!";
+                break;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("GAME STATUS");
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+
+        Platform.runLater( () -> {
+            alert.showAndWait();
+        });
     }
 
     private HashMap<String, String> parameterConvert(String parameters)
