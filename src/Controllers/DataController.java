@@ -29,8 +29,6 @@ public class DataController {
     }
 
 
-
-
     /***
      *  generic Game datasets
      */
@@ -65,7 +63,7 @@ public class DataController {
             this.dataset = new TicTacToeDataset();
             this.dataset.gameType = type;
         }
-        this.dataset.YourTurn = false;
+        this.dataset.yourTurn = false;
     }
 
     /***
@@ -86,7 +84,7 @@ public class DataController {
 
     public void setAI(boolean AI)
     {
-        this.dataset.AI = AI;
+        this.userData.AI = AI;
     }
 
 
@@ -107,14 +105,12 @@ public class DataController {
      */
     public void setYourTurn(boolean turn)
     {
-        this.dataset.YourTurn = turn;
+        this.dataset.yourTurn = turn;
     }
 
     public void setPlayerOne(boolean playerOne)
     {
-        System.out.println("Setting p1 in dataset: " + playerOne);
         this.dataset.playerOne = playerOne;
-        System.out.println("Getting p1 from dataset: " + this.dataset.playerOne);
     }
 
     public void setPlayerName(String name)
@@ -166,7 +162,7 @@ public class DataController {
 
     public boolean getAI()
     {
-        return this.dataset.AI;
+        return this.userData.AI;
     }
 
 
@@ -187,7 +183,7 @@ public class DataController {
      */
     public boolean getYourTurn()
     {
-        return this.dataset.YourTurn;
+        return this.dataset.yourTurn;
     }
 
     public boolean getPlayerOne()

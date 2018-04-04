@@ -1,7 +1,6 @@
 package Controllers;
 
 import DAL.TCPConnection;
-import Models.GameType;
 import Views.GameBoardView;
 
 
@@ -9,9 +8,6 @@ public class TicTacToeController extends GameController {
 
     private DataController dataController;
     private TCPConnection connection;
-    private GameBoardView gameBoard;
-    private boolean playable = true;
-    private boolean turnX = true;
 
 
     public TicTacToeController() {
@@ -24,7 +20,8 @@ public class TicTacToeController extends GameController {
      */
     public void initializeGame() {
 
-        dataController.setDatasetType(GameType.Tictactoe);
+        //dataController.setDatasetType(GameType.Tictactoe);
+
         dataController.setPossibleMoves(new int[]{1,1,1,1,1,1,1,1,1});
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
