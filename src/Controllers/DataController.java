@@ -5,7 +5,6 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,8 +27,6 @@ public class DataController {
     public static DataController getInstance() {
         return ourInstance;
     }
-
-
 
 
     /***
@@ -66,7 +63,7 @@ public class DataController {
             this.dataset = new TicTacToeDataset();
             this.dataset.gameType = type;
         }
-        this.dataset.YourTurn = false;
+        this.dataset.yourTurn = false;
     }
 
     /***
@@ -87,7 +84,7 @@ public class DataController {
 
     public void setAI(boolean AI)
     {
-        this.dataset.AI = AI;
+        this.userData.AI = AI;
     }
 
 
@@ -108,12 +105,12 @@ public class DataController {
      */
     public void setYourTurn(boolean turn)
     {
-        this.dataset.YourTurn = turn;
+        this.dataset.yourTurn = turn;
     }
 
     public void setPlayerOne(boolean playerOne)
     {
-        this.dataset.PlayerOne = playerOne;
+        this.dataset.playerOne = playerOne;
     }
 
     public void setPlayerName(String name)
@@ -165,7 +162,7 @@ public class DataController {
 
     public boolean getAI()
     {
-        return this.dataset.AI;
+        return this.userData.AI;
     }
 
 
@@ -186,12 +183,12 @@ public class DataController {
      */
     public boolean getYourTurn()
     {
-        return this.dataset.YourTurn;
+        return this.dataset.yourTurn;
     }
 
     public boolean getPlayerOne()
     {
-        return this.dataset.PlayerOne;
+        return this.dataset.playerOne;
     }
 
     public String getPlayerName()

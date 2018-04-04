@@ -1,9 +1,7 @@
 package Controllers;
 
 import DAL.TCPConnection;
-import Models.GameType;
 import Views.GameBoardView;
-import javafx.application.Platform;
 
 
 public class TicTacToeController extends GameController {
@@ -25,8 +23,9 @@ public class TicTacToeController extends GameController {
      */
     public void initializeGame() {
 
-        dataController.setDatasetType(GameType.Tictactoe);
-        dataController.setPossibleMoves(new int[9]);
+        //dataController.setDatasetType(GameType.Tictactoe);
+
+        dataController.setPossibleMoves(new int[]{1,1,1,1,1,1,1,1,1});
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
 
@@ -43,21 +42,18 @@ public class TicTacToeController extends GameController {
     }
 
     public boolean isTurnX(){
-        boolean turnX = dataController.getYourTurn();
-        return turnX;
+        return dataController.getYourTurn();
     }
 
 
     @Override
     public boolean sentMove(int move) {
+        System.out.println("Receiving move " + move);
         int[] pm = dataController.getPossibleMoves();
         if(dataController.getYourTurn()){
-            for(int i : pm){
-                if(i == move){
-                    dataController.setYourTurn(false);
-                    this.connection.sentCommand("MOVE " + move);
-                    break;
-                }
+            if(pm[move] == 1){
+                dataController.setYourTurn(false);
+                this.connection.sentCommand("MOVE " + move);
             }
         }
 
@@ -72,8 +68,6 @@ public class TicTacToeController extends GameController {
 
         dataController.setData(dataSet);
 
-        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataSet));
-
         int[] possibleMoves = new int[dataSet.length];
 
         for(int i = 0; i < dataSet.length; i++){
@@ -85,6 +79,7 @@ public class TicTacToeController extends GameController {
 
         dataController.setPossibleMoves(possibleMoves);
 
+        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataSet));
     }
 }
 
