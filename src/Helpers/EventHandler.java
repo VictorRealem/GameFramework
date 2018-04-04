@@ -223,10 +223,15 @@ public class EventHandler {
                     //start match
                     TCPConnection connection = TCPConnection.getInstance();
                     connection.sentCommand("challenge accept " + parameters.get("CHALLENGENUMBER"));
-                    try {
-                        Thread.sleep(10);
-                    }catch(InterruptedException ex) {
-                        ex.printStackTrace();
+                    switch (parameters.get("GAMETYPE")) {
+                        case "Tic-tac-toe": {
+                            dataController.setDatasetType(GameType.Tictactoe);
+                            break;
+                        }
+                        case "Reversi": {
+                            dataController.setDatasetType(GameType.Reversi);
+                            break;
+                        }
                     }
                 }
             }
