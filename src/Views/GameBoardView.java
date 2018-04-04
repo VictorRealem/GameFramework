@@ -132,7 +132,7 @@ class CenterPane extends GridPane {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 Tile tile = new Tile(controller,count);
-                tile.setTranslateY(i * -1);
+                //tile.setTranslateY(i * -15);
                 int val = dataset[count];
                 System.out.println("val: " + val);
                 if(val == 1) {
