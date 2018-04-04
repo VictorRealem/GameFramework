@@ -15,7 +15,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class GameBoardView{
 
@@ -39,8 +38,6 @@ public class GameBoardView{
         borderPane.setBottom(new BottomPane());
         CenterPane centerPane = new CenterPane(boardSize,controller, dataSet);
         board = centerPane.getBoard();
-        centerPane.setHgap(10);
-        centerPane.setVgap(10);
         borderPane.setCenter(centerPane);
         borderPane.setLeft(new LeftPane());
         borderPane.setRight(new RightPane());
@@ -132,7 +129,7 @@ class CenterPane extends GridPane {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 Tile tile = new Tile(controller,count);
-                tile.setTranslateY(i * -1);
+                tile.setTranslateY(i * -12);
                 int val = dataset[count];
                 System.out.println("val: " + val);
                 if(val == 1) {
@@ -227,7 +224,6 @@ class Tile extends StackPane {
 
     public Tile(GameController controller, int count) {
         this.controller = controller;
-        Random random = new Random();
         index = count;
         Rectangle border = new Rectangle(80, 80);
         border.setFill(null);
