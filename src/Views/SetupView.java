@@ -129,7 +129,7 @@ public class SetupView {
      */
     private void setupSelected(GridPane OBox) {
         DataController dataController = DataController.getInstance();
-        dataController.setDatasetType(GameType.Tictactoe);
+        //dataController.setDatasetType(GameType.Tictactoe);
         selectedGame = new Label("");
 
         selectedPlayer = new Label("");

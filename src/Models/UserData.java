@@ -13,4 +13,5 @@ public class UserData {
     public String OpponentName;
     public List<String> gamelist;
     public List<String> playerlist;
+    public boolean AI;
 }
