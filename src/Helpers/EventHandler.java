@@ -237,15 +237,17 @@ public class EventHandler {
                 contentText = "You have lost!";
                 break;
         }
-
+        /**
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("GAME STATUS");
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
 
         Platform.runLater( () -> {
-            alert.showAndWait();
+          //  alert.showAndWait();
         });
+        **/
+        System.out.println(response);
     }
 
     private HashMap<String, String> parameterConvert(String parameters)
