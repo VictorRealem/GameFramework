@@ -5,7 +5,6 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -113,7 +112,9 @@ public class DataController {
 
     public void setPlayerOne(boolean playerOne)
     {
-        this.dataset.PlayerOne = playerOne;
+        System.out.println("Setting p1 in dataset: " + playerOne);
+        this.dataset.playerOne = playerOne;
+        System.out.println("Getting p1 from dataset: " + this.dataset.playerOne);
     }
 
     public void setPlayerName(String name)
@@ -191,7 +192,7 @@ public class DataController {
 
     public boolean getPlayerOne()
     {
-        return this.dataset.PlayerOne;
+        return this.dataset.playerOne;
     }
 
     public String getPlayerName()
