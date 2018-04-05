@@ -80,6 +80,7 @@ public class LoginView {
     {
         Label nameLabel = new Label("Name:");
         grid.add(nameLabel, 0, 0);
+        //77.162.40.81
         Label serverUrlLabel = new Label("Server address:");
         grid.add(serverUrlLabel, 0, 1);
         Label portLabel = new Label("Port:");
