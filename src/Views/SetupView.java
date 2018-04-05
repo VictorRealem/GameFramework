@@ -144,8 +144,8 @@ public class SetupView {
      */
     private void setupSelected(GridPane OBox) {
         selectedGame = new Label("");
-
         selectedPlayer = new Label("");
+
         Label selLabel = new Label("SELECTED GAME");
         Label selPlayer = new Label ("SELECTED PLAYER");
 
@@ -183,6 +183,8 @@ public class SetupView {
                     }
                 }
                 selectedGame.setText(l.getText());
+                if(!selectedPlayer.getText().equals(""))
+                    start.setDisable(false);
                 TCPConnection connection = TCPConnection.getInstance();
                 connection.sentCommand("subscribe " + game);
             });
@@ -210,7 +212,8 @@ public class SetupView {
             if(!name.equals(controller.getUserName())) {
                 l.setOnMouseClicked((MouseEvent) -> {
                     selectedPlayer.setText(name);
-                    start.setDisable(false);
+                    if(!selectedGame.getText().equals(""))
+                        start.setDisable(false);
                 });
             }
             playBox.getChildren().add(l);
