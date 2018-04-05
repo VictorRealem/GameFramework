@@ -402,4 +402,9 @@ public class ReversiController extends GameController {
 
         return !dataController.getYourTurn();
     }
+
+    public int[] getPossibleMoves(){
+        int[] pm = dataController.getPossibleMoves();
+        return pm;
+    }
 }
