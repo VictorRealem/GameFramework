@@ -81,7 +81,27 @@ public class TicTacToeController extends GameController {
 
         dataController.setPossibleMoves(possibleMoves);
 
+        updateScore();
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataSet));
+    }
+
+    public void updateScore(){
+        int[] dataSet = dataController.getData();
+
+        int playerOneScore = 0;
+        int playerTwoScore = 0;
+
+        for(int counter = 0; counter < 9; counter++){
+            if(dataSet[counter] == 1){
+                playerOneScore++;
+            }
+            else if(dataSet[counter] == 2){
+                playerTwoScore++;
+            } else{
+                // do nothing
+            }
+        }
+        dataController.setScore(playerOneScore, playerTwoScore);
     }
 }
 
