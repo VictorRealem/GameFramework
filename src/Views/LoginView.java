@@ -32,6 +32,7 @@ public class LoginView {
      */
     public Scene getLoginScene() {
         GridPane gridPane = new GridPane();
+        setStyling(gridPane);
         setLabels(gridPane);
         setTextboxes(gridPane);
         setbutton(gridPane);
@@ -127,6 +128,10 @@ public class LoginView {
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(login);
         grid.add(hbBtn, 1, 3);
+    }
+
+    private void setStyling(GridPane grid){
+        grid.setStyle("-fx-background-color: #FAFAFA");
     }
 
 
