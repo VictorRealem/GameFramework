@@ -131,7 +131,6 @@ class CenterPane extends GridPane {
                 Tile tile = new Tile(controller,count);
                 tile.setTranslateY(i * -12);
                 int val = dataset[count];
-                System.out.println("val: " + val);
                 if(val == 1) {
                     tile.getTextField().setText("x");
                 } else if(val == 2) {
@@ -141,7 +140,7 @@ class CenterPane extends GridPane {
                 count++;
             }
         }
-        System.out.println("-----------");
+
     }
 
     public ArrayList<Tile> getBoard() {
@@ -235,14 +234,7 @@ class Tile extends StackPane {
         getChildren().addAll(border, text);
 
         this.setOnMouseClicked(event -> {
-            /*if (!playable)
-                return;*/
-                System.out.println("Sending move");
-                controller.sentMove(index);
-                System.out.println("Move send");
-                //System.out.println("sending to server");
-                // checkState();
-
+            controller.sentMove(index);
         });
     }
 

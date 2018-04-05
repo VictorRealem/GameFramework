@@ -8,9 +8,6 @@ public class TicTacToeController extends GameController {
 
     private DataController dataController;
     private TCPConnection connection;
-    private GameBoardView gameBoard;
-    private boolean playable = true;
-    private boolean turnX = true;
 
 
     public TicTacToeController() {
@@ -48,7 +45,6 @@ public class TicTacToeController extends GameController {
 
     @Override
     public boolean sentMove(int move) {
-        System.out.println("Receiving move " + move);
         int[] pm = dataController.getPossibleMoves();
         if(dataController.getYourTurn()){
             if(pm[move] == 1){
