@@ -2,7 +2,6 @@ package Views;
 
 import Controllers.SetupController;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -89,8 +88,9 @@ public class LoginView {
     {
         Label nameLabel = new Label("Name:");
         grid.add(nameLabel, 0, 0);
+        //77.162.40.81      Pi server
+        //145.33.225.170    School server
         nameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        //77.162.40.81
         Label serverUrlLabel = new Label("Server address:");
         serverUrlLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
         grid.add(serverUrlLabel, 0, 1);

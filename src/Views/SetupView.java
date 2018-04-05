@@ -123,6 +123,7 @@ public class SetupView {
         ComboBox<String> playOptions = new ComboBox<>();
         playOptions.getItems().addAll("Player", "AI");
         playOptions.setEditable(false);
+        playOptions.setValue("Player");
         playOptions.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -183,10 +184,11 @@ public class SetupView {
                     }
                 }
                 selectedGame.setText(l.getText());
-                if(!selectedPlayer.getText().equals(""))
-                    start.setDisable(false);
                 TCPConnection connection = TCPConnection.getInstance();
                 connection.sentCommand("subscribe " + game);
+                if(!selectedPlayer.getText().equals("")) {
+                    start.setDisable(false);
+                }
             });
             gameBox.getChildren().add(l);
         }

@@ -23,6 +23,7 @@ public class SetupController {
     public SetupController(Stage primaryStage)
     {
         this.primaryStage = primaryStage;
+        connection = TCPConnection.getInstance();
     }
 
     public Scene InitializeLogin()
@@ -40,7 +41,7 @@ public class SetupController {
         try {
             connection.initializeConnection(this.host, Integer.parseInt(this.port));
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Could not connect");
             return false;
         }
         connection.start();
