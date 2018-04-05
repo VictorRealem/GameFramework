@@ -39,10 +39,11 @@ public class SetupController {
         this.port = port;
         try {
             connection.initializeConnection(this.host, Integer.parseInt(this.port));
-            connection.start();
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
+        connection.start();
 
         this.name = name;
         connection.sentCommand("login " + name);
@@ -67,9 +68,11 @@ public class SetupController {
      * @return a list containing the required data
      */
     public List<String> getDataList(int type) {
+        connection = TCPConnection.getInstance();
         List<String> dataList;
         switch(type) {
             case 0: {
+                System.out.println("Connection: " + connection);
                 connection.sentCommand("get gamelist");
                 break;
             }

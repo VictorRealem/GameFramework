@@ -15,7 +15,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class GameBoardView{
 
@@ -39,8 +38,6 @@ public class GameBoardView{
         borderPane.setBottom(new BottomPane());
         CenterPane centerPane = new CenterPane(boardSize,controller, dataSet);
         board = centerPane.getBoard();
-        centerPane.setHgap(1);
-        centerPane.setVgap(1);
         borderPane.setCenter(centerPane);
         borderPane.setLeft(new LeftPane());
         borderPane.setRight(new RightPane());
@@ -132,7 +129,7 @@ class CenterPane extends GridPane {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 Tile tile = new Tile(controller,count);
-                tile.setTranslateY(i * -1);
+                tile.setTranslateY(i * -12);
                 int val = dataset[count];
                 if(val == 1) {
                     tile.getTextField().setText("x");
