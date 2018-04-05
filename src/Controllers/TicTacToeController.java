@@ -1,5 +1,6 @@
 package Controllers;
 
+import AI.AI;
 import DAL.TCPConnection;
 import Views.GameBoardView;
 
@@ -33,15 +34,20 @@ public class TicTacToeController extends GameController {
 
         if(AI){
             //run AI code.
+            AI ai = new AI();
+            System.out.println("AI is made");
+            int move = ai.makeMove(dataController.getPossibleMoves());
+            System.out.println("AI made move " + move);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            sentMove(move);
         }else{
             dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
         }
     }
-
-    public boolean isTurnX(){
-        return dataController.getYourTurn();
-    }
-
 
     @Override
     public boolean sentMove(int move) {
