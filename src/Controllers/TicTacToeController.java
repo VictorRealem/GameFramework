@@ -3,6 +3,10 @@ package Controllers;
 import AI.AI;
 import DAL.TCPConnection;
 import Views.GameBoardView;
+import javafx.scene.image.Image;
+
+import javax.xml.soap.Text;
+import java.awt.*;
 
 
 public class TicTacToeController extends GameController {
@@ -49,6 +53,7 @@ public class TicTacToeController extends GameController {
 
         }
     }
+
 
     @Override
     public int[] getPossibleMoves() {
@@ -109,6 +114,17 @@ public class TicTacToeController extends GameController {
             }
         }
         dataController.setScore(playerOneScore, playerTwoScore);
+    }
+
+
+    @Override
+    public String getImage(int val) {
+        if (val == 1){
+            return "/Images/blueX.png";
+        }if (val == 2){
+            return "/Images/redCircle.png";
+        }
+        return null;
     }
 }
 

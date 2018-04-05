@@ -3,6 +3,7 @@ package Controllers;
 import AI.AI;
 import DAL.TCPConnection;
 import Views.GameBoardView;
+import javafx.scene.image.Image;
 
 import java.util.Arrays;
 
@@ -463,5 +464,16 @@ public class ReversiController extends GameController {
         }
         dataController.setScore(playerOneScore, playerTwoScore);
 
+    }
+
+
+    @Override
+    public String getImage(int val) {
+        if (val == 1){
+            return "/Images/red.png";
+        }if (val == 2){
+            return "/Images/blue.png";
+        }
+        return null;
     }
 }
