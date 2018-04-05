@@ -1,7 +1,7 @@
 package Controllers;
 
+import AI.AI;
 import DAL.TCPConnection;
-import Models.GameType;
 import Views.GameBoardView;
 
 import java.util.Arrays;
@@ -243,8 +243,6 @@ public class ReversiController extends GameController {
     }
 
     private boolean checkPossibleMoves(int move, int player, int[] dataSet){
-
-
         int opponent = 1;
         if(player == 1){
             opponent = 2;
@@ -381,6 +379,16 @@ public class ReversiController extends GameController {
 
         if(AI){
             //run AI code.
+            AI ai = new AI();
+            System.out.println("AI is made");
+            int move = ai.makeMove(dataController.getPossibleMoves());
+            System.out.println("AI made move " + move);
+            try {
+                Thread.sleep(0);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            sentMove(move);
         }
         else{
             dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
@@ -395,9 +403,8 @@ public class ReversiController extends GameController {
         if(dataController.getYourTurn()){
             if(possibleMoves[move] == 1){
                 dataController.setYourTurn(false);
-                move = move;
                 this.connection.sentCommand("MOVE " + move);
-                System.out.println(move);
+                //System.out.println(move);
             }
         }
 
