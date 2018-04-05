@@ -88,14 +88,30 @@ public class SetupView {
 
         start.setOnAction( (ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
-            System.out.println("challenge " + selectedPlayer.getText() + " " + selectedGame.getText());
-            connection.sentCommand("challenge " + selectedPlayer.getText() + " " + selectedGame.getText());
+            //System.out.println("challenge " + "\"" + selectedPlayer.getText() + "\" \"" + selectedGame.getText() + "\"");
+            DataController dataController = DataController.getInstance();
+            switch(selectedGame.getText()) {
+                case "Tic-tac-toe": {
+                    dataController.setDatasetType(GameType.Tictactoe);
+                    connection.sentCommand("challenge " + "\"" + selectedPlayer.getText() + "\" \"" + selectedGame.getText() + "\"");
+                    break;
+                }
+                case "Reversi": {
+                    dataController.setDatasetType(GameType.Reversi);
+                    connection.sentCommand("challenge " + "\"" + selectedPlayer.getText() + "\" \"" + selectedGame.getText() + "\"");
+                    break;
+                }
+                default: {
+                    System.out.println("This game doesn't exist");
+                }
+            }
         });
         start.setDisable(true);
 
         updatePlayList.setOnAction( (ActionEvent e) -> {
             setupPlayList();
         });
+
         BBox.getChildren().add(updatePlayList);
         BBox.getChildren().add(start);
     }
@@ -128,8 +144,6 @@ public class SetupView {
      * @param OBox The options gridpane
      */
     private void setupSelected(GridPane OBox) {
-        DataController dataController = DataController.getInstance();
-        //dataController.setDatasetType(GameType.Tictactoe);
         selectedGame = new Label("");
 
         selectedPlayer = new Label("");
