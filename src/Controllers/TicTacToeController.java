@@ -31,6 +31,7 @@ public class TicTacToeController extends GameController {
     @Override
     public void turn() {
         boolean AI = dataController.getAI();
+        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
 
         if(AI){
             //run AI code.
@@ -38,14 +39,14 @@ public class TicTacToeController extends GameController {
             System.out.println("AI is made");
             int move = ai.makeMove(dataController.getPossibleMoves());
             System.out.println("AI made move " + move);
-            try {
+            sentMove(move);
+            System.out.println("Move was supposed to be send");
+            /*try {
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
-            }
-            sentMove(move);
-        }else{
-            dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
+            }*/
+
         }
     }
 
