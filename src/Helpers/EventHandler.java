@@ -220,6 +220,7 @@ public class EventHandler {
                 alert.setContentText(parameters.get("CHALLENGER") + " wants to play " + parameters.get("GAMETYPE") + " with you!");
                 Optional<ButtonType> input = alert.showAndWait();
                 if(input.get() == ButtonType.OK) {
+
                     //start match
                     TCPConnection connection = TCPConnection.getInstance();
                     connection.sentCommand("challenge accept " + parameters.get("CHALLENGENUMBER"));

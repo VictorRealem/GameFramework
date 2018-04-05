@@ -88,8 +88,23 @@ public class SetupView {
 
         start.setOnAction( (ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
-            System.out.println("challenge " + "\"" + selectedPlayer.getText() + "\" \"" + selectedGame.getText() + "\"");
-            connection.sentCommand("challenge " + "\"" + selectedPlayer.getText() + "\" \"" + selectedGame.getText() + "\"");
+            //System.out.println("challenge " + "\"" + selectedPlayer.getText() + "\" \"" + selectedGame.getText() + "\"");
+            DataController dataController = DataController.getInstance();
+            switch(selectedGame.getText()) {
+                case "Tic-tac-toe": {
+                    dataController.setDatasetType(GameType.Tictactoe);
+                    connection.sentCommand("challenge " + "\"" + selectedPlayer.getText() + "\" \"" + selectedGame.getText() + "\"");
+                    break;
+                }
+                case "Reversi": {
+                    dataController.setDatasetType(GameType.Reversi);
+                    connection.sentCommand("challenge " + "\"" + selectedPlayer.getText() + "\" \"" + selectedGame.getText() + "\"");
+                    break;
+                }
+                default: {
+                    System.out.println("This game doesn't exist");
+                }
+            }
         });
         start.setDisable(true);
 
