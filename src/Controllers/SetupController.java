@@ -39,10 +39,11 @@ public class SetupController {
         this.port = port;
         try {
             connection.initializeConnection(this.host, Integer.parseInt(this.port));
-            connection.start();
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
+        connection.start();
 
         this.name = name;
         connection.sentCommand("login " + name);

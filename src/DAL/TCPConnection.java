@@ -58,7 +58,9 @@ public class TCPConnection extends Thread {
 
     public void initializeConnection(String host, int port) throws Exception
     {
-        this.clientSocket = new Socket(host,port);
+        if(clientSocket == null) {
+            this.clientSocket = new Socket(host, port);
+        }
     }
 
 
@@ -94,8 +96,7 @@ public class TCPConnection extends Thread {
         while (checkConnection()) {
             String response = inFromServer.readLine();
             // For testing purposes.
-            //System.out.println("server: " + response);
-
+            System.out.println("server: " + response);
             handler.HandleCommand(response);
         }
     }
