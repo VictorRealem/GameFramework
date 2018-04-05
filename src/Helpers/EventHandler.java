@@ -21,6 +21,11 @@ public class EventHandler {
         this.dataController = DataController.getInstance();
     }
 
+    /**
+     * Handles the server response
+     * If the response is a SVR response it gives it to the SVR handler
+     * @param response
+     */
     public void HandleCommand(String response)
     {
         if(response == null) {
@@ -48,6 +53,11 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Handles all server responses that start with 'SVR'
+     * Depending on the second keyword it gives the response to the appropriate handler.
+     * @param response The server response
+     */
     private void SVRHandler(String response)
     {
         String command = response.split(" ")[0];
@@ -98,6 +108,12 @@ public class EventHandler {
         }
 
     }
+
+    /**
+     * Handles the playerlist response from the server
+     * Adds all the players from the response to the DataController playerlist
+     * @param response The server response
+     */
     private void PlayerlistHandler(String response)
     {
         response = response.replaceAll(" ", "");
@@ -111,6 +127,12 @@ public class EventHandler {
 
     }
 
+    /**
+     * Handles the game list response from the server
+     * Puts all the games from the response in the dataController game list
+     * Not much else
+     * @param response The server response
+     */
     private void GamelistHandler(String response) {
         //System.out.println("In gamelist handler");
         response = response.replaceAll(" ", "");
@@ -123,6 +145,12 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Handles a turn
+     * Depending on which game is beïng played it creates a controller for that game
+     * and tells it to do a turn
+     * @param response The server response
+     */
     private void TurnHandler(String response)
     {
         HashMap<String, String> parameters = this.parameterConvert(response);
@@ -142,6 +170,12 @@ public class EventHandler {
 
     }
 
+    /**
+     * Handles the starting of a match
+     * Sets whether you are player one and if its your turn to start
+     * Depening on which game is beïng played the appropiate controller is created and told to initialize the game
+     * @param response The server response
+     */
     private void MatchHandler(String response)
     {
         HashMap<String, String> parameters = this.parameterConvert(response);
@@ -173,6 +207,13 @@ public class EventHandler {
 
     }
 
+    /**
+     * Handlers a single move
+     * It checks whether this player is player1 or player2, it then checks which game is being played.
+     * Depening on which game is beïng played it makes a appropiate controller and tells it to update
+     * the board with the move that has been made and the player that made it
+     * @param response
+     */
     private void MoveHandler(String response)
     {
         int move, player;
@@ -209,6 +250,12 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Handles the receiving of a challenge
+     * Puts up an alert that can be accepted or rejected
+     * When accepted an answer is send to the server and the game is started
+     * @param response
+     */
     private void ChallengeHandler(String response)
     {
         HashMap<String, String> parameters = parameterConvert(response);
@@ -244,6 +291,11 @@ public class EventHandler {
 
     }
 
+    /**
+     * Converts the response of the server to a hashmap
+     * @param parameters The response of the server
+     * @return A hashmap<String,String> containing the Parameters => values
+     */
     private HashMap<String, String> parameterConvert(String parameters)
     {
         parameters = parameters.replaceAll(" ", "");
