@@ -1,5 +1,6 @@
 package Views;
 
+import Controllers.DataController;
 import Controllers.GameController;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -49,9 +50,7 @@ public class GameBoardView{
 
 class BottomPane extends HBox {
 
-    // private TextField serverMessage = new TextField("You win");
     private Label serverMessage;
-
 
     public BottomPane() {
         setAlignment(Pos.CENTER);
@@ -108,6 +107,8 @@ class TopPane extends HBox {
 class CenterPane extends GridPane {
 
     int boardSize;
+
+
     ArrayList<Tile> board;
     GameController controller;
 
@@ -115,7 +116,6 @@ class CenterPane extends GridPane {
 
         this.boardSize = boardSize;
         this.controller = controller;
-
         boardSize =  (int) Math.sqrt(boardSize);
         drawBoard(boardSize, dataSet);
         //setStylingPane();
@@ -156,7 +156,8 @@ class CenterPane extends GridPane {
 class LeftPane extends VBox {
 
     private Label p1 = new Label("Player 1 \n  score");
-    private Label score = new Label("3");
+    DataController dataController = DataController.getInstance();
+    private Label score = new Label("" + dataController.getPlayerOneScore());
     private Separator separator = new Separator();
 
     public LeftPane(){
@@ -179,8 +180,6 @@ class LeftPane extends VBox {
         setAlignment(Pos.TOP_CENTER);
         setSpacing(5.0);
         setStyle("-fx-background-color: #005b96");
-
-        //setStyle("-fx-border-color: blue");
         setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
     }
 }
@@ -188,7 +187,8 @@ class LeftPane extends VBox {
 class RightPane extends VBox{
 
     private Label p2 = new Label("Player 2 \n  score");
-    private Label score = new Label("5");
+    DataController dataController = DataController.getInstance();
+    private Label score = new Label("" + dataController.getPlayerTwoScore());
     private Separator separator = new Separator();
 
     public RightPane(){
@@ -211,7 +211,6 @@ class RightPane extends VBox{
         setAlignment(Pos.TOP_CENTER);
         setSpacing(5.0);
         setStyle("-fx-background-color:  #ff4c4c");
-        //setStyle("-fx-border-color: red");
         setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
     }
 
@@ -221,15 +220,23 @@ class Tile extends StackPane {
     private GameController controller;
     private int index;
 
+
+
+
     public Tile(GameController controller, int count) {
         this.controller = controller;
+        int[] pm = controller.getPossibleMoves();
         index = count;
         Rectangle border = new Rectangle(80, 80);
         border.setFill(null);
+        if (pm[count] == 1 && pm.length > 0) {
+
+            border.setFill(Color.rgb(144,238,144));
+        }else {
+            border.setFill(null);
+        }
         border.setStroke(Color.BLACK);
-
         text.setFont(Font.font(72));
-
         setAlignment(Pos.CENTER);
         getChildren().addAll(border, text);
 

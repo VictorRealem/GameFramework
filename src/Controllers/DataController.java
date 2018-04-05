@@ -77,6 +77,19 @@ public class DataController {
         this.dataset.gameData = boardData;
     }
 
+    public void setScore(int playerOneScore, int playerTwoScore){
+        this.dataset.playerOneScore = playerOneScore;
+        this.dataset.playerTwoScore = playerTwoScore;
+    }
+
+    public int getPlayerOneScore(){
+        return this.dataset.playerOneScore;
+    }
+
+    public int getPlayerTwoScore(){
+        return this.dataset.playerTwoScore;
+    }
+
 
     /***
      * Saves the option for using the AI

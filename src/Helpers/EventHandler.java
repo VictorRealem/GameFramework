@@ -295,6 +295,35 @@ public class EventHandler {
      */
     private void EndGameHandler(String response, String state)
     {
+
+        HashMap<String, String> parameters = parameterConvert(response);
+        Platform.runLater( () -> {
+            synchronized (parameters) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle(state);
+                alert.setHeaderText("Challenged by " + parameters.get("CHALLENGER"));
+                alert.setContentText(parameters.get("CHALLENGER") + " wants to play " + parameters.get("GAMETYPE") + " with you!");
+                Optional<ButtonType> input = alert.showAndWait();
+                if(input.get() == ButtonType.OK) {
+
+                    //start match
+                    TCPConnection connection = TCPConnection.getInstance();
+                    connection.sentCommand("challenge accept " + parameters.get("CHALLENGENUMBER"));
+                    switch (parameters.get("GAMETYPE")) {
+                        case "Tic-tac-toe": {
+                            dataController.setDatasetType(GameType.Tictactoe);
+                            break;
+                        }
+                        case "Reversi": {
+                            dataController.setDatasetType(GameType.Reversi);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+
+
         String headerText = "";
         String contentText = "" ;
 

@@ -1,7 +1,7 @@
 package Controllers;
 
+import AI.AI;
 import DAL.TCPConnection;
-import Models.GameType;
 import Views.GameBoardView;
 
 import java.util.Arrays;
@@ -33,8 +33,6 @@ public class ReversiController extends GameController {
 
         // set the selected square tot the players color
         dataSet[move] = player;
-
-        // change stones between new and old stones..
 
         // the number of squares next to the move.
         int up = move / 8;
@@ -211,6 +209,9 @@ public class ReversiController extends GameController {
         // update the possible moves dataset
         updatePossibleMoves();
 
+        // update the player score
+        updateScore();
+
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
 
@@ -242,8 +243,6 @@ public class ReversiController extends GameController {
     }
 
     private boolean checkPossibleMoves(int move, int player, int[] dataSet){
-
-
         int opponent = 1;
         if(player == 1){
             opponent = 2;
@@ -380,6 +379,16 @@ public class ReversiController extends GameController {
 
         if(AI){
             //run AI code.
+            AI ai = new AI();
+            System.out.println("AI is made");
+            int move = ai.makeMove(dataController.getPossibleMoves());
+            System.out.println("AI made move " + move);
+            try {
+                Thread.sleep(0);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            sentMove(move);
         }
         else{
             dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
@@ -394,12 +403,36 @@ public class ReversiController extends GameController {
         if(dataController.getYourTurn()){
             if(possibleMoves[move] == 1){
                 dataController.setYourTurn(false);
-                move = move;
                 this.connection.sentCommand("MOVE " + move);
-                System.out.println(move);
+                //System.out.println(move);
             }
         }
 
         return !dataController.getYourTurn();
+    }
+
+
+    public int[] getPossibleMoves(){
+        int[] pm = dataController.getPossibleMoves();
+        return pm;
+    }
+    public void updateScore(){
+        int[] dataSet = dataController.getData();
+
+        int playerOneScore = 0;
+        int playerTwoScore = 0;
+
+        for(int counter = 0; counter < 64; counter++){
+            if(dataSet[counter] == 1){
+                playerOneScore++;
+            }
+            else if(dataSet[counter] == 2){
+                playerTwoScore++;
+            } else{
+                // do nothing
+            }
+        }
+        dataController.setScore(playerOneScore, playerTwoScore);
+
     }
 }

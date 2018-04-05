@@ -1,5 +1,6 @@
 package Controllers;
 
+import AI.AI;
 import DAL.TCPConnection;
 import Views.GameBoardView;
 
@@ -33,15 +34,26 @@ public class TicTacToeController extends GameController {
 
         if(AI){
             //run AI code.
+            AI ai = new AI();
+            System.out.println("AI is made");
+            int move = ai.makeMove(dataController.getPossibleMoves());
+            System.out.println("AI made move " + move);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            sentMove(move);
         }else{
             dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
         }
     }
 
-    public boolean isTurnX(){
-        return dataController.getYourTurn();
+    @Override
+    public int[] getPossibleMoves() {
+        int[] pm = dataController.getPossibleMoves();
+        return pm;
     }
-
 
     @Override
     public boolean sentMove(int move) {
@@ -75,7 +87,27 @@ public class TicTacToeController extends GameController {
 
         dataController.setPossibleMoves(possibleMoves);
 
+        updateScore();
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataSet));
+    }
+
+    public void updateScore(){
+        int[] dataSet = dataController.getData();
+
+        int playerOneScore = 0;
+        int playerTwoScore = 0;
+
+        for(int counter = 0; counter < 9; counter++){
+            if(dataSet[counter] == 1){
+                playerOneScore++;
+            }
+            else if(dataSet[counter] == 2){
+                playerTwoScore++;
+            } else{
+                // do nothing
+            }
+        }
+        dataController.setScore(playerOneScore, playerTwoScore);
     }
 }
 
