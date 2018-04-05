@@ -14,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -213,9 +212,6 @@ public class SetupView {
                     selectedPlayer.setText(name);
                     start.setDisable(false);
                 });
-            } else {
-                l.setBorder(new Border(new BorderStroke(Color.BLACK,
-                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
             }
             playBox.getChildren().add(l);
         }

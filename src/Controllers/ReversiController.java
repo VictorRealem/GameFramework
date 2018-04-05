@@ -4,6 +4,8 @@ import DAL.TCPConnection;
 import Models.GameType;
 import Views.GameBoardView;
 
+import java.util.Arrays;
+
 public class ReversiController extends GameController {
 
     private DataController dataController;
@@ -45,18 +47,18 @@ public class ReversiController extends GameController {
         // check upward
         for (int counter = 1; counter <= up; counter++) {
             boolean allowTurning = false;
-            if (dataSet[move + (8 * counter)] == 0) {
+            if (dataSet[move - (8 * counter)] == 0) {
                 break;
             }
-            if (dataSet[move + (8 * counter)] == player) {
+            if (dataSet[move - (8 * counter)] == player) {
                 allowTurning = true;
             }
             if (allowTurning) {
                 for (counter = 1; counter <= up; counter++) {
-                    if(dataSet[move + (8 * counter)] == 0 || dataSet[move + (8 * counter)] == player){
+                    if(dataSet[move - (8 * counter)] == 0 || dataSet[move - (8 * counter)] == player){
                         break;
                     }
-                    dataSet[move + (8 * counter)] = player;
+                    dataSet[move - (8 * counter)] = player;
                 }
                 break;
             }
@@ -65,18 +67,18 @@ public class ReversiController extends GameController {
         // check downward
         for (int counter = 1; counter <= down; counter++) {
             boolean allowTurning = false;
-            if (dataSet[move - (8 * counter)] == 0) {
+            if (dataSet[move + (8 * counter)] == 0) {
                 break;
             }
-            if (dataSet[move - (8 * counter)] == player) {
+            if (dataSet[move + (8 * counter)] == player) {
                 allowTurning = true;
             }
             if (allowTurning) {
                 for (counter = 1; counter <= down; counter++) {
-                    if(dataSet[move - (8 * counter)] == 0 || dataSet[move - (8 * counter)] == player){
+                    if(dataSet[move + (8 * counter)] == 0 || dataSet[move + (8 * counter)] == player){
                         break;
                     }
-                    dataSet[move - (8 * counter)] = player;
+                    dataSet[move + (8 * counter)] = player;
                 }
                 break;
             }
@@ -227,19 +229,20 @@ public class ReversiController extends GameController {
         }
 
         for(int counter = 0; counter < 64; counter ++){
-            if(checkPossibleMoves(counter, player)){
+            if(checkPossibleMoves(counter, player, dataSet)){
                 possibleMoves[counter] = 1; // move is possible
             }
             else{
                 possibleMoves[counter] = 0; // move is not possible
             }
         }
+        System.out.println(Arrays.toString(possibleMoves));
         dataController.setPossibleMoves(possibleMoves);
 
     }
 
-    private boolean checkPossibleMoves(int move, int player){
-        int[] dataSet = dataController.getData();
+    private boolean checkPossibleMoves(int move, int player, int[] dataSet){
+
 
         int opponent = 1;
         if(player == 1){
@@ -261,7 +264,7 @@ public class ReversiController extends GameController {
                 return true;
             }
             if (dataSet[move - (8 * counter)] == 0) {
-                possibleRow = false;
+                break;
             }
             if(dataSet[move - (8 * counter)] == opponent){
                 possibleRow = true;
@@ -276,7 +279,7 @@ public class ReversiController extends GameController {
                 return true;
             }
             if (dataSet[move + (8 * counter)] == 0) {
-                possibleRow = false;
+                break;
             }
             if(dataSet[move + (8 * counter)] == opponent){
                 possibleRow = true;
@@ -290,7 +293,7 @@ public class ReversiController extends GameController {
                 return true;
             }
             if (dataSet[move - counter] == 0) {
-                possibleRow = false;
+                break;
             }
             if(dataSet[move - counter] == opponent){
                 possibleRow = true;
@@ -304,7 +307,7 @@ public class ReversiController extends GameController {
                 return true;
             }
             if (dataSet[move + counter] == 0) {
-                possibleRow = false;
+                break;
             }
             if(dataSet[move + counter] == opponent){
                 possibleRow = true;
@@ -318,7 +321,7 @@ public class ReversiController extends GameController {
                 return true;
             }
             if (dataSet[move - (9 * counter)] == 0) {
-                possibleRow = false;
+                break;
             }
             if(dataSet[move - (9 * counter)] == opponent){
                 possibleRow = true;
@@ -332,7 +335,7 @@ public class ReversiController extends GameController {
                 return true;
             }
             if (dataSet[move - (7 * counter)] == 0) {
-                possibleRow = false;
+                break;
             }
             if (dataSet[move - (7 * counter)] == opponent){
                 possibleRow = true;
@@ -346,7 +349,7 @@ public class ReversiController extends GameController {
                 return true;
             }
             if (dataSet[move + (7 * counter)] == 0) {
-                possibleRow = false;
+                break;
             }
             if (dataSet[move + (7 * counter)] == opponent){
                 possibleRow = true;
@@ -360,7 +363,7 @@ public class ReversiController extends GameController {
                 return true;
             }
             if (dataSet[move + (9 * counter)] == 0) {
-                possibleRow = false;
+                break;
             }
             if(dataSet[move + (9 * counter)] == opponent){
                 possibleRow = true;
@@ -387,6 +390,7 @@ public class ReversiController extends GameController {
 
     public boolean sentMove(int move) {
         int[] possibleMoves = dataController.getPossibleMoves();
+
         if(dataController.getYourTurn()){
             if(possibleMoves[move] == 1){
                 dataController.setYourTurn(false);
