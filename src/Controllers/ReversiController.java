@@ -3,6 +3,7 @@ package Controllers;
 import AI.AI;
 import DAL.TCPConnection;
 import Views.GameBoardView;
+import javafx.scene.image.Image;
 
 import java.util.Arrays;
 
@@ -243,6 +244,11 @@ public class ReversiController extends GameController {
     }
 
     private boolean checkPossibleMoves(int move, int player, int[] dataSet){
+
+        if(dataSet[move] != 0){
+            return false;
+        }
+
         int opponent = 1;
         if(player == 1){
             opponent = 2;
@@ -259,8 +265,11 @@ public class ReversiController extends GameController {
         // check upward
         for (int counter = 1; counter <= up; counter++) {
 
-            if (dataSet[move - (8 * counter)] == player && possibleRow) {
-                return true;
+            if (dataSet[move - (8 * counter)] == player) {
+                if(possibleRow){
+                    return true;
+                }
+                break;
             }
             if (dataSet[move - (8 * counter)] == 0) {
                 break;
@@ -274,8 +283,11 @@ public class ReversiController extends GameController {
         // check downward
         for (int counter = 1; counter <= down; counter++) {
 
-            if (dataSet[move + (8 * counter)] == player && possibleRow) {
-                return true;
+            if (dataSet[move + (8 * counter)] == player) {
+                if(possibleRow){
+                    return true;
+                }
+                break;
             }
             if (dataSet[move + (8 * counter)] == 0) {
                 break;
@@ -288,8 +300,11 @@ public class ReversiController extends GameController {
         possibleRow = false;
         // check left
         for (int counter = 1; counter <= left; counter++) {
-            if (dataSet[move - counter] == player && possibleRow) {
-                return true;
+            if (dataSet[move - counter] == player) {
+                if(possibleRow){
+                    return true;
+                }
+                break;
             }
             if (dataSet[move - counter] == 0) {
                 break;
@@ -302,8 +317,11 @@ public class ReversiController extends GameController {
         possibleRow = false;
         // check right
         for (int counter = 1; counter <= right; counter++) {
-            if (dataSet[move + counter] == player && possibleRow) {
-                return true;
+            if (dataSet[move + counter] == player) {
+                if(possibleRow){
+                    return true;
+                }
+                break;
             }
             if (dataSet[move + counter] == 0) {
                 break;
@@ -316,8 +334,11 @@ public class ReversiController extends GameController {
         possibleRow = false;
         // check up left
         for (int counter = 1; counter <= left && counter <= up; counter++) {
-            if (dataSet[move - (9 * counter)] == player && possibleRow) {
-                return true;
+            if (dataSet[move - (9 * counter)] == player) {
+                if(possibleRow){
+                    return true;
+                }
+                break;
             }
             if (dataSet[move - (9 * counter)] == 0) {
                 break;
@@ -330,8 +351,11 @@ public class ReversiController extends GameController {
         possibleRow = false;
         // check up right
         for (int counter = 1; counter <= right && counter <= up; counter++) {
-            if (dataSet[move - (7 * counter)] == player && possibleRow) {
-                return true;
+            if (dataSet[move - (7 * counter)] == player) {
+                if(possibleRow){
+                    return true;
+                }
+                break;
             }
             if (dataSet[move - (7 * counter)] == 0) {
                 break;
@@ -344,8 +368,11 @@ public class ReversiController extends GameController {
         possibleRow = false;
         // check down left
         for (int counter = 1; counter <= left && counter <= down; counter++) {
-            if (dataSet[move + (7 * counter)] == player && possibleRow) {
-                return true;
+            if (dataSet[move + (7 * counter)] == player) {
+                if(possibleRow){
+                    return true;
+                }
+                break;
             }
             if (dataSet[move + (7 * counter)] == 0) {
                 break;
@@ -358,8 +385,11 @@ public class ReversiController extends GameController {
         possibleRow = false;
         // check down right
         for (int counter = 1; counter <= right && counter <= down; counter++) {
-            if (dataSet[move + (9 * counter)] == player && possibleRow) {
-                return true;
+            if (dataSet[move + (9 * counter)] == player) {
+                if(possibleRow){
+                    return true;
+                }
+                break;
             }
             if (dataSet[move + (9 * counter)] == 0) {
                 break;
@@ -411,6 +441,11 @@ public class ReversiController extends GameController {
         return !dataController.getYourTurn();
     }
 
+
+    public int[] getPossibleMoves(){
+        int[] pm = dataController.getPossibleMoves();
+        return pm;
+    }
     public void updateScore(){
         int[] dataSet = dataController.getData();
 
@@ -428,5 +463,17 @@ public class ReversiController extends GameController {
             }
         }
         dataController.setScore(playerOneScore, playerTwoScore);
+
+    }
+
+
+    @Override
+    public String getImage(int val) {
+        if (val == 1){
+            return "/Images/red.png";
+        }if (val == 2){
+            return "/Images/blue.png";
+        }
+        return null;
     }
 }
