@@ -3,11 +3,14 @@ package Helpers;
 import Controllers.DataController;
 import Controllers.ReversiController;
 import Controllers.TicTacToeController;
+import DAL.TCPConnection;
 import Models.GameType;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 public class EventHandler {
 
@@ -148,13 +151,10 @@ public class EventHandler {
         boolean playerOne = true;
         if(playertostart.equals(opponent))
         {
-            System.out.println("entering here");
             Yourturn = false;
             playerOne = false;
         }
-        System.out.println("Setting yt: " + Yourturn);
         dataController.setYourTurn(Yourturn);
-        System.out.println("Setting p1: " + playerOne);
         dataController.setPlayerOne(playerOne);
         dataController.setOpponentName(opponent);
 
@@ -180,8 +180,6 @@ public class EventHandler {
         HashMap<String, String> parameters = this.parameterConvert(response);
         String playerName = parameters.get("PLAYER");
         String opponentName = dataController.getOpponentName();
-        System.out.println("Playername: " + playerName);
-        System.out.println("Opname: " + opponentName);
 
         if(opponentName.equals(playerName)){
             //opponent has set a move
@@ -191,7 +189,6 @@ public class EventHandler {
             }
         } else {
             player = 2;
-            System.out.println("PlayerOne " + dataController.getPlayerOne());
             if(dataController.getPlayerOne()) {
                 player = 1;
             }
@@ -214,7 +211,32 @@ public class EventHandler {
 
     private void ChallengeHandler(String response)
     {
+        HashMap<String, String> parameters = parameterConvert(response);
+        Platform.runLater( () -> {
+            synchronized (parameters) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("CHALLENGE");
+                alert.setHeaderText("Challenged by " + parameters.get("CHALLENGER"));
+                alert.setContentText(parameters.get("CHALLENGER") + " wants to play " + parameters.get("GAMETYPE") + " with you!");
+                Optional<ButtonType> input = alert.showAndWait();
+                if(input.get() == ButtonType.OK) {
 
+                    //start match
+                    TCPConnection connection = TCPConnection.getInstance();
+                    connection.sentCommand("challenge accept " + parameters.get("CHALLENGENUMBER"));
+                    switch (parameters.get("GAMETYPE")) {
+                        case "Tic-tac-toe": {
+                            dataController.setDatasetType(GameType.Tictactoe);
+                            break;
+                        }
+                        case "Reversi": {
+                            dataController.setDatasetType(GameType.Reversi);
+                            break;
+                        }
+                    }
+                }
+            }
+            });
     }
 
     private void EndGameHandler(String response, String state)
