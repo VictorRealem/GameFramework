@@ -32,6 +32,13 @@ public class TCPConnection extends Thread {
         return !clientSocket.isClosed();
     }
 
+    public boolean checkSocket() {
+        if(clientSocket == null) {
+            return false;
+        }
+        return true;
+    }
+
     public void logout() {
         sentCommand("logout");
         try {

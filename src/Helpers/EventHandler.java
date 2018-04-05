@@ -2,6 +2,7 @@ package Helpers;
 
 import Controllers.DataController;
 import Controllers.ReversiController;
+import Controllers.SetupController;
 import Controllers.TicTacToeController;
 import DAL.TCPConnection;
 import Models.GameType;
@@ -9,6 +10,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -267,10 +269,8 @@ public class EventHandler {
                 alert.setContentText(parameters.get("CHALLENGER") + " wants to play " + parameters.get("GAMETYPE") + " with you!");
                 Optional<ButtonType> input = alert.showAndWait();
                 if(input.get() == ButtonType.OK) {
-
                     //start match
                     TCPConnection connection = TCPConnection.getInstance();
-                    connection.sentCommand("challenge accept " + parameters.get("CHALLENGENUMBER"));
                     switch (parameters.get("GAMETYPE")) {
                         case "Tic-tac-toe": {
                             dataController.setDatasetType(GameType.Tictactoe);
@@ -281,11 +281,18 @@ public class EventHandler {
                             break;
                         }
                     }
+                    connection.sentCommand("challenge accept " + parameters.get("CHALLENGENUMBER"));
                 }
             }
             });
     }
 
+    /**
+     * Handles the end of a game whether it be Draw/Win or Lose
+     * Displays a pop up that redirects back to the setup screen
+     * @param response The server response
+     * @param state win/lose or draw
+     */
     private void EndGameHandler(String response, String state)
     {
         String headerText = "";
@@ -306,17 +313,23 @@ public class EventHandler {
                 contentText = "You have lost!";
                 break;
         }
-        /**
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("GAME STATUS");
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
+        ArrayList<String> alertText = new ArrayList<>();
+        alertText.add(headerText);
+        alertText.add(contentText);
 
         Platform.runLater( () -> {
-          //  alert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("GAME STATUS");
+            alert.setHeaderText(alertText.get(0));
+            alert.setContentText(alertText.get(1));
+            Optional<ButtonType> input = alert.showAndWait();
+
+            if(input.get() == ButtonType.OK ) {
+                SetupController setupController = new SetupController(dataController.getPrimaryStage());
+                dataController.setScene(setupController.InitializeSetupView());
+            }
         });
-        **/
-        System.out.println(response);
+        //System.out.println(response);
     }
 
     /**

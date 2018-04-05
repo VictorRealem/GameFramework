@@ -60,6 +60,7 @@ public class DataController {
         }
 
         if(type == GameType.Tictactoe) {
+            System.out.println("Setting dataset type to tictactoe");
             this.dataset = new TicTacToeDataset();
             this.dataset.gameType = type;
         }
@@ -224,6 +225,8 @@ public class DataController {
     public void setPrimayStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
+    public Stage getPrimaryStage() { return primaryStage;}
 
     /**
      * Sets the scene on the primary stage
