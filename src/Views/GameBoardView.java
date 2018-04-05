@@ -156,7 +156,8 @@ class CenterPane extends GridPane {
 class LeftPane extends VBox {
 
     private Label p1 = new Label("Player 1 \n  score");
-    private Label score = new Label("3");
+    DataController dataController = DataController.getInstance();
+    private Label score = new Label("" + dataController.getPlayerOneScore());
     private Separator separator = new Separator();
 
     public LeftPane(){
@@ -186,7 +187,8 @@ class LeftPane extends VBox {
 class RightPane extends VBox{
 
     private Label p2 = new Label("Player 2 \n  score");
-    private Label score = new Label("5");
+    DataController dataController = DataController.getInstance();
+    private Label score = new Label("" + dataController.getPlayerTwoScore());
     private Separator separator = new Separator();
 
     public RightPane(){

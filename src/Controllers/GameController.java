@@ -5,4 +5,6 @@ public abstract class GameController {
     public abstract void turn();
     public abstract boolean sentMove(int move);
     public abstract int[] getPossibleMoves();
+    public abstract void updateScore();
+
 }
