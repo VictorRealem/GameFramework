@@ -8,8 +8,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -106,7 +108,9 @@ class TopPane extends HBox {
 
 class CenterPane extends GridPane {
 
-    int boardSize;
+   private int boardSize;
+   private Image img;
+   private Image img2;
 
 
     ArrayList<Tile> board;
@@ -131,10 +135,14 @@ class CenterPane extends GridPane {
                 Tile tile = new Tile(controller,count);
                 tile.setTranslateY(i * -12);
                 int val = dataset[count];
+                Rectangle rec = tile.fillTile();
                 if(val == 1) {
-                    tile.getTextField().setText("x");
+                    img = new Image(controller.getImage(val));
+                    rec.setFill(new ImagePattern(img));
+
                 } else if(val == 2) {
-                    tile.getTextField().setText("o");
+                    img2 = new Image(controller.getImage(val));
+                    rec.setFill(new ImagePattern(img2));
                 }
                 add(tile, j, i);
                 count++;
@@ -217,6 +225,7 @@ class RightPane extends VBox{
 }
 class Tile extends StackPane {
     private Text text = new Text();
+    private Rectangle border;
     private GameController controller;
     private int index;
 
@@ -227,10 +236,9 @@ class Tile extends StackPane {
         this.controller = controller;
         int[] pm = controller.getPossibleMoves();
         index = count;
-        Rectangle border = new Rectangle(80, 80);
+        border = new Rectangle(80, 80);
         border.setFill(null);
         if (pm[count] == 1 && pm.length > 0) {
-
             border.setFill(Color.rgb(144,238,144));
         }else {
             border.setFill(null);
@@ -245,20 +253,8 @@ class Tile extends StackPane {
         });
     }
 
-    public double getCenterX() {
-        return getTranslateX();
-    }
-
-    public double getCenterY() {
-        return getTranslateY();
-    }
-
-    public Text getTextField() {
-        return text;
-    }
-
-    public String getValue() {
-        return text.getText();
-    }
+  public Rectangle fillTile(){
+      return border;
+  }
 
 }
