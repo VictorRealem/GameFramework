@@ -10,4 +10,6 @@ public class Dataset {
     public GameType gameType;
     public boolean yourTurn;
     public boolean playerOne;
+    public int playerOneScore;
+    public int playerTwoScore;
 }
