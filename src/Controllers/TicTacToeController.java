@@ -50,6 +50,12 @@ public class TicTacToeController extends GameController {
     }
 
     @Override
+    public int[] getPossibleMoves() {
+        int[] pm = dataController.getPossibleMoves();
+        return pm;
+    }
+
+    @Override
     public boolean sentMove(int move) {
         int[] pm = dataController.getPossibleMoves();
         if(dataController.getYourTurn()){

@@ -411,6 +411,11 @@ public class ReversiController extends GameController {
         return !dataController.getYourTurn();
     }
 
+
+    public int[] getPossibleMoves(){
+        int[] pm = dataController.getPossibleMoves();
+        return pm;
+    }
     public void updateScore(){
         int[] dataSet = dataController.getData();
 
@@ -428,5 +433,6 @@ public class ReversiController extends GameController {
             }
         }
         dataController.setScore(playerOneScore, playerTwoScore);
+
     }
 }
