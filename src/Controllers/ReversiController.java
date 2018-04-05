@@ -34,8 +34,6 @@ public class ReversiController extends GameController {
         // set the selected square tot the players color
         dataSet[move] = player;
 
-        // change stones between new and old stones..
-
         // the number of squares next to the move.
         int up = move / 8;
         int left = move % 8;
@@ -210,6 +208,9 @@ public class ReversiController extends GameController {
 
         // update the possible moves dataset
         updatePossibleMoves();
+
+        // update the player score
+        updateScore();
 
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
@@ -408,5 +409,24 @@ public class ReversiController extends GameController {
         }
 
         return !dataController.getYourTurn();
+    }
+
+    public void updateScore(){
+        int[] dataSet = dataController.getData();
+
+        int playerOneScore = 0;
+        int playerTwoScore = 0;
+
+        for(int counter = 0; counter < 64; counter++){
+            if(dataSet[counter] == 1){
+                playerOneScore++;
+            }
+            else if(dataSet[counter] == 2){
+                playerTwoScore++;
+            } else{
+                // do nothing
+            }
+        }
+        dataController.setScore(playerOneScore, playerTwoScore);
     }
 }
