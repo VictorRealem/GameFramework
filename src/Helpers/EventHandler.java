@@ -329,7 +329,6 @@ public class EventHandler {
                 dataController.setScene(setupController.InitializeSetupView());
             }
         });
-        //System.out.println(response);
     }
 
     /**

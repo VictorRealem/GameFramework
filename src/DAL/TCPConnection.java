@@ -25,11 +25,16 @@ public class TCPConnection extends Thread {
     public static TCPConnection getInstance() {
         if(ourInstance == null)
             ourInstance = new TCPConnection();
+            System.out.println("Instance made");
         return ourInstance;
     }
 
-    public boolean checkConnection() {
-        return !clientSocket.isClosed();
+    public static boolean checkConnection() {
+        return ourInstance != null;
+    }
+
+    public boolean checkMadeConnection() {
+        return ourInstance != null;
     }
 
     public boolean checkSocket() {
@@ -43,6 +48,7 @@ public class TCPConnection extends Thread {
         sentCommand("logout");
         try {
             clientSocket.close();
+            ourInstance = null;
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
@@ -84,8 +90,10 @@ public class TCPConnection extends Thread {
             Thread.sleep(100);
         } catch (IOException e) {
             e.printStackTrace();
+            e.getCause();
         } catch (InterruptedException ex) {
             ex.printStackTrace();
+            ex.getCause();
         }
     }
 
@@ -100,7 +108,9 @@ public class TCPConnection extends Thread {
     {
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         EventHandler handler = new EventHandler();
-        while (checkConnection()) {
+        //System.out.println("Listen con bf: " + checkMadeConnection());
+        while (checkMadeConnection()) {
+            //System.out.println("Listen con: " + checkMadeConnection());
             String response = inFromServer.readLine();
             // For testing purposes.
             System.out.println("server: " + response);

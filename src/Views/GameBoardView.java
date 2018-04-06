@@ -1,14 +1,20 @@
 package Views;
 
+import Controllers.DataController;
 import Controllers.GameController;
+import DAL.TCPConnection;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -39,8 +45,8 @@ public class GameBoardView{
         CenterPane centerPane = new CenterPane(boardSize,controller, dataSet);
         board = centerPane.getBoard();
         borderPane.setCenter(centerPane);
-        borderPane.setLeft(new LeftPane());
-        borderPane.setRight(new RightPane());
+        borderPane.setLeft(new LeftPane(controller));
+        borderPane.setRight(new RightPane(controller));
 
         return new Scene(borderPane,1000,900);
     }
@@ -49,21 +55,21 @@ public class GameBoardView{
 
 class BottomPane extends HBox {
 
-    // private TextField serverMessage = new TextField("You win");
-    private Label serverMessage;
-
+    //private Label serverMessage;
 
     public BottomPane() {
         setAlignment(Pos.CENTER);
-        setLabel();
+        setForfeit();
         setLayout();
-
     }
 
-    private void setLabel(){
-        serverMessage = new Label("You win");
-        serverMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        getChildren().add(serverMessage);
+    private void setForfeit() {
+        Button forfeit = new Button("Give up");
+        forfeit.setOnAction((ActionEvent e) -> {
+            TCPConnection connection = TCPConnection.getInstance();
+            connection.sentCommand("forfeit");
+        });
+        getChildren().add(forfeit);
     }
 
     private void setLayout(){
@@ -107,7 +113,11 @@ class TopPane extends HBox {
 
 class CenterPane extends GridPane {
 
-    int boardSize;
+   private int boardSize;
+   private Image img;
+   private Image img2;
+
+
     ArrayList<Tile> board;
     GameController controller;
 
@@ -115,7 +125,6 @@ class CenterPane extends GridPane {
 
         this.boardSize = boardSize;
         this.controller = controller;
-
         boardSize =  (int) Math.sqrt(boardSize);
         drawBoard(boardSize, dataSet);
         //setStylingPane();
@@ -131,10 +140,14 @@ class CenterPane extends GridPane {
                 Tile tile = new Tile(controller,count);
                 tile.setTranslateY(i * -12);
                 int val = dataset[count];
+                Rectangle rec = tile.fillTile();
                 if(val == 1) {
-                    tile.getTextField().setText("x");
+                    img = new Image(controller.getImage(val));
+                    rec.setFill(new ImagePattern(img));
+
                 } else if(val == 2) {
-                    tile.getTextField().setText("o");
+                    img2 = new Image(controller.getImage(val));
+                    rec.setFill(new ImagePattern(img2));
                 }
                 add(tile, j, i);
                 count++;
@@ -155,11 +168,20 @@ class CenterPane extends GridPane {
 
 class LeftPane extends VBox {
 
-    private Label p1 = new Label("Player 1 \n  score");
-    private Label score = new Label("3");
+    private Label p1;
+    DataController dataController = DataController.getInstance();
+    private Label score = new Label("" + dataController.getPlayerOneScore());
     private Separator separator = new Separator();
 
-    public LeftPane(){
+    public LeftPane(GameController controller){
+        if (controller.getPlayer1()) {
+
+            String player1 = controller.getNamePlayer1();
+            p1 = new Label(player1 + " \n  score");
+        }else {
+            String oppenent = controller.getNameOppenent();
+            p1 = new Label(oppenent + " \n  score");
+        }
         setLayout();
         setText();
     }
@@ -179,19 +201,26 @@ class LeftPane extends VBox {
         setAlignment(Pos.TOP_CENTER);
         setSpacing(5.0);
         setStyle("-fx-background-color: #005b96");
-
-        //setStyle("-fx-border-color: blue");
         setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
     }
 }
 
 class RightPane extends VBox{
 
-    private Label p2 = new Label("Player 2 \n  score");
-    private Label score = new Label("5");
+    private Label p2;
+    DataController dataController = DataController.getInstance();
+    private Label score = new Label("" + dataController.getPlayerTwoScore());
     private Separator separator = new Separator();
 
-    public RightPane(){
+    public RightPane(GameController controller){
+        if (controller.getPlayer1()) {
+            System.out.println("right" + controller.getPlayer1());
+            String oppenent = controller.getNameOppenent();
+            p2 = new Label(oppenent + " \n  score");
+        }else {
+            String player1 = controller.getNamePlayer1();
+            p2 = new Label(player1 + " \n  score");
+        }
         setLayout();
         setText();
     }
@@ -211,25 +240,32 @@ class RightPane extends VBox{
         setAlignment(Pos.TOP_CENTER);
         setSpacing(5.0);
         setStyle("-fx-background-color:  #ff4c4c");
-        //setStyle("-fx-border-color: red");
         setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
     }
 
 }
 class Tile extends StackPane {
     private Text text = new Text();
+    private Rectangle border;
     private GameController controller;
     private int index;
 
+
+
+
     public Tile(GameController controller, int count) {
         this.controller = controller;
+        int[] pm = controller.getPossibleMoves();
         index = count;
-        Rectangle border = new Rectangle(80, 80);
+        border = new Rectangle(80, 80);
         border.setFill(null);
+        if (pm[count] == 1 && pm.length > 0) {
+            border.setFill(Color.rgb(144,238,144));
+        }else {
+            border.setFill(null);
+        }
         border.setStroke(Color.BLACK);
-
         text.setFont(Font.font(72));
-
         setAlignment(Pos.CENTER);
         getChildren().addAll(border, text);
 
@@ -238,20 +274,8 @@ class Tile extends StackPane {
         });
     }
 
-    public double getCenterX() {
-        return getTranslateX();
-    }
-
-    public double getCenterY() {
-        return getTranslateY();
-    }
-
-    public Text getTextField() {
-        return text;
-    }
-
-    public String getValue() {
-        return text.getText();
-    }
+  public Rectangle fillTile(){
+      return border;
+  }
 
 }

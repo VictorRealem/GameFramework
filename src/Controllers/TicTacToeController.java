@@ -3,6 +3,10 @@ package Controllers;
 import AI.AI;
 import DAL.TCPConnection;
 import Views.GameBoardView;
+import javafx.scene.image.Image;
+
+import javax.xml.soap.Text;
+import java.awt.*;
 
 
 public class TicTacToeController extends GameController {
@@ -31,6 +35,7 @@ public class TicTacToeController extends GameController {
     @Override
     public void turn() {
         boolean AI = dataController.getAI();
+        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
 
         if(AI){
             //run AI code.
@@ -38,15 +43,22 @@ public class TicTacToeController extends GameController {
             System.out.println("AI is made");
             int move = ai.makeMove(dataController.getPossibleMoves());
             System.out.println("AI made move " + move);
-            try {
+            sentMove(move);
+            System.out.println("Move was supposed to be send");
+            /*try {
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
-            }
-            sentMove(move);
-        }else{
-            dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
+            }*/
+
         }
+    }
+
+
+    @Override
+    public int[] getPossibleMoves() {
+        int[] pm = dataController.getPossibleMoves();
+        return pm;
     }
 
     @Override
@@ -81,7 +93,54 @@ public class TicTacToeController extends GameController {
 
         dataController.setPossibleMoves(possibleMoves);
 
+        updateScore();
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataSet));
+    }
+
+    public void updateScore(){
+        int[] dataSet = dataController.getData();
+
+        int playerOneScore = 0;
+        int playerTwoScore = 0;
+
+        for(int counter = 0; counter < 9; counter++){
+            if(dataSet[counter] == 1){
+                playerOneScore++;
+            }
+            else if(dataSet[counter] == 2){
+                playerTwoScore++;
+            } else{
+                // do nothing
+            }
+        }
+        dataController.setScore(playerOneScore, playerTwoScore);
+    }
+
+
+    @Override
+    public String getImage(int val) {
+        if (val == 1){
+            return "/Images/redCircle.png";
+        }if (val == 2){
+            return "/Images/blueX.png";
+
+        }
+        return null;
+    }
+
+    @Override
+    public String getNamePlayer1() {
+        return  dataController.getPlayerName();
+    }
+
+    @Override
+    public String getNameOppenent() {
+        return  dataController.getOpponentName();
+    }
+
+    @Override
+    public boolean getPlayer1() {
+        return dataController.getPlayerOne();
     }
 }
 
