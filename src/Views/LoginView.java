@@ -8,8 +8,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 /**
  * Class LoginView
@@ -20,7 +25,6 @@ public class LoginView {
     private TextField name, serverUrl, port ;
     private Button login;
     private SetupController controller;
-    LoginView lv;
 
     public LoginView(SetupController controller) {
         this.controller = controller;
@@ -31,12 +35,15 @@ public class LoginView {
      * @return the scene of the login screen
      */
     public Scene getLoginScene() {
+        BorderPane bp = new BorderPane();
         GridPane gridPane = new GridPane();
+        bp.setTop(gridPane);
+        setStyling(gridPane,bp);
         setLabels(gridPane);
         setTextboxes(gridPane);
         setbutton(gridPane);
         setEventHandlers();
-        return new Scene(gridPane,600,300);
+        return new Scene(bp,600,300);
     }
 
     /**
@@ -66,7 +73,7 @@ public class LoginView {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("WARNING");
                 alert.setHeaderText("Name error");
-                alert.setContentText("Your player name can't contain spaces and must at least be 1 character long");
+                alert.setContentText("Your player name can't contain spaces and must at least be 1 character long and cant be longer than 7 characters");
 
                 alert.showAndWait();
             }
@@ -81,10 +88,14 @@ public class LoginView {
     {
         Label nameLabel = new Label("Name:");
         grid.add(nameLabel, 0, 0);
-        //77.162.40.81
+        //77.162.40.81      Pi server
+        //145.33.225.170    School server
+        nameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
         Label serverUrlLabel = new Label("Server address:");
+        serverUrlLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
         grid.add(serverUrlLabel, 0, 1);
         Label portLabel = new Label("Port:");
+        portLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
         grid.add(portLabel, 0, 2);
     }
 
@@ -123,11 +134,19 @@ public class LoginView {
     private void setbutton(GridPane grid)
     {
         login = new Button("Login");
+        login.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(login);
         grid.add(hbBtn, 1, 3);
     }
 
+    private void setStyling(GridPane grid,BorderPane bp){
+        Image image = new Image("Images/loginLine.png");
+        bp.setBottom(new ImageView(image));
+        bp.setStyle("-fx-background-color: #FAFAFA");
+        grid.setVgap(5.0);
+        grid.setHgap(5.0);
+    }
 
 }

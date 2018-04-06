@@ -84,6 +84,7 @@ public class SetupView {
     private void setupBottomBox(HBox BBox) {
         start = new Button("Start game");
         Button updatePlayList = new Button("Update players");
+        Button logout = new Button("Logout");
 
         start.setOnAction( (ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
@@ -111,8 +112,16 @@ public class SetupView {
             setupPlayList();
         });
 
+        logout.setOnAction((ActionEvent e) -> {
+            TCPConnection connection = TCPConnection.getInstance();
+            connection.logout();
+            controller.setScene(controller.InitializeLogin());
+        });
+
+
         BBox.getChildren().add(updatePlayList);
         BBox.getChildren().add(start);
+        BBox.getChildren().add(logout);
     }
 
     /**
@@ -123,6 +132,7 @@ public class SetupView {
         ComboBox<String> playOptions = new ComboBox<>();
         playOptions.getItems().addAll("Player", "AI");
         playOptions.setEditable(false);
+        playOptions.setValue("Player");
         playOptions.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -144,8 +154,8 @@ public class SetupView {
      */
     private void setupSelected(GridPane OBox) {
         selectedGame = new Label("");
-
         selectedPlayer = new Label("");
+
         Label selLabel = new Label("SELECTED GAME");
         Label selPlayer = new Label ("SELECTED PLAYER");
 
@@ -185,6 +195,9 @@ public class SetupView {
                 selectedGame.setText(l.getText());
                 TCPConnection connection = TCPConnection.getInstance();
                 connection.sentCommand("subscribe " + game);
+                if(!selectedPlayer.getText().equals("")) {
+                    start.setDisable(false);
+                }
             });
             gameBox.getChildren().add(l);
         }
@@ -210,7 +223,8 @@ public class SetupView {
             if(!name.equals(controller.getUserName())) {
                 l.setOnMouseClicked((MouseEvent) -> {
                     selectedPlayer.setText(name);
-                    start.setDisable(false);
+                    if(!selectedGame.getText().equals(""))
+                        start.setDisable(false);
                 });
             }
             playBox.getChildren().add(l);
