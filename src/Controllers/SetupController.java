@@ -114,6 +114,7 @@ public class SetupController {
      */
     public boolean checkName(String name) {
         if(name.equals("")) { return false; }
+        if(name.length() > 7) { return false; }
         for (Character c: name.toCharArray()) {
             if(c.equals(' ')) {
                 return false;

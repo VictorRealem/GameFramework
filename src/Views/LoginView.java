@@ -73,7 +73,7 @@ public class LoginView {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("WARNING");
                 alert.setHeaderText("Name error");
-                alert.setContentText("Your player name can't contain spaces and must at least be 1 character long");
+                alert.setContentText("Your player name can't contain spaces and must at least be 1 character long and cant be longer than 7 characters");
 
                 alert.showAndWait();
             }
