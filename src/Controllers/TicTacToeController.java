@@ -120,9 +120,10 @@ public class TicTacToeController extends GameController {
     @Override
     public String getImage(int val) {
         if (val == 1){
-            return "/Images/blueX.png";
-        }if (val == 2){
             return "/Images/redCircle.png";
+        }if (val == 2){
+            return "/Images/blueX.png";
+
         }
         return null;
     }

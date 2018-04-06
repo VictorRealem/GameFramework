@@ -470,9 +470,10 @@ public class ReversiController extends GameController {
     @Override
     public String getImage(int val) {
         if (val == 1){
-            return "/Images/red.png";
-        }if (val == 2){
             return "/Images/blue.png";
+        }if (val == 2){
+            return "/Images/red.png";
+
         }
         return null;
     }
