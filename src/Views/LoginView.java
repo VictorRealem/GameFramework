@@ -2,7 +2,6 @@ package Views;
 
 import Controllers.SetupController;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -74,7 +73,7 @@ public class LoginView {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("WARNING");
                 alert.setHeaderText("Name error");
-                alert.setContentText("Your player name can't contain spaces and must at least be 1 character long");
+                alert.setContentText("Your player name can't contain spaces and must at least be 1 character long and cant be longer than 7 characters");
 
                 alert.showAndWait();
             }
@@ -89,8 +88,9 @@ public class LoginView {
     {
         Label nameLabel = new Label("Name:");
         grid.add(nameLabel, 0, 0);
+        //77.162.40.81      Pi server
+        //145.33.225.170    School server
         nameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        //77.162.40.81
         Label serverUrlLabel = new Label("Server address:");
         serverUrlLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
         grid.add(serverUrlLabel, 0, 1);

@@ -2,10 +2,13 @@ package Views;
 
 import Controllers.DataController;
 import Controllers.GameController;
+import DAL.TCPConnection;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
@@ -52,19 +55,21 @@ public class GameBoardView{
 
 class BottomPane extends HBox {
 
-    private Label serverMessage;
+    //private Label serverMessage;
 
     public BottomPane() {
         setAlignment(Pos.CENTER);
-        setLabel();
+        setForfeit();
         setLayout();
-
     }
 
-    private void setLabel(){
-        serverMessage = new Label("You win");
-        serverMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        getChildren().add(serverMessage);
+    private void setForfeit() {
+        Button forfeit = new Button("Give up");
+        forfeit.setOnAction((ActionEvent e) -> {
+            TCPConnection connection = TCPConnection.getInstance();
+            connection.sentCommand("forfeit");
+        });
+        getChildren().add(forfeit);
     }
 
     private void setLayout(){
