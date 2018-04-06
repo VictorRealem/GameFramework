@@ -2,10 +2,13 @@ package Views;
 
 import Controllers.DataController;
 import Controllers.GameController;
+import DAL.TCPConnection;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
@@ -42,8 +45,8 @@ public class GameBoardView{
         CenterPane centerPane = new CenterPane(boardSize,controller, dataSet);
         board = centerPane.getBoard();
         borderPane.setCenter(centerPane);
-        borderPane.setLeft(new LeftPane());
-        borderPane.setRight(new RightPane());
+        borderPane.setLeft(new LeftPane(controller));
+        borderPane.setRight(new RightPane(controller));
 
         return new Scene(borderPane,1000,900);
     }
@@ -52,19 +55,21 @@ public class GameBoardView{
 
 class BottomPane extends HBox {
 
-    private Label serverMessage;
+    //private Label serverMessage;
 
     public BottomPane() {
         setAlignment(Pos.CENTER);
-        setLabel();
+        setForfeit();
         setLayout();
-
     }
 
-    private void setLabel(){
-        serverMessage = new Label("You win");
-        serverMessage.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        getChildren().add(serverMessage);
+    private void setForfeit() {
+        Button forfeit = new Button("Give up");
+        forfeit.setOnAction((ActionEvent e) -> {
+            TCPConnection connection = TCPConnection.getInstance();
+            connection.sentCommand("forfeit");
+        });
+        getChildren().add(forfeit);
     }
 
     private void setLayout(){
@@ -163,12 +168,20 @@ class CenterPane extends GridPane {
 
 class LeftPane extends VBox {
 
-    private Label p1 = new Label("Player 1 \n  score");
+    private Label p1;
     DataController dataController = DataController.getInstance();
     private Label score = new Label("" + dataController.getPlayerOneScore());
     private Separator separator = new Separator();
 
-    public LeftPane(){
+    public LeftPane(GameController controller){
+        if (controller.getPlayer1()) {
+
+            String player1 = controller.getNamePlayer1();
+            p1 = new Label(player1 + " \n  score");
+        }else {
+            String oppenent = controller.getNameOppenent();
+            p1 = new Label(oppenent + " \n  score");
+        }
         setLayout();
         setText();
     }
@@ -194,12 +207,20 @@ class LeftPane extends VBox {
 
 class RightPane extends VBox{
 
-    private Label p2 = new Label("Player 2 \n  score");
+    private Label p2;
     DataController dataController = DataController.getInstance();
     private Label score = new Label("" + dataController.getPlayerTwoScore());
     private Separator separator = new Separator();
 
-    public RightPane(){
+    public RightPane(GameController controller){
+        if (controller.getPlayer1()) {
+            System.out.println("right" + controller.getPlayer1());
+            String oppenent = controller.getNameOppenent();
+            p2 = new Label(oppenent + " \n  score");
+        }else {
+            String player1 = controller.getNamePlayer1();
+            p2 = new Label(player1 + " \n  score");
+        }
         setLayout();
         setText();
     }
