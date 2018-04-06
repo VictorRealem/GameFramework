@@ -126,5 +126,20 @@ public class TicTacToeController extends GameController {
         }
         return null;
     }
+
+    @Override
+    public String getNamePlayer1() {
+        return  dataController.getPlayerName();
+    }
+
+    @Override
+    public String getNameOppenent() {
+        return  dataController.getOpponentName();
+    }
+
+    @Override
+    public boolean getPlayer1() {
+        return dataController.getPlayerOne();
+    }
 }
 
