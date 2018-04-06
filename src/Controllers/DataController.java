@@ -74,6 +74,7 @@ public class DataController {
 
     public void setData(int[] boardData)
     {
+        System.out.println("Setting data in dataController");
         this.dataset.gameData = boardData;
     }
 
