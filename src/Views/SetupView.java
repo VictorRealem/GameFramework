@@ -84,6 +84,7 @@ public class SetupView {
     private void setupBottomBox(HBox BBox) {
         start = new Button("Start game");
         Button updatePlayList = new Button("Update players");
+        Button logout = new Button("Logout");
 
         start.setOnAction( (ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
@@ -111,8 +112,16 @@ public class SetupView {
             setupPlayList();
         });
 
+        logout.setOnAction((ActionEvent e) -> {
+            TCPConnection connection = TCPConnection.getInstance();
+            connection.logout();
+            controller.setScene(controller.InitializeLogin());
+        });
+
+
         BBox.getChildren().add(updatePlayList);
         BBox.getChildren().add(start);
+        BBox.getChildren().add(logout);
     }
 
     /**

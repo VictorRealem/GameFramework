@@ -23,7 +23,7 @@ public class SetupController {
     public SetupController(Stage primaryStage)
     {
         this.primaryStage = primaryStage;
-        connection = TCPConnection.getInstance();
+
     }
 
     public Scene InitializeLogin()
@@ -33,9 +33,9 @@ public class SetupController {
 
     public boolean login(String name, String host, String port)
     {
+        connection = TCPConnection.getInstance();
         if(host.equals("") || port.equals("")) { return false; }
         // Initialize server connection
-        connection = TCPConnection.getInstance();
         this.host = host;
         this.port = port;
         try {
@@ -46,15 +46,11 @@ public class SetupController {
         }
         connection.start();
 
+
         this.name = name;
         connection.sentCommand("login " + name);
         DataController.getInstance().setPlayerName(name);
 
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException ex) {
-            System.out.println(ex.getMessage());
-        }
         return true;
     }
 
@@ -73,7 +69,7 @@ public class SetupController {
         List<String> dataList;
         switch(type) {
             case 0: {
-                System.out.println("Connection: " + connection);
+                //System.out.println("Connection: " + connection);
                 connection.sentCommand("get gamelist");
                 break;
             }

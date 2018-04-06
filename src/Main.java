@@ -28,9 +28,11 @@ public class Main extends Application {
     @Override
     public void stop() {
         //log out on exit
-        TCPConnection connection = TCPConnection.getInstance();
-        if (connection.checkConnection() && connection.checkSocket()) {
-            connection.logout(); }
+
+        if (TCPConnection.checkConnection()) {
+            TCPConnection connection = TCPConnection.getInstance();
+            connection.logout();
+        }
     }
 
     public static void main(String args[])
