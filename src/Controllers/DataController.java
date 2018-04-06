@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class DataController {
     private Stage primaryStage;
+    private int aiDifficulty;
 
     /***
      *  SingleTon instancie for the data controller
@@ -102,6 +103,14 @@ public class DataController {
         this.userData.AI = AI;
     }
 
+    /**
+     * Sets the ai difficulty
+     * @param difficulty
+     */
+    public void setAiDifficulty(int difficulty) {
+        aiDifficulty = difficulty;
+    }
+
 
     /***
      * Saves the possible moves after these are calculated.
@@ -174,18 +183,22 @@ public class DataController {
      * Returns AI option
      * @return AI
      */
-
     public boolean getAI()
     {
         return this.userData.AI;
     }
+
+    /**
+     * Returns AI difficulty
+     * @return AI difficulty
+     */
+    public int getAiDifficulty() { return aiDifficulty; }
 
 
     /***
      * Returns the possible moves dataset
      * @return Possible moves
      */
-
     public int[] getPossibleMoves()
     {
         return this.pmDataset.Dataset;
