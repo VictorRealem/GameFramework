@@ -19,7 +19,7 @@ public class ReversiController extends GameController {
      */
     public void initializeGame(){
         dataController.setPossibleMoves(new int[64]);
-        dataController.setPossibleMoves(updatePossibleMoves());
+        dataController.setPossibleMoves(updatePossibleMoves(dataController.getData()));
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
 
@@ -27,11 +27,11 @@ public class ReversiController extends GameController {
     public void update(int move, int player) {
 
         // update the dataset.
-        int[] dataSet = this.caculateMove(move, player);
+        int[] dataSet = this.caculateMove(move, player, dataController.getData());
         dataController.setData(dataSet);
 
         // update the possible moves dataset
-        int[] possibleMoves = updatePossibleMoves();
+        int[] possibleMoves = updatePossibleMoves(dataController.getData());
         dataController.setPossibleMoves(possibleMoves);
 
         // update the player score
@@ -40,9 +40,7 @@ public class ReversiController extends GameController {
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
 
-    private int[] caculateMove(int move, int player){
-        // get the current boardstate
-        int[] dataSet = dataController.getData();
+    private int[] caculateMove(int move, int player, int[] dataSet){
 
         // set the selected square tot the players color
         dataSet[move] = player;
@@ -219,9 +217,9 @@ public class ReversiController extends GameController {
         return dataSet;
     }
 
-    private int[] updatePossibleMoves(){
+    private int[] updatePossibleMoves(int[] dataSet){
 
-        int[] dataSet = dataController.getData();
+
 
         int[] possibleMoves = new int[dataSet.length];
 
