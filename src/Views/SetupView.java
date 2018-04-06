@@ -74,7 +74,12 @@ public class SetupView {
         pane.setRight(optionsBox);
         pane.setBottom(bottomBox);
 
-        return new Scene(pane,700,300);
+        System.out.println("Height: " + playBox.getHeight());
+        if(playBox.getHeight() > 700) {
+            return new Scene(pane,playBox.getHeight(), 300);
+        } else {
+            return new Scene(pane,700,300);
+        }
     }
 
     /**
@@ -194,7 +199,7 @@ public class SetupView {
                 }
                 selectedGame.setText(l.getText());
                 TCPConnection connection = TCPConnection.getInstance();
-                connection.sentCommand("subscribe " + game);
+                // connection.sentCommand("subscribe " + game);
                 if(!selectedPlayer.getText().equals("")) {
                     start.setDisable(false);
                 }
@@ -232,7 +237,7 @@ public class SetupView {
 
         playBox.setMinWidth(100);
         playBox.setPrefWidth(100);
-        playBox.setMaxWidth(100);
+        //playBox.setMaxWidth(100);
 
         scnBox.getChildren().remove(playBox);
         scnBox.getChildren().add(playBox);

@@ -55,7 +55,7 @@ public class GameBoardView{
 
 class BottomPane extends HBox {
 
-    //private Label serverMessage;
+    // private Label serverMessage;
 
     public BottomPane() {
         setAlignment(Pos.CENTER);
