@@ -74,7 +74,6 @@ public class SetupView {
         pane.setRight(optionsBox);
         pane.setBottom(bottomBox);
 
-        System.out.println("Height: " + playBox.getHeight());
         if(playBox.getHeight() > 700) {
             return new Scene(pane,playBox.getHeight(), 300);
         } else {
@@ -249,6 +248,7 @@ public class SetupView {
         for (String name: playList) {
             Label l = new Label(name);
             if(!name.equals(controller.getUserName())) {
+                System.out.println("UserName" + controller.getUserName());
                 l.setOnMouseClicked((MouseEvent) -> {
                     selectedPlayer.setText(name);
                     if(!selectedGame.getText().equals(""))

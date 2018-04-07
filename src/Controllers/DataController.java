@@ -61,7 +61,7 @@ public class DataController {
         }
 
         if(type == GameType.Tictactoe) {
-            System.out.println("Setting dataset type to tictactoe");
+            //System.out.println("Setting dataset type to tictactoe");
             this.dataset = new TicTacToeDataset();
             this.dataset.gameType = type;
         }
@@ -75,7 +75,7 @@ public class DataController {
 
     public void setData(int[] boardData)
     {
-        System.out.println("Setting data in dataController");
+        //System.out.println("Setting data in dataController");
         this.dataset.gameData = boardData;
     }
 
