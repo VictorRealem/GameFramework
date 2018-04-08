@@ -47,7 +47,6 @@ public class GameBoardView{
         borderPane.setCenter(centerPane);
         borderPane.setLeft(new LeftPane(controller));
         borderPane.setRight(new RightPane(controller));
-
         return new Scene(borderPane,1000,900);
     }
 }
