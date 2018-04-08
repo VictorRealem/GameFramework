@@ -86,6 +86,7 @@ public class SetupView {
         //pane.setStyle("-fx-background-color: #FAFAFA");
         pane.setStyle("-fx-background-image: url(\"/Images/water.png\");-fx-background-size: 720, 350;-fx-background-repeat: no-repeat;");
 
+        return new Scene(pane,720,350);
     }
 
     /**
@@ -99,6 +100,7 @@ public class SetupView {
 
         logout.setPrefWidth(99);
         challenge.setPrefWidth(99);
+        start.setTooltip(new Tooltip("Play against random player"));
 
         start.setOnAction( (ActionEvent e) -> {
             switch(game) {
@@ -245,6 +247,8 @@ public class SetupView {
                         System.out.println("This game is not supported by this application");
                     }
                 }
+            }
+        });
 
         gameBox.setMinWidth(100);
         gameBox.setPrefWidth(100);
