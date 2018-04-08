@@ -17,6 +17,7 @@ public class Main extends Application {
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(5);
         grid.setHgap(5);
+        primaryStage.setResizable(false);
 
         SetupController setupController = new SetupController(primaryStage);
         primaryStage.setScene(setupController.InitializeLogin());
