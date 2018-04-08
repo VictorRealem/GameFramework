@@ -55,7 +55,7 @@ public class SetupController {
     }
 
     public String getUserName() {
-        return name;
+        return DataController.getInstance().getPlayerName();
     }
 
 

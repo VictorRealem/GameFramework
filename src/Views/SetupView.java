@@ -74,7 +74,6 @@ public class SetupView {
         pane.setRight(optionsBox);
         pane.setBottom(bottomBox);
 
-        System.out.println("Height: " + playBox.getHeight());
         if(playBox.getHeight() > 700) {
             return new Scene(pane,playBox.getHeight(), 300);
         } else {
@@ -135,13 +134,15 @@ public class SetupView {
      */
     private void setupAIOption(GridPane OBox) {
         ComboBox<String> playOptions = new ComboBox<>();
+        DataController dataController = DataController.getInstance();
         playOptions.getItems().addAll("Player", "AI");
         playOptions.setEditable(false);
         playOptions.setValue("Player");
+        dataController.setAI(false);
         playOptions.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                DataController dataController = DataController.getInstance();
+
                 if(newValue.equals("AI")) {
                     dataController.setAI(true);
                 } else {
@@ -149,9 +150,30 @@ public class SetupView {
                 }
             }
         });
+
+        ComboBox<String> difficultyOptions = new ComboBox<>();
+        difficultyOptions.getItems().addAll("Easy", "Medium");
+        difficultyOptions.setEditable(false);
+        difficultyOptions.setValue("Easy");
+        dataController.setAiDifficulty(0);
+        difficultyOptions.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.equals("Easy")) {
+                    dataController.setAiDifficulty(0);
+                } else if(newValue.equals("Medium")) {
+                    dataController.setAiDifficulty(1);
+                }
+            }
+        });
+
         OBox.add(new Label("Player or AI"),0,1);
         OBox.add(playOptions,1,1);
+
+        OBox.add(new Label("AI difficulty"),2,1);
+        OBox.add(difficultyOptions,3,1);
     }
+
 
     /**
      * Adds the selectedGame label to the options gridpane and the selected game
@@ -226,6 +248,7 @@ public class SetupView {
         for (String name: playList) {
             Label l = new Label(name);
             if(!name.equals(controller.getUserName())) {
+                System.out.println("UserName" + controller.getUserName());
                 l.setOnMouseClicked((MouseEvent) -> {
                     selectedPlayer.setText(name);
                     if(!selectedGame.getText().equals(""))

@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class DataController {
     private Stage primaryStage;
+    private int aiDifficulty;
 
     /***
      *  SingleTon instancie for the data controller
@@ -60,7 +61,7 @@ public class DataController {
         }
 
         if(type == GameType.Tictactoe) {
-            System.out.println("Setting dataset type to tictactoe");
+            //System.out.println("Setting dataset type to tictactoe");
             this.dataset = new TicTacToeDataset();
             this.dataset.gameType = type;
         }
@@ -74,7 +75,7 @@ public class DataController {
 
     public void setData(int[] boardData)
     {
-        System.out.println("Setting data in dataController");
+        //System.out.println("Setting data in dataController");
         this.dataset.gameData = boardData;
     }
 
@@ -100,6 +101,14 @@ public class DataController {
     public void setAI(boolean AI)
     {
         this.userData.AI = AI;
+    }
+
+    /**
+     * Sets the ai difficulty
+     * @param difficulty
+     */
+    public void setAiDifficulty(int difficulty) {
+        aiDifficulty = difficulty;
     }
 
 
@@ -174,18 +183,22 @@ public class DataController {
      * Returns AI option
      * @return AI
      */
-
     public boolean getAI()
     {
         return this.userData.AI;
     }
+
+    /**
+     * Returns AI difficulty
+     * @return AI difficulty
+     */
+    public int getAiDifficulty() { return aiDifficulty; }
 
 
     /***
      * Returns the possible moves dataset
      * @return Possible moves
      */
-
     public int[] getPossibleMoves()
     {
         return this.pmDataset.Dataset;
