@@ -1,12 +1,7 @@
 package Controllers;
 
-import AI.AI;
 import DAL.TCPConnection;
 import Views.GameBoardView;
-import javafx.scene.image.Image;
-
-import javax.xml.soap.Text;
-import java.awt.*;
 
 
 public class TicTacToeController extends GameController {
@@ -39,7 +34,7 @@ public class TicTacToeController extends GameController {
 
         if(AI){
             //run AI code.
-            AI ai = new AI();
+            /*AI ai = new AI();
             System.out.println("AI is made");
             int move = ai.makeMove(dataController.getPossibleMoves());
             System.out.println("AI made move " + move);
