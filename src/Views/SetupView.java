@@ -156,6 +156,7 @@ public class SetupView {
      * Adds the ToggleSwitch for  AI  on/off to the gridpane and sets up the event to handle the selection
      * @param pane The gridpane containing all the options
      */
+
     private void setupAIOption(GridPane pane) {
         ToggleSwitch aiSwitch = new ToggleSwitch("AI");
         aiSwitch.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -169,8 +170,8 @@ public class SetupView {
             }
         });
         pane.add(aiSwitch,0,1);
-
     }
+
 
     /**
      * Simple slider control for difficulty level
