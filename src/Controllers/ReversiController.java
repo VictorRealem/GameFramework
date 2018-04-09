@@ -420,7 +420,7 @@ public class ReversiController extends GameController {
             int move = ai.makeMove(dataController.getData(), dataController.getPossibleMoves());
             System.out.println("AI made move " + move);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
