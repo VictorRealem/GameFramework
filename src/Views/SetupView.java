@@ -86,7 +86,8 @@ public class SetupView {
         //pane.setStyle("-fx-background-color: #FAFAFA");
         pane.setStyle("-fx-background-image: url(\"/Images/water.png\");-fx-background-size: 720, 350;-fx-background-repeat: no-repeat;");
 
-        return new Scene(pane, 720, 350);
+        return new Scene(pane,720,350);
+
     }
 
     /**
@@ -100,6 +101,7 @@ public class SetupView {
 
         logout.setPrefWidth(99);
         challenge.setPrefWidth(99);
+        start.setTooltip(new Tooltip("Play against random player"));
 
         start.setOnAction( (ActionEvent e) -> {
             switch(game) {
@@ -188,8 +190,26 @@ public class SetupView {
         slider.setSnapToTicks(true);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
+        dataController.setAiDifficulty(1);
 
-        slider.setLabelFormatter(new StringConverter<Double>() {
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (slider.getValue() < 0.8){
+                    System.out.println("easy");
+                    dataController.setAiDifficulty(0);
+                }
+                if (slider.getValue() > 0.9 && slider.getValue() < 1.4){
+                    System.out.println("medium");
+                    dataController.setAiDifficulty(1);
+                }
+                if (slider.getValue() > 1.6){
+                    System.out.println("hard (medium)");
+                    dataController.setAiDifficulty(1);
+                }
+            }
+        });
+        /*slider.setLabelFormatter(new StringConverter<Double>() {
             @Override
             public String toString(Double n) {
                 if (n < 0.1) return "easy";
@@ -215,7 +235,7 @@ public class SetupView {
                         return null;
                 }
             }
-        });
+        });*/
 
         OPane.add(slider,0,2);
     }
@@ -232,27 +252,29 @@ public class SetupView {
         gameListView.getItems().addAll(controller.getDataList(0));
 
         gameListView.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
-                                           @Override
-                                           public void handle(javafx.scene.input.MouseEvent event) {
-                                               game = gameListView.getSelectionModel().getSelectedItem();
 
-                                               switch (game) {
-                                                   case "Tic-tac-toe": {
-                                                       dataController.setDatasetType(GameType.Tictactoe);
-                                                       start.setDisable(false);
-                                                       break;
-                                                   }
-                                                   case "Reversi": {
-                                                       dataController.setDatasetType(GameType.Reversi);
-                                                       start.setDisable(false);
-                                                       break;
-                                                   }
-                                                   default: {
-                                                       System.out.println("This game is not supported by this application");
-                                                   }
-                                               }
-                                           }
-                                       });
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                 game = gameListView.getSelectionModel().getSelectedItem();
+
+                switch (game) {
+                    case "Tic-tac-toe": {
+                        dataController.setDatasetType(GameType.Tictactoe);
+                        start.setDisable(false);
+                        break;
+                    }
+                    case "Reversi": {
+                        dataController.setDatasetType(GameType.Reversi);
+                        start.setDisable(false);
+                        break;
+                    }
+                    default: {
+                        System.out.println("This game is not supported by this application");
+                    }
+                }
+            }
+        });
+
         gameBox.setMinWidth(100);
         gameBox.setPrefWidth(100);
         gameBox.setMaxWidth(100);
