@@ -190,8 +190,26 @@ public class SetupView {
         slider.setSnapToTicks(true);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
+        dataController.setAiDifficulty(1);
 
-        slider.setLabelFormatter(new StringConverter<Double>() {
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (slider.getValue() < 0.8){
+                    System.out.println("easy");
+                    dataController.setAiDifficulty(0);
+                }
+                if (slider.getValue() > 0.9 && slider.getValue() < 1.4){
+                    System.out.println("medium");
+                    dataController.setAiDifficulty(1);
+                }
+                if (slider.getValue() > 1.6){
+                    System.out.println("hard (medium)");
+                    dataController.setAiDifficulty(1);
+                }
+            }
+        });
+        /*slider.setLabelFormatter(new StringConverter<Double>() {
             @Override
             public String toString(Double n) {
                 if (n < 0.1) return "easy";
@@ -217,7 +235,7 @@ public class SetupView {
                         return null;
                 }
             }
-        });
+        });*/
 
         OPane.add(slider,0,2);
     }
