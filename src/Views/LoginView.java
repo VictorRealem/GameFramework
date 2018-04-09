@@ -43,7 +43,7 @@ public class LoginView {
         setTextboxes(gridPane);
         setbutton(gridPane);
         setEventHandlers();
-        return new Scene(bp,600,300);
+        return new Scene(bp,585,300);
     }
 
     /**
