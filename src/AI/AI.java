@@ -14,6 +14,9 @@ public class AI {
 
     public int makeMove(int[] dataset, int[] pMoves) {
         int move;
+        //remove
+        dataController.setAiDifficulty(1);
+        //
         switch (dataController.getAiDifficulty()) {
             case 0: {
                 move = randomMove(pMoves);
@@ -74,23 +77,32 @@ public class AI {
         int prevOpSumTiles = 64;
         int move = -1;
 
-        int priority = -1;
+        int priority;
+        int prevPriority = 5;
 
         if(dataController.getPlayerOne())
             player = 1;
             opponent = 2;
 
         for(int i = 0; i < possibleMoves.length; i++) {
+
             //System.out.println("Index: " + i + " - " + possibleMoves[i]);
             if(possibleMoves[i] == 1) {
+                System.out.println("Checking move " + i);
                 if(corners.contains(i)) {
+                    System.out.println("Corner");
                     move = i;
                     break;
                 } else if(sides.contains(i)) {
+                    System.out.println("Sides");
                     priority = 1;
                 } else if(hardAvoidance.contains(i)) {
+                    System.out.println("Hard av");
+                    priority = 4;
+                } else if(softAvoidance.contains(i)) {
+                    System.out.println("Soft av");
                     priority = 3;
-                } else if(softAvoidance.contains(i) && priority == 3) {
+                } else {
                     priority = 2;
                 }
                 int[] newBoard = controller.calculateMove(i, player, dataset);
@@ -100,9 +112,13 @@ public class AI {
                         opSumTiles++;
                     }
                 }
-                if(opSumTiles < prevOpSumTiles) {
+                System.out.println("Prev P: " + prevPriority);
+                System.out.println("New p: " + priority);
+                if(opSumTiles < prevOpSumTiles && prevPriority > priority) {
+                    //new priority is smaller than prev priority
                     prevOpSumTiles = opSumTiles;
                     move = i;
+                    prevPriority = priority;
                 }
             }
             opSumTiles = 0;
@@ -178,4 +194,5 @@ public class AI {
         hardAvoidance.add(62);
         return hardAvoidance;
     }
+
 }
