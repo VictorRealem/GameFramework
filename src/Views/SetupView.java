@@ -95,6 +95,7 @@ public class SetupView {
      * @param pane
      */
     private void setupOptionPane(GridPane pane) {
+        Label playerName = new Label(dataController.getPlayerName());
         start = new Button("Quick game");
         Button logout = new Button("Logout");
         Button challenge = new Button("Challenge");
@@ -102,6 +103,7 @@ public class SetupView {
         logout.setPrefWidth(99);
         challenge.setPrefWidth(99);
         start.setTooltip(new Tooltip("Play against random player"));
+        playerName.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
 
         start.setOnAction( (ActionEvent e) -> {
             switch(game) {
@@ -148,6 +150,8 @@ public class SetupView {
             controller.setScene(controller.InitializeLogin());
         });
 
+
+        pane.add(playerName,0,0);
         pane.add(start,0,3);
         pane.add(challenge,0,4);
         pane.add(logout,0,5);
@@ -209,33 +213,7 @@ public class SetupView {
                 }
             }
         });
-        /*slider.setLabelFormatter(new StringConverter<Double>() {
-            @Override
-            public String toString(Double n) {
-                if (n < 0.1) return "easy";
-                if (n < 1.1) return "medium";
-                if (n < 3.0) return "hard";
-                return null;
-            }
 
-            @Override
-            public Double fromString(String s) {
-                switch (s) {
-                    case "easy":
-                        System.out.println("Setting AI difficulty to easy");
-                        dataController.setAiDifficulty(0);
-                        return null;
-                    case "medium":
-                        System.out.println("Setting AI difficulty to medium");
-                        dataController.setAiDifficulty(1);
-                        return null;
-                    case "hard":
-                        return null;
-                    default:
-                        return null;
-                }
-            }
-        });*/
 
         OPane.add(slider,0,2);
     }
