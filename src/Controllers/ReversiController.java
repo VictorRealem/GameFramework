@@ -25,9 +25,9 @@ public class ReversiController extends GameController {
 
     @Override
     public void update(int move, int player) {
-
+        System.out.println("Updating");
         // update the dataset.
-        int[] dataSet = this.caculateMove(move, player, dataController.getData());
+        int[] dataSet = this.calculateMove(move, player, dataController.getData());
         dataController.setData(dataSet);
 
         // update the possible moves dataset
@@ -40,9 +40,16 @@ public class ReversiController extends GameController {
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
 
-    private int[] caculateMove(int move, int player, int[] dataSet){
-
+    public int[] calculateMove(int move, int player, int[] newDataSet){
+        System.out.println("Calculating move");
         // set the selected square tot the players color
+
+
+        int[] dataSet = new int[newDataSet.length];
+        for(int i = 0; i < dataSet.length; i++) {
+            dataSet[i] = newDataSet[i];
+        }
+
         dataSet[move] = player;
 
         // the number of squares next to the move.
@@ -213,14 +220,11 @@ public class ReversiController extends GameController {
                 break;
             }
         }
-
         return dataSet;
     }
 
     private int[] updatePossibleMoves(int[] dataSet){
-
-
-
+        System.out.println("Updating Possible Moves");
         int[] possibleMoves = new int[dataSet.length];
 
         int player;
@@ -245,7 +249,7 @@ public class ReversiController extends GameController {
     }
 
     private boolean checkPossibleMoves(int move, int player, int[] dataSet){
-
+        //System.out.println("Checking Possible Moves");
         if(dataSet[move] != 0){
             return false;
         }
@@ -407,17 +411,23 @@ public class ReversiController extends GameController {
     public void turn() {
         //notify user or start ai.
         boolean AI = dataController.getAI();
-        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
+
 
         if(AI){
             //run AI code.
-            AI ai = new AI();
+            AI ai = new AI(this);
             System.out.println("AI is made");
-            int move = ai.makeMove(dataController.getPossibleMoves());
+            int move = ai.makeMove(dataController.getData(), dataController.getPossibleMoves());
             System.out.println("AI made move " + move);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
             sentMove(move);
-            System.out.println("Move was supposed to be send");
         }
+
+        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
 
     @Override
@@ -429,6 +439,7 @@ public class ReversiController extends GameController {
             if(possibleMoves[move] == 1){
                 dataController.setYourTurn(false);
                 this.connection.sentCommand("MOVE " + move);
+                System.out.println("Move was supposed to be send");
                 //System.out.println(move);
             }
         }
