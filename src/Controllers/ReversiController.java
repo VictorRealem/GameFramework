@@ -19,7 +19,11 @@ public class ReversiController extends GameController {
      */
     public void initializeGame(){
         dataController.setPossibleMoves(new int[64]);
-        dataController.setPossibleMoves(updatePossibleMoves(dataController.getData()));
+        if(dataController.getPlayerOne()) {
+            dataController.setPossibleMoves(updatePossibleMoves(dataController.getData(),1));
+        } else {
+            dataController.setPossibleMoves(updatePossibleMoves(dataController.getData(),2));
+        }
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
 
@@ -31,7 +35,12 @@ public class ReversiController extends GameController {
         dataController.setData(dataSet);
 
         // update the possible moves dataset
-        int[] possibleMoves = updatePossibleMoves(dataController.getData());
+        int[] possibleMoves;
+        if(dataController.getPlayerOne()) {
+            possibleMoves = updatePossibleMoves(dataController.getData(),1);
+        } else {
+             possibleMoves = updatePossibleMoves(dataController.getData(),2);
+        }
         dataController.setPossibleMoves(possibleMoves);
 
         // update the player score
@@ -223,17 +232,10 @@ public class ReversiController extends GameController {
         return dataSet;
     }
 
-    private int[] updatePossibleMoves(int[] dataSet){
-        System.out.println("Updating Possible Moves");
+    public int[] updatePossibleMoves(int[] dataSet, int player){
+        //System.out.println("Updating Possible Moves");
         int[] possibleMoves = new int[dataSet.length];
 
-        int player;
-        if(dataController.getPlayerOne()){
-            player = 1;
-        }
-        else{
-            player = 2;
-        }
 
         for(int counter = 0; counter < 64; counter ++){
             if(checkPossibleMoves(counter, player, dataSet)){
@@ -412,22 +414,21 @@ public class ReversiController extends GameController {
         //notify user or start ai.
         boolean AI = dataController.getAI();
 
-
+        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
         if(AI){
             //run AI code.
             AI ai = new AI(this);
             System.out.println("AI is made");
             int move = ai.makeMove(dataController.getData(), dataController.getPossibleMoves());
             System.out.println("AI made move " + move);
-            try {
-                Thread.sleep(100);
+            /*try {
+                Thread.sleep(2000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
-            }
+            }*/
             sentMove(move);
         }
 
-        dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
     }
 
     @Override
