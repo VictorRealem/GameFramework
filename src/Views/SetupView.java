@@ -20,6 +20,8 @@ import javafx.scene.text.FontWeight;
 import javafx.util.StringConverter;
 import org.controlsfx.control.ToggleSwitch;
 
+import java.util.List;
+
 /**
  * This view is the view in which you can select the game you want to play, and if possible to player you want to challenge.
  */
@@ -282,8 +284,16 @@ public class SetupView {
             playerListView.getItems().clear();
             setupPlayerList();
         });
-        playerListView.getItems().addAll(controller.getDataList(1));
 
+        List<String> players = controller.getDataList(1);
+        for (String s : players){
+            if (s.equals(dataController.getPlayerName())){
+
+            }else {
+                playerListView.getItems().add(s);
+            }
+        }
+        
         playerListView.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
