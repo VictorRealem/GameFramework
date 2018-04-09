@@ -75,12 +75,14 @@ public class AI {
         int move = -1;
 
         int priority = -1;
+        int movePriority = -1;
 
         if(dataController.getPlayerOne())
             player = 1;
             opponent = 2;
 
         for(int i = 0; i < possibleMoves.length; i++) {
+
             //System.out.println("Index: " + i + " - " + possibleMoves[i]);
             if(possibleMoves[i] == 1) {
                 if(corners.contains(i)) {
@@ -100,9 +102,12 @@ public class AI {
                         opSumTiles++;
                     }
                 }
-                if(opSumTiles < prevOpSumTiles) {
+                if(opSumTiles < prevOpSumTiles && movePriority < priority) {
                     prevOpSumTiles = opSumTiles;
                     move = i;
+                    System.out.println("Prev P: " + movePriority);
+                    System.out.println("New p: " + priority);
+                    movePriority = priority;
                 }
             }
             opSumTiles = 0;

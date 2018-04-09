@@ -86,6 +86,7 @@ public class SetupView {
         //pane.setStyle("-fx-background-color: #FAFAFA");
         pane.setStyle("-fx-background-image: url(\"/Images/water.png\");-fx-background-size: 720, 350;-fx-background-repeat: no-repeat;");
 
+        return new Scene(pane, 720, 350);
     }
 
     /**
@@ -200,11 +201,15 @@ public class SetupView {
             @Override
             public Double fromString(String s) {
                 switch (s) {
-                    case "Novice":
+                    case "easy":
+                        System.out.println("Setting AI difficulty to easy");
+                        dataController.setAiDifficulty(0);
                         return null;
-                    case "Intermediate":
+                    case "medium":
+                        System.out.println("Setting AI difficulty to medium");
+                        dataController.setAiDifficulty(1);
                         return null;
-                    case "Advanced":
+                    case "hard":
                         return null;
                     default:
                         return null;
@@ -227,26 +232,27 @@ public class SetupView {
         gameListView.getItems().addAll(controller.getDataList(0));
 
         gameListView.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
-            @Override
-            public void handle(javafx.scene.input.MouseEvent event) {
-                 game = gameListView.getSelectionModel().getSelectedItem();
+                                           @Override
+                                           public void handle(javafx.scene.input.MouseEvent event) {
+                                               game = gameListView.getSelectionModel().getSelectedItem();
 
-                switch (game) {
-                    case "Tic-tac-toe": {
-                        dataController.setDatasetType(GameType.Tictactoe);
-                        start.setDisable(false);
-                        break;
-                    }
-                    case "Reversi": {
-                        dataController.setDatasetType(GameType.Reversi);
-                        start.setDisable(false);
-                        break;
-                    }
-                    default: {
-                        System.out.println("This game is not supported by this application");
-                    }
-                }
-
+                                               switch (game) {
+                                                   case "Tic-tac-toe": {
+                                                       dataController.setDatasetType(GameType.Tictactoe);
+                                                       start.setDisable(false);
+                                                       break;
+                                                   }
+                                                   case "Reversi": {
+                                                       dataController.setDatasetType(GameType.Reversi);
+                                                       start.setDisable(false);
+                                                       break;
+                                                   }
+                                                   default: {
+                                                       System.out.println("This game is not supported by this application");
+                                                   }
+                                               }
+                                           }
+                                       });
         gameBox.setMinWidth(100);
         gameBox.setPrefWidth(100);
         gameBox.setMaxWidth(100);
@@ -255,10 +261,12 @@ public class SetupView {
         scnBox.getChildren().add(gameBox);
     }
 
+
     /**
      * Similair to setupGameList, retrieves all the players via SetupController, puts them in a BorderPane and adds this to VBox
      */
     private void setupPlayerList() {
+        scnBox.getChildren().remove(playBox);
         Label player = new Label("PLAYERS");
         player.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         BorderPane stylePane = new BorderPane();
@@ -266,7 +274,6 @@ public class SetupView {
         Image refreshPic = new Image("/Images/Refresh16.gif");
         Button refresh = new Button();
         refresh.setGraphic(new ImageView(refreshPic));
-        playerListView.getItems().addAll(controller.getDataList(1));
 
         stylePane.setCenter(player);
         stylePane.setLeft(refresh);
@@ -275,12 +282,13 @@ public class SetupView {
             playerListView.getItems().clear();
             setupPlayerList();
         });
+        playerListView.getItems().addAll(controller.getDataList(1));
 
         playerListView.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 String player = playerListView.getSelectionModel().getSelectedItem();
-                System.out.println(player);
+                //System.out.println(player);
             }
         });
 
@@ -301,3 +309,4 @@ public class SetupView {
         scnBox.getChildren().add(spacer);
     }
 }
+
