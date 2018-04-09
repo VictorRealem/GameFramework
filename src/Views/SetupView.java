@@ -86,7 +86,8 @@ public class SetupView {
         //pane.setStyle("-fx-background-color: #FAFAFA");
         pane.setStyle("-fx-background-image: url(\"/Images/water.png\");-fx-background-size: 720, 350;-fx-background-repeat: no-repeat;");
 
-        return new Scene(pane, 720, 350);
+        return new Scene(pane,720,350);
+
     }
 
     /**
@@ -100,6 +101,7 @@ public class SetupView {
 
         logout.setPrefWidth(99);
         challenge.setPrefWidth(99);
+        start.setTooltip(new Tooltip("Play against random player"));
 
         start.setOnAction( (ActionEvent e) -> {
             switch(game) {
@@ -232,27 +234,29 @@ public class SetupView {
         gameListView.getItems().addAll(controller.getDataList(0));
 
         gameListView.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
-                                           @Override
-                                           public void handle(javafx.scene.input.MouseEvent event) {
-                                               game = gameListView.getSelectionModel().getSelectedItem();
 
-                                               switch (game) {
-                                                   case "Tic-tac-toe": {
-                                                       dataController.setDatasetType(GameType.Tictactoe);
-                                                       start.setDisable(false);
-                                                       break;
-                                                   }
-                                                   case "Reversi": {
-                                                       dataController.setDatasetType(GameType.Reversi);
-                                                       start.setDisable(false);
-                                                       break;
-                                                   }
-                                                   default: {
-                                                       System.out.println("This game is not supported by this application");
-                                                   }
-                                               }
-                                           }
-                                       });
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                 game = gameListView.getSelectionModel().getSelectedItem();
+
+                switch (game) {
+                    case "Tic-tac-toe": {
+                        dataController.setDatasetType(GameType.Tictactoe);
+                        start.setDisable(false);
+                        break;
+                    }
+                    case "Reversi": {
+                        dataController.setDatasetType(GameType.Reversi);
+                        start.setDisable(false);
+                        break;
+                    }
+                    default: {
+                        System.out.println("This game is not supported by this application");
+                    }
+                }
+            }
+        });
+
         gameBox.setMinWidth(100);
         gameBox.setPrefWidth(100);
         gameBox.setMaxWidth(100);
