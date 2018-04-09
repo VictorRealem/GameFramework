@@ -168,6 +168,7 @@ public class SetupView {
 
     private void setupAIOption(GridPane pane) {
         ToggleSwitch aiSwitch = new ToggleSwitch("AI");
+        dataController.setAI(false);
         aiSwitch.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -293,7 +294,7 @@ public class SetupView {
                 playerListView.getItems().add(s);
             }
         }
-        
+
         playerListView.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
