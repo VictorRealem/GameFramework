@@ -170,8 +170,8 @@ public class SetupView {
         OBox.add(new Label("Player or AI"),0,1);
         OBox.add(playOptions,1,1);
 
-        OBox.add(new Label("AI difficulty"),2,1);
-        OBox.add(difficultyOptions,3,1);
+        OBox.add(new Label("AI difficulty"),0,4);
+        OBox.add(difficultyOptions,1,4);
     }
 
 
