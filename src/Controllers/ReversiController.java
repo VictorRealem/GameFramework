@@ -428,7 +428,6 @@ public class ReversiController extends GameController {
             }*/
             sentMove(move);
         }
-
     }
 
     @Override
