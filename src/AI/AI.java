@@ -14,9 +14,6 @@ public class AI {
 
     public int makeMove(int[] dataset, int[] pMoves) {
         int move;
-        //remove
-        dataController.setAiDifficulty(1);
-        //
         switch (dataController.getAiDifficulty()) {
             case 0: {
                 move = randomMove(pMoves);
@@ -75,6 +72,10 @@ public class AI {
 
         int opSumTiles = 0;
         int prevOpSumTiles = 64;
+
+        int sumOpPosMoves = 0;
+        int prevOpSumPosMoves = 64;
+
         int move = -1;
 
         int priority;
@@ -91,8 +92,7 @@ public class AI {
                 System.out.println("Checking move " + i);
                 if(corners.contains(i)) {
                     System.out.println("Corner");
-                    move = i;
-                    break;
+                    priority = 0;
                 } else if(sides.contains(i)) {
                     System.out.println("Sides");
                     priority = 1;
@@ -112,13 +112,25 @@ public class AI {
                         opSumTiles++;
                     }
                 }
-                System.out.println("Prev P: " + prevPriority);
-                System.out.println("New p: " + priority);
-                if(opSumTiles < prevOpSumTiles && prevPriority > priority) {
-                    //new priority is smaller than prev priority
-                    prevOpSumTiles = opSumTiles;
-                    move = i;
-                    prevPriority = priority;
+
+                int[] opPosMoves = controller.updatePossibleMoves(newBoard,opponent);
+
+                for(int a = 0; a < opPosMoves.length; a++) {
+                    if(opPosMoves[a] == 1) {
+                        sumOpPosMoves++;
+                    }
+                }
+
+                if(prevPriority >= priority) {
+                    if(sumOpPosMoves < prevOpSumPosMoves) {
+                        if (opSumTiles < prevOpSumTiles) {
+                            //new priority is smaller than prev priority
+                            prevOpSumTiles = opSumTiles;
+                            prevOpSumPosMoves = sumOpPosMoves;
+                            move = i;
+                            prevPriority = priority;
+                        }
+                    }
                 }
             }
             opSumTiles = 0;

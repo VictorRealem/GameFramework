@@ -20,6 +20,8 @@ import javafx.scene.text.FontWeight;
 import javafx.util.StringConverter;
 import org.controlsfx.control.ToggleSwitch;
 
+import java.util.List;
+
 /**
  * This view is the view in which you can select the game you want to play, and if possible to player you want to challenge.
  */
@@ -95,6 +97,7 @@ public class SetupView {
      * @param pane
      */
     private void setupOptionPane(GridPane pane) {
+        Label playerName = new Label(dataController.getPlayerName());
         start = new Button("Quick game");
         Button logout = new Button("Logout");
         Button challenge = new Button("Challenge");
@@ -102,6 +105,7 @@ public class SetupView {
         logout.setPrefWidth(99);
         challenge.setPrefWidth(99);
         start.setTooltip(new Tooltip("Play against random player"));
+        playerName.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
 
         start.setOnAction( (ActionEvent e) -> {
             switch(game) {
@@ -148,6 +152,8 @@ public class SetupView {
             controller.setScene(controller.InitializeLogin());
         });
 
+
+        pane.add(playerName,0,0);
         pane.add(start,0,3);
         pane.add(challenge,0,4);
         pane.add(logout,0,5);
@@ -162,6 +168,7 @@ public class SetupView {
 
     private void setupAIOption(GridPane pane) {
         ToggleSwitch aiSwitch = new ToggleSwitch("AI");
+        dataController.setAI(false);
         aiSwitch.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -190,34 +197,26 @@ public class SetupView {
         slider.setSnapToTicks(true);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
+        dataController.setAiDifficulty(1);
 
-        slider.setLabelFormatter(new StringConverter<Double>() {
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
-            public String toString(Double n) {
-                if (n < 0.1) return "easy";
-                if (n < 1.1) return "medium";
-                if (n < 3.0) return "hard";
-                return null;
-            }
-
-            @Override
-            public Double fromString(String s) {
-                switch (s) {
-                    case "easy":
-                        System.out.println("Setting AI difficulty to easy");
-                        dataController.setAiDifficulty(0);
-                        return null;
-                    case "medium":
-                        System.out.println("Setting AI difficulty to medium");
-                        dataController.setAiDifficulty(1);
-                        return null;
-                    case "hard":
-                        return null;
-                    default:
-                        return null;
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (slider.getValue() < 0.8){
+                    System.out.println("easy");
+                    dataController.setAiDifficulty(0);
+                }
+                if (slider.getValue() > 0.9 && slider.getValue() < 1.4){
+                    System.out.println("medium");
+                    dataController.setAiDifficulty(1);
+                }
+                if (slider.getValue() > 1.6){
+                    System.out.println("hard (medium)");
+                    dataController.setAiDifficulty(1);
                 }
             }
         });
+
 
         OPane.add(slider,0,2);
     }
@@ -286,7 +285,15 @@ public class SetupView {
             playerListView.getItems().clear();
             setupPlayerList();
         });
-        playerListView.getItems().addAll(controller.getDataList(1));
+
+        List<String> players = controller.getDataList(1);
+        for (String s : players){
+            if (s.equals(dataController.getPlayerName())){
+
+            }else {
+                playerListView.getItems().add(s);
+            }
+        }
 
         playerListView.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
