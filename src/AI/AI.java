@@ -3,13 +3,14 @@ package AI;
 import Controllers.DataController;
 import Controllers.ReversiController;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 public class AI {
     private DataController dataController;
+    private int totalTiles;
     public AI(ReversiController controller) {
         this.dataController = DataController.getInstance();
+        totalTiles = 0;
     }
 
     public int makeMove(int[] dataset, int[] pMoves) {
@@ -20,7 +21,7 @@ public class AI {
                 break;
             }
             case 1: {
-                move = blockingMove(dataset, pMoves);
+                move = blockingMove(dataset, getPriotitymoves(pMoves));
                 break;
             }
             default: {
@@ -30,6 +31,46 @@ public class AI {
             }
         }
         return move;
+    }
+
+    public HashMap<Integer, ArrayList<Integer>> getPriotitymoves(int[] pmdataset){
+        HashMap<Integer, ArrayList<Integer>> priomoves = new HashMap<>();
+        ArrayList<Integer> cornerMoves = new ArrayList<>();
+        ArrayList<Integer> sideMoves = new ArrayList<>();
+        ArrayList<Integer> softAvMoves = new ArrayList<>();
+        ArrayList<Integer> hardAvMoves = new ArrayList<>();
+        ArrayList<Integer> restMoves = new ArrayList<>();
+
+
+        for(int i = 0; i < pmdataset.length; i++){
+            if(pmdataset[i] == 0){
+                continue;
+            }
+
+            if(getCorners().contains(i)){
+                cornerMoves.add(i);
+            }
+            else if(getSides().contains(i)){
+                sideMoves.add(i);
+            }
+            else if(getSoftAvoidance().contains(i)){
+                softAvMoves.add(i);
+            }
+            else if(getHardAvoidance().contains(i)){
+                hardAvMoves.add(i);
+            }
+            else{
+                restMoves.add(i);
+            }
+        }
+
+        priomoves.put(0,cornerMoves);
+        priomoves.put(1,sideMoves);
+        priomoves.put(2,restMoves);
+        priomoves.put(3,softAvMoves);
+        priomoves.put(4,hardAvMoves);
+
+        return priomoves;
     }
 
     /**
@@ -60,9 +101,9 @@ public class AI {
         return move;
     }
 
-    private int blockingMove(int[] dataset ,int[] possibleMoves) {
+    private int blockingMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
         ReversiController controller = new ReversiController();
-        ArrayList<Integer> corners = getCorners();
+        /*ArrayList<Integer> corners = getCorners();
         ArrayList<Integer> sides = getSides();
         ArrayList<Integer> softAvoidance = getSoftAvoidance();
         ArrayList<Integer> hardAvoidance = getHardAvoidance();
@@ -73,10 +114,13 @@ public class AI {
         int opSumTiles = 0;
         int prevOpSumTiles = 64;
 
+        int playerTiles = 0;
+        int prevPlayerTiles = 0;
+
         int sumOpPosMoves = 0;
         int prevOpSumPosMoves = 64;
 
-        int move = -1;
+        ArrayList<Integer> moves = new ArrayList<>();
 
         int priority;
         int prevPriority = 5;
@@ -86,30 +130,18 @@ public class AI {
             opponent = 2;
 
         for(int i = 0; i < possibleMoves.length; i++) {
+            playerTiles = 0;
+            opSumTiles = 0;
+            sumOpPosMoves = 0;
 
             //System.out.println("Index: " + i + " - " + possibleMoves[i]);
-            if(possibleMoves[i] == 1) {
-                System.out.println("Checking move " + i);
-                if(corners.contains(i)) {
-                    System.out.println("Corner");
-                    priority = 0;
-                } else if(sides.contains(i)) {
-                    System.out.println("Sides");
-                    priority = 1;
-                } else if(hardAvoidance.contains(i)) {
-                    System.out.println("Hard av");
-                    priority = 4;
-                } else if(softAvoidance.contains(i)) {
-                    System.out.println("Soft av");
-                    priority = 3;
-                } else {
-                    priority = 2;
-                }
                 int[] newBoard = controller.calculateMove(i, player, dataset);
 
                 for(int x = 0; x < newBoard.length; x++) {
                     if(newBoard[x] == opponent) {
                         opSumTiles++;
+                    } else if(newBoard[x] == player) {
+                        playerTiles++;
                     }
                 }
 
@@ -121,21 +153,106 @@ public class AI {
                     }
                 }
 
-                if(prevPriority >= priority) {
-                    if(sumOpPosMoves < prevOpSumPosMoves) {
-                        if (opSumTiles < prevOpSumTiles) {
+                totalTiles += playerTiles;
+
+                if(playerTiles >= prevPlayerTiles) {
+                    if(prevPriority >= priority) {
+                        if (opSumTiles <= prevOpSumTiles) {
                             //new priority is smaller than prev priority
                             prevOpSumTiles = opSumTiles;
                             prevOpSumPosMoves = sumOpPosMoves;
-                            move = i;
+                            prevPlayerTiles = playerTiles;
+                            moves.add(i);
                             prevPriority = priority;
                         }
                     }
                 }
-            }
-            opSumTiles = 0;
-
         }
+        Random r = new Random();
+        //System.out.println(moves.size());
+        int index = r.nextInt(moves.size());
+        //System.out.println(moves.get(index));
+        //return moves.get(index);
+        */
+        ArrayList<Integer> moves = new ArrayList<>();
+        if(priorityMoves.get(0).size() > 0) {
+            moves = priorityMoves.get(0);
+
+        } else if(priorityMoves.get(1).size() > 0) {
+            moves = priorityMoves.get(1);
+
+        } else if(priorityMoves.get(2).size() > 0) {
+            moves = priorityMoves.get(2);
+
+        } else if(priorityMoves.get(3).size() > 0) {
+            moves = priorityMoves.get(3);
+
+        } else if(priorityMoves.get(4).size() > 0) {
+            moves = priorityMoves.get(4);
+        }
+        ArrayList<Integer> doableMoves = new ArrayList<>();
+
+        int player = 2;
+        int opponent = 1;
+
+        if(dataController.getPlayerOne()) {
+            player = 1;
+            opponent = 2;
+        }
+
+        int prevPlayerTiles = 0;
+
+        for(int move : moves) {
+            int playerTiles = 0;
+            int opponentTiles = 0;
+
+
+            int[] newBoard = controller.calculateMove(move, player, dataset);
+            for (int cell : newBoard) {
+                if (cell == player) {
+                    playerTiles++;
+                } else if (cell == opponent) {
+                    opponentTiles++;
+                }
+            }
+
+            if (playerTiles > prevPlayerTiles) {
+                prevPlayerTiles = playerTiles;
+                doableMoves.clear();
+                doableMoves.add(move);
+            } else if (playerTiles == prevPlayerTiles) {
+                doableMoves.add(move);
+            }
+        }
+        Random r = new Random();
+        //System.out.println(moves.size());
+        int index = r.nextInt(doableMoves.size());
+        //System.out.println(moves.get(index));
+        return doableMoves.get(index);
+    }
+
+    private int predictOpponent(int[] board, int[] possibleMoves, int opponent) {
+        int move = -1;
+
+        int numTiles = 0;
+        int prevNumTiles = 0;
+
+        ReversiController controller = new ReversiController();
+        for(int i = 0; i< possibleMoves.length; i++) {
+            if(possibleMoves[i] == 1) {
+                int[] newBoard = controller.calculateMove(i,opponent,board);
+                for(int a = 0; a< newBoard.length; a++) {
+                    if(newBoard[a] == opponent) {
+                        numTiles++;
+                    }
+                }
+                if(numTiles > prevNumTiles) {
+                    prevNumTiles = numTiles;
+                    move = i;
+                }
+            }
+        }
+
         return move;
     }
 
@@ -206,5 +323,4 @@ public class AI {
         hardAvoidance.add(62);
         return hardAvoidance;
     }
-
 }
