@@ -43,6 +43,8 @@ public class LoginView {
         setTextboxes(gridPane);
         setbutton(gridPane);
         setEventHandlers();
+
+        bp.setStyle("-fx-background-image: url(\"/Images/water2.jpg\");-fx-background-size: 600, 300;-fx-background-repeat: no-repeat;");
         return new Scene(bp,585,300);
     }
 
@@ -142,8 +144,8 @@ public class LoginView {
     }
 
     private void setStyling(GridPane grid,BorderPane bp){
-        Image image = new Image("Images/loginLine.png");
-        bp.setBottom(new ImageView(image));
+       /* Image image = new Image("Images/loginLine.png");
+        bp.setBottom(new ImageView(image));*/
         bp.setStyle("-fx-background-color: #FAFAFA");
         grid.setVgap(5.0);
         grid.setHgap(5.0);
