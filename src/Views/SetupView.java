@@ -212,7 +212,7 @@ public class SetupView {
                 }
                 if (slider.getValue() > 1.6){
                     System.out.println("hard (medium)");
-                    dataController.setAiDifficulty(1);
+                    dataController.setAiDifficulty(2);
                 }
             }
         });
