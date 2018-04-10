@@ -3,8 +3,7 @@ package AI;
 import Controllers.DataController;
 import Controllers.ReversiController;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 public class AI {
     private DataController dataController;
@@ -30,6 +29,37 @@ public class AI {
             }
         }
         return move;
+    }
+
+    public HashMap<Integer, Integer> getPriotitymoves(int[] pmdataset){
+        HashMap<Integer, Integer> priomoves = new HashMap<>();
+
+        for(int i = 0; i < pmdataset.length; i++){
+            if(pmdataset[i] == 0){
+                continue;
+            }
+
+            if(getCorners().contains(i)){
+                priomoves.put(i, 0);
+            }
+            else
+            if(getSides().contains(i)){
+                priomoves.put(i, 1);
+            }
+            else
+            if(getSoftAvoidance().contains(i)){
+                priomoves.put(i, 3);
+            }
+            else
+            if(getHardAvoidance().contains(i)){
+                priomoves.put(i,4);
+            }
+            else{
+                priomoves.put(i,2);
+            }
+        }
+
+        return priomoves;
     }
 
     /**
