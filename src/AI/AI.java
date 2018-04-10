@@ -106,7 +106,7 @@ public class AI {
         int sumOpPosMoves = 0;
         int prevOpSumPosMoves = 64;
 
-        int move = -1;
+        ArrayList<Integer> moves = new ArrayList<>();
 
         int priority;
         int prevPriority = 5;
@@ -151,22 +151,26 @@ public class AI {
                     }
                 }
 
-                if(prevPriority >= priority) {
-                    if(sumOpPosMoves < prevOpSumPosMoves) {
-                        if (opSumTiles < prevOpSumTiles) {
+                if(sumOpPosMoves <= prevOpSumPosMoves) {
+                    if(prevPriority >= priority) {
+                        if (opSumTiles <= prevOpSumTiles) {
                             //new priority is smaller than prev priority
                             prevOpSumTiles = opSumTiles;
                             prevOpSumPosMoves = sumOpPosMoves;
-                            move = i;
+                            moves.add(i);
                             prevPriority = priority;
                         }
                     }
                 }
             }
             opSumTiles = 0;
+            sumOpPosMoves = 0;
 
         }
-        return move;
+        Random r = new Random();
+        int index = r.nextInt(moves.size());
+        System.out.println(moves.get(index));
+        return moves.get(index);
     }
 
     private ArrayList<Integer> getCorners() {
