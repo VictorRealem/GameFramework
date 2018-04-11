@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import org.controlsfx.control.textfield.TextFields;
 
 /**
  * Class LoginView
@@ -120,6 +121,9 @@ public class LoginView {
         serverUrl.setPrefColumnCount(20);
         serverUrl.setPromptText("Server address");
         serverUrl.setText("Localhost");
+
+        String[] suggestions = {"77.162.40.81","Localhost","145.33.225.170"};
+        TextFields.bindAutoCompletion(serverUrl,suggestions);
 
         port = new TextField();
         port.setPrefColumnCount(20);
