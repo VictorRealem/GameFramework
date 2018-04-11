@@ -21,7 +21,11 @@ public class AI {
                 break;
             }
             case 1: {
-                move = maxTilesMove(dataset, getPriotitymoves(pMoves));
+                move = maxTilesMove(dataset, getPriotitymoves(pMoves)).get(0);
+                break;
+            }
+            case 2:{
+                move = hardMove(dataset, getPriotitymoves(pMoves));
                 break;
             }
             default: {
@@ -33,45 +37,7 @@ public class AI {
         return move;
     }
 
-    public HashMap<Integer, ArrayList<Integer>> getPriotitymoves(int[] pmdataset){
-        HashMap<Integer, ArrayList<Integer>> priomoves = new HashMap<>();
-        ArrayList<Integer> cornerMoves = new ArrayList<>();
-        ArrayList<Integer> sideMoves = new ArrayList<>();
-        ArrayList<Integer> softAvMoves = new ArrayList<>();
-        ArrayList<Integer> hardAvMoves = new ArrayList<>();
-        ArrayList<Integer> restMoves = new ArrayList<>();
 
-
-        for(int i = 0; i < pmdataset.length; i++){
-            if(pmdataset[i] == 0){
-                continue;
-            }
-
-            if(getCorners().contains(i)){
-                cornerMoves.add(i);
-            }
-            else if(getSides().contains(i)){
-                sideMoves.add(i);
-            }
-            else if(getSoftAvoidance().contains(i)){
-                softAvMoves.add(i);
-            }
-            else if(getHardAvoidance().contains(i)){
-                hardAvMoves.add(i);
-            }
-            else{
-                restMoves.add(i);
-            }
-        }
-
-        priomoves.put(0,cornerMoves);
-        priomoves.put(1,sideMoves);
-        priomoves.put(2,restMoves);
-        priomoves.put(3,softAvMoves);
-        priomoves.put(4,hardAvMoves);
-
-        return priomoves;
-    }
 
     /**
      * Chooses a random move from all the posible Moves
@@ -101,26 +67,111 @@ public class AI {
         return move;
     }
 
-    private int maxTilesMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
+    public int hardMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves){
+
+
+        ArrayList<Integer> moves = new ArrayList<>();
+
+
+        // check if hardAV move is good
+        moves.addAll(this.checkHardAv(dataset,priorityMoves));
+        if(moves.size() > 0){
+            Random r = new Random();
+            int index = r.nextInt(moves.size());
+            return moves.get(index);
+        }
+
+
+        if(!aheadOfOpponent(dataset)){
+            // try blocking the opponent.
+            moves.addAll(blockingMove(dataset, priorityMoves));
+
+        }else{
+            // get max tiles based on priority
+            moves.addAll(this.maxTilesMove(dataset,priorityMoves));
+        }
+
+        if(moves.size() == 0){
+            moves.addAll(this.maxTilesMove(dataset,priorityMoves));
+        }
+
+        Random r = new Random();
+        int index = r.nextInt(moves.size());
+        return moves.get(index);
+
+    }
+
+
+    private ArrayList<Integer> blockingMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
+        ReversiController controller = new ReversiController();
+        ArrayList<Integer> moves = new ArrayList<>();
+        if(priorityMoves.get(0).size() > 0) {
+            moves = priorityMoves.get(0);
+
+        } else if(priorityMoves.get(1).size() > 0) {
+            moves = priorityMoves.get(1);
+
+        } else if(priorityMoves.get(2).size() > 0) {
+            moves = priorityMoves.get(2);
+
+        } else if(priorityMoves.get(3).size() > 0) {
+            moves = priorityMoves.get(3);
+
+        } else if(priorityMoves.get(4).size() > 0) {
+            moves = priorityMoves.get(4);
+        }
+
+        ArrayList<Integer> blockingMoves = new ArrayList<>();
+        int prefPrio = 0;
+
+        int player = 2;
+        int opponent = 1;
+
+        if(dataController.getPlayerOne()) {
+            player = 1;
+            opponent = 2;
+        }
+
+        for(int move : moves) {
+            int[] newBoard = controller.calculateMove(move, player, dataset);
+            int[] opponentPm = controller.updatePossibleMoves(newBoard, opponent);
+            int amount = 0;
+            int priosum = 0;
+            if(getPriotitymoves(opponentPm).get(0).size() > 0){
+                // this move gives opponent a corner.
+                continue;
+            }
+
+            priosum += getPriotitymoves(opponentPm).get(1).size();
+            priosum += getPriotitymoves(opponentPm).get(2).size() * 2;
+            priosum += getPriotitymoves(opponentPm).get(3).size() * 3;
+            priosum += getPriotitymoves(opponentPm).get(4).size() * 4;
+
+            amount += getPriotitymoves(opponentPm).get(1).size();
+            amount += getPriotitymoves(opponentPm).get(2).size();
+            amount += getPriotitymoves(opponentPm).get(3).size();
+            amount += getPriotitymoves(opponentPm).get(4).size();
+
+            int prio = priosum / amount;
+
+            if(prio > prefPrio){
+                blockingMoves.clear();
+                blockingMoves.add(move);
+            }
+
+            if(prio == prefPrio){
+                blockingMoves.add(move);
+            }
+        }
+
+        return blockingMoves;
+
+    }
+
+
+    private ArrayList<Integer> maxTilesMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
         ReversiController controller = new ReversiController();
 
-        /*if(priorityMoves.get(0).size() > 0) {
-            moves = priorityMoves.get(0);
-        }
-        if(priorityMoves.get(1).size() > 0) {
-            moves.addAll(priorityMoves.get(1));
-
-        }
-        if(priorityMoves.get(2).size() > 0) {
-            moves.addAll(priorityMoves.get(2));
-        }
-        if(priorityMoves.get(3).size() > 0) {
-            moves.addAll(priorityMoves.get(3));
-
-        }
-        if(priorityMoves.get(4).size() > 0) {
-            moves.addAll(priorityMoves.get(4));
-        }*/
         ArrayList<Integer> doableMoves = new ArrayList<>();
 
         int player = 2;
@@ -170,9 +221,21 @@ public class AI {
             }
         }
 
-        Random r = new Random();
-        int index = r.nextInt(doableMoves.size());
-        return doableMoves.get(index);
+        return doableMoves;
+    }
+
+    private ArrayList<Integer> checkHardAv(int[] dataset, HashMap<Integer, ArrayList<Integer>> priorityMoves){
+        ArrayList<Integer> moves = new ArrayList<>();
+        if(priorityMoves.get(4).size() > 0){
+            ArrayList<Integer> hardAv = priorityMoves.get(4);
+            for(int pmmove : hardAv){
+                HashMap<Integer, ArrayList<Integer>> opponentPriorityMoves = this.getPriotitymoves(this.calculateOpponentmoves(dataset, pmmove));
+                if(opponentPriorityMoves.get(4).size() == 0){
+                    moves.add(pmmove);
+                }
+            }
+        }
+        return moves;
     }
 
 
@@ -200,6 +263,93 @@ public class AI {
 
         return move;
     }
+
+    private boolean aheadOfOpponent(int[] dataset){
+        int player = 2;
+        int opponent = 1;
+
+        if(dataController.getPlayerOne()){
+            player = 1;
+            opponent = 2;
+        }
+
+        int playerTiles = 0;
+        int opponentTiles = 0;
+
+        for(int data : dataset){
+            if(data == 0){
+                continue;
+            }
+            if(data == player){
+                playerTiles++;
+            }
+            if(data == opponent){
+                opponentTiles++;
+            }
+        }
+
+        if(playerTiles > opponentTiles ){
+            return true;
+        }
+
+        return false;
+    }
+
+    private HashMap<Integer, ArrayList<Integer>> getPriotitymoves(int[] pmdataset){
+        HashMap<Integer, ArrayList<Integer>> priomoves = new HashMap<>();
+        ArrayList<Integer> cornerMoves = new ArrayList<>();
+        ArrayList<Integer> sideMoves = new ArrayList<>();
+        ArrayList<Integer> softAvMoves = new ArrayList<>();
+        ArrayList<Integer> hardAvMoves = new ArrayList<>();
+        ArrayList<Integer> restMoves = new ArrayList<>();
+
+
+        for(int i = 0; i < pmdataset.length; i++){
+            if(pmdataset[i] == 0){
+                continue;
+            }
+
+            if(getCorners().contains(i)){
+                cornerMoves.add(i);
+            }
+            else if(getSides().contains(i)){
+                sideMoves.add(i);
+            }
+            else if(getSoftAvoidance().contains(i)){
+                softAvMoves.add(i);
+            }
+            else if(getHardAvoidance().contains(i)){
+                hardAvMoves.add(i);
+            }
+            else{
+                restMoves.add(i);
+            }
+        }
+
+        priomoves.put(0,cornerMoves);
+        priomoves.put(1,sideMoves);
+        priomoves.put(2,restMoves);
+        priomoves.put(3,softAvMoves);
+        priomoves.put(4,hardAvMoves);
+
+        return priomoves;
+    }
+
+    private int[] calculateOpponentmoves(int[] board, int move){
+        int player = 2;
+        int opponent = 1;
+
+        if(dataController.getPlayerOne()){
+            player = 1;
+            opponent = 2;
+        }
+
+        ReversiController controller = new ReversiController();
+        int[] newboard = controller.calculateMove(move, player, board);
+
+        return controller.updatePossibleMoves(newboard, opponent);
+    }
+
 
     private ArrayList<Integer> getCorners() {
         ArrayList<Integer> corners = new ArrayList<>();
