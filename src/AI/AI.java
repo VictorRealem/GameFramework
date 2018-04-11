@@ -98,9 +98,9 @@ public class AI {
         }
 
 
-        if(aheadOfOpponent(dataset)){
+        if(this.getTotalTiles(dataset) < 32 && this.aheadOfOpponent(dataset)){
             // try blocking the opponent.
-            //moves.addAll(blockingMove(dataset, priorityMoves));
+            moves.addAll(blockingMove(dataset, priorityMoves));
 
         }else{
             // get max tiles based on priority
@@ -315,6 +315,16 @@ public class AI {
         }
 
         return false;
+    }
+
+    private int getTotalTiles(int[] board){
+         int totaltiles = 0;
+         for (int move : board){
+             if(move != 0){
+                 totaltiles++;
+             }
+         }
+         return totaltiles;
     }
 
     private HashMap<Integer, ArrayList<Integer>> getPriotitymoves(int[] pmdataset){
