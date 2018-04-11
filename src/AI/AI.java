@@ -21,7 +21,7 @@ public class AI {
                 break;
             }
             case 1: {
-                move = maxTilesMove(dataset, getPriotitymoves(pMoves));
+                move = maxPrioMove(dataset, getPriotitymoves(pMoves));
                 break;
             }
             default: {
@@ -101,7 +101,14 @@ public class AI {
         return move;
     }
 
-    private int maxTilesMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
+    /**
+     * Combines the number of tiles gained from a move and the priority of the move, the move with the lowest score (low priority is good)
+     * is made, if there are more moves that have the same score a random move is picked from those options
+     * @param dataset
+     * @param priorityMoves
+     * @return
+     */
+    private int maxPrioMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
         ReversiController controller = new ReversiController();
 
         /*if(priorityMoves.get(0).size() > 0) {
