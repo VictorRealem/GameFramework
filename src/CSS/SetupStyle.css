@@ -1,9 +1,24 @@
-#gamesList{
-
 .list-cell {
-    -fx-background-color: transparent;
+
+
+     -fx-background-color: rgba(240,240,240,0.5);
 }
 .list-view {
-    -fx-background-color: transparent;
+
+
+         -fx-background-color: rgba(240,240,240,0.5);
+   }
+
+#playerList{
+
+-fx-font-size: 10pt;
+-fx-font-weight: bold;
+
 }
+
+#gamesList{
+-fx-font-size: 11pt;
+-fx-font-weight: bold;
+
 }
+
