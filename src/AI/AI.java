@@ -98,9 +98,9 @@ public class AI {
         }
 
 
-        if(!aheadOfOpponent(dataset)){
+        if(aheadOfOpponent(dataset)){
             // try blocking the opponent.
-            moves.addAll(blockingMove(dataset, priorityMoves));
+            //moves.addAll(blockingMove(dataset, priorityMoves));
 
         }else{
             // get max tiles based on priority
