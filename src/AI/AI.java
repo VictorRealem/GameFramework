@@ -255,11 +255,9 @@ public class AI {
                 int opponentGain = newOpponentTiles - opponentTiles;
                 int playerLoss = newPlayerTiles - playerTiles;
 
-                System.out.println("Opponent gain for move: " + move + " is: " + opponentGain);
-                System.out.println("Player loss for move: " + move + " is: " + playerLoss);
-
+                int threshhold = opponentTiles / 3;
                 //make choice based on thresholds of loss and gain
-                if(opponentGain <= 5 && playerLoss >= -5) {
+                if(opponentGain <= threshhold && playerLoss >= -threshhold) {
                     //make choice based on movepoints
                     if (movePoint > prevMovePoint) {
                         prevMovePoint = movePoint;
