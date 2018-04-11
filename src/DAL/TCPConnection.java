@@ -25,7 +25,6 @@ public class TCPConnection extends Thread {
     public static TCPConnection getInstance() {
         if(ourInstance == null)
             ourInstance = new TCPConnection();
-            System.out.println("Instance made");
         return ourInstance;
     }
 
@@ -110,10 +109,11 @@ public class TCPConnection extends Thread {
         EventHandler handler = new EventHandler();
         //System.out.println("Listen con bf: " + checkMadeConnection());
         while (checkMadeConnection()) {
+            System.out.println("Listening");
             //System.out.println("Listen con: " + checkMadeConnection());
             String response = inFromServer.readLine();
             // For testing purposes.
-            System.out.println("server: " + response);
+            //System.out.println("server: " + response);
             handler.HandleCommand(response);
         }
     }

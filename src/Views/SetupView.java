@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.StringConverter;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.util.List;
@@ -102,6 +103,8 @@ public class SetupView {
         start = new Button("Quick game");
         Button logout = new Button("Logout");
         Button challenge = new Button("Challenge");
+        Label empty = new Label("");
+        empty.setPadding(new Insets(0,0,5,0));
 
         logout.setPrefWidth(99);
         challenge.setPrefWidth(99);
@@ -156,10 +159,12 @@ public class SetupView {
             controller.setScene(controller.InitializeLogin());
         });
 
-        pane.add(playerName,0,0);
-        pane.add(start,0,3);
-        pane.add(challenge,0,4);
-        pane.add(logout,0,5);
+        pane.add(empty,0,0);
+        pane.add(playerName,0,1);
+
+        pane.add(start,0,4);
+        pane.add(challenge,0,5);
+        pane.add(logout,0,6);
 
     }
 
@@ -171,7 +176,8 @@ public class SetupView {
 
     private void setupAIOption(GridPane pane) {
         ToggleSwitch aiSwitch = new ToggleSwitch("AI");
-        dataController.setAI(false);
+        aiSwitch.setSelected(true);
+        dataController.setAI(true);
         aiSwitch.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -182,7 +188,7 @@ public class SetupView {
                 }
             }
         });
-        pane.add(aiSwitch,0,1);
+        pane.add(aiSwitch,0,2);
     }
 
 
@@ -202,6 +208,31 @@ public class SetupView {
         slider.setShowTickLabels(true);
         dataController.setAiDifficulty(1);
 
+        slider.setLabelFormatter(new StringConverter<Double>() {
+
+            public String toString(Double n) {
+                if (n < 0.5) return "easy";
+                if (n < 1.5) return "medium";
+                if (n < 2.5) return "hard";
+
+                return "Expert";
+            }
+
+            @Override
+            public Double fromString(String s) {
+                switch (s) {
+                    case "easy":
+                        return 0d;
+                    case "medium":
+                        return 1d;
+                    case "hard":
+                        return 2d;
+
+                    default:
+                        return 2d;
+                }
+            }
+        });
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -214,14 +245,14 @@ public class SetupView {
                     dataController.setAiDifficulty(1);
                 }
                 if (slider.getValue() > 1.6){
-                    System.out.println("hard (medium)");
+                    System.out.println("hard");
                     dataController.setAiDifficulty(2);
                 }
             }
         });
 
 
-        OPane.add(slider,0,2);
+        OPane.add(slider,0,3);
     }
 
     /**
@@ -234,7 +265,7 @@ public class SetupView {
         gamesLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         gameBox.setSpacing(8.0);
         gameListView.getItems().addAll(controller.getDataList(0));
-
+        gameListView.setId("gameList");
         gameListView.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
 
             @Override
