@@ -152,24 +152,31 @@ public class AI {
             int[] opponentPm = controller.updatePossibleMoves(newBoard, opponent);
             int amount = 0;
             int priosum = 0;
-            if(getPriotitymoves(opponentPm).get(0).size() > 0){
+            if(getPriotitymoves(opponentPm).get(4).size() > 0){
                 // this move gives opponent a corner.
                 continue;
             }
 
-            priosum += getPriotitymoves(opponentPm).get(1).size();
+            priosum += getPriotitymoves(opponentPm).get(0).size();
+            priosum += getPriotitymoves(opponentPm).get(1).size() * 1;
             priosum += getPriotitymoves(opponentPm).get(2).size() * 2;
             priosum += getPriotitymoves(opponentPm).get(3).size() * 3;
-            priosum += getPriotitymoves(opponentPm).get(4).size() * 4;
 
+            amount += getPriotitymoves(opponentPm).get(0).size();
             amount += getPriotitymoves(opponentPm).get(1).size();
             amount += getPriotitymoves(opponentPm).get(2).size();
             amount += getPriotitymoves(opponentPm).get(3).size();
-            amount += getPriotitymoves(opponentPm).get(4).size();
+
+            // no moves for opponent
+            if(amount == 0){
+                blockingMoves.clear();
+                blockingMoves.add(move);
+                return blockingMoves;
+            }
 
             int prio = priosum / amount;
 
-            if(prio > prefPrio){
+            if(prio < prefPrio){
                 blockingMoves.clear();
                 blockingMoves.add(move);
             }
@@ -241,11 +248,11 @@ public class AI {
 
     private ArrayList<Integer> checkHardAv(int[] dataset, HashMap<Integer, ArrayList<Integer>> priorityMoves){
         ArrayList<Integer> moves = new ArrayList<>();
-        if(priorityMoves.get(4).size() > 0){
-            ArrayList<Integer> hardAv = priorityMoves.get(4);
+        if(priorityMoves.get(0).size() > 0){
+            ArrayList<Integer> hardAv = priorityMoves.get(0);
             for(int pmmove : hardAv){
                 HashMap<Integer, ArrayList<Integer>> opponentPriorityMoves = this.getPriotitymoves(this.calculateOpponentmoves(dataset, pmmove));
-                if(opponentPriorityMoves.get(4).size() == 0){
+                if(opponentPriorityMoves.get(0).size() == 0){
                     moves.add(pmmove);
                 }
             }
