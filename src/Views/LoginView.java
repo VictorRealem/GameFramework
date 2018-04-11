@@ -2,12 +2,14 @@ package Views;
 
 import Controllers.SetupController;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -44,6 +46,7 @@ public class LoginView {
         setbutton(gridPane);
         setEventHandlers();
 
+        bp.setPadding(new Insets(20,0,0,10));
         bp.setStyle("-fx-background-image: url(\"/Images/water2.jpg\");-fx-background-size: 600, 300;-fx-background-repeat: no-repeat;");
         return new Scene(bp,585,300);
     }
