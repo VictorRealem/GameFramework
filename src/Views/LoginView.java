@@ -115,12 +115,14 @@ public class LoginView {
         name.setPrefColumnCount(20);
         name.setPromptText("Username");
 
+        String[] namesuggestions = {"Jelmer","Wisse","Arjen","Woute","oldAI","newAI"};
+        TextFields.bindAutoCompletion(name,namesuggestions);
 
 
         serverUrl = new TextField();
         serverUrl.setPrefColumnCount(20);
         serverUrl.setPromptText("Server address");
-        serverUrl.setText("Localhost");
+        //serverUrl.setText("Localhost");
 
         String[] suggestions = {"77.162.40.81","Localhost","145.33.225.170"};
         TextFields.bindAutoCompletion(serverUrl,suggestions);
