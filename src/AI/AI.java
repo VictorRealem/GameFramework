@@ -21,7 +21,7 @@ public class AI {
                 break;
             }
             case 1: {
-                move = maxTilesMove(dataset, getPriotitymoves(pMoves)).get(0);
+                move = maxPrioMove(dataset, getPriotitymoves(pMoves)).get(0);
                 break;
             }
             case 2:{
@@ -67,9 +67,18 @@ public class AI {
         return move;
     }
 
-    public int hardMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves){
 
+    
 
+    /**
+     * Combines the number of tiles gained from a move and the priority of the move, the move with the lowest score (low priority is good)
+     * is made, if there are more moves that have the same score a random move is picked from those options
+     * @param dataset
+     * @param priorityMoves
+     * @return
+     */
+    
+     public int hardMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves){
         ArrayList<Integer> moves = new ArrayList<>();
 
 
@@ -169,7 +178,7 @@ public class AI {
     }
 
 
-    private ArrayList<Integer> maxTilesMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
+    private ArrayList<Integer> maxPrioMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
         ReversiController controller = new ReversiController();
 
         ArrayList<Integer> doableMoves = new ArrayList<>();
