@@ -13,6 +13,12 @@ public class AI {
         totalTiles = 0;
     }
 
+    /**
+     * Makes a move depending on the AI difficulty, 0 for a random move, 1 for a max priority move, 2 for a hardMove(C)
+     * @param dataset
+     * @param pMoves
+     * @return
+     */
     public int makeMove(int[] dataset, int[] pMoves) {
         int move;
         switch (dataController.getAiDifficulty()) {
@@ -21,7 +27,8 @@ public class AI {
                 break;
             }
             case 1: {
-                move = maxPrioMove(dataset, getPriotitymoves(pMoves)).get(0);
+                ArrayList<Integer> moves = maxPrioMove(dataset, getPriotitymoves(pMoves));
+                move = moves.get(new Random().nextInt(moves.size()));
                 break;
             }
             case 2:{
@@ -97,11 +104,11 @@ public class AI {
 
         }else{
             // get max tiles based on priority
-            moves.addAll(this.maxTilesMove(dataset,priorityMoves));
+            moves.addAll(this.maxPrioMove(dataset,priorityMoves));
         }
 
         if(moves.size() == 0){
-            moves.addAll(this.maxTilesMove(dataset,priorityMoves));
+            moves.addAll(this.maxPrioMove(dataset,priorityMoves));
         }
 
         Random r = new Random();
@@ -114,20 +121,19 @@ public class AI {
     private ArrayList<Integer> blockingMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
         ReversiController controller = new ReversiController();
         ArrayList<Integer> moves = new ArrayList<>();
-        if(priorityMoves.get(0).size() > 0) {
-            moves = priorityMoves.get(0);
-
-        } else if(priorityMoves.get(1).size() > 0) {
-            moves = priorityMoves.get(1);
+        if(priorityMoves.get(4).size() > 0) {
+            moves = priorityMoves.get(4);
+        } else if(priorityMoves.get(3).size() > 0) {
+            moves = priorityMoves.get(3);
 
         } else if(priorityMoves.get(2).size() > 0) {
             moves = priorityMoves.get(2);
 
-        } else if(priorityMoves.get(3).size() > 0) {
-            moves = priorityMoves.get(3);
+        } else if(priorityMoves.get(1).size() > 0) {
+            moves = priorityMoves.get(1);
 
-        } else if(priorityMoves.get(4).size() > 0) {
-            moves = priorityMoves.get(4);
+        } else if(priorityMoves.get(0).size() > 0) {
+            moves = priorityMoves.get(0);
         }
 
         ArrayList<Integer> blockingMoves = new ArrayList<>();
@@ -192,7 +198,7 @@ public class AI {
         }
 
         int prevPlayerTiles = 0;
-        double prevMovePoint = 64.0;
+        double prevMovePoint = 0;
 
         for(Map.Entry entrySet : priorityMoves.entrySet()) {
             int prio = (int) entrySet.getKey();
@@ -220,7 +226,7 @@ public class AI {
                 totalTiles += playerTiles;
                 //System.out.println("Total Tiles: " + totalTiles);
 
-                if (movePoint < prevMovePoint) {
+                if (movePoint > prevMovePoint) {
                     prevMovePoint = movePoint;
                     doableMoves.clear();
                     doableMoves.add(move);
@@ -335,11 +341,11 @@ public class AI {
             }
         }
 
-        priomoves.put(0,cornerMoves);
-        priomoves.put(1,sideMoves);
+        priomoves.put(4,cornerMoves);
+        priomoves.put(3,sideMoves);
         priomoves.put(2,restMoves);
-        priomoves.put(3,softAvMoves);
-        priomoves.put(4,hardAvMoves);
+        priomoves.put(1,softAvMoves);
+        priomoves.put(0,hardAvMoves);
 
         return priomoves;
     }
