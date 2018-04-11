@@ -98,7 +98,7 @@ public class AI {
         }
 
 
-        if(!aheadOfOpponent(dataset)){
+        if(this.getTotalTiles(dataset) < 32 && this.aheadOfOpponent(dataset)){
             // try blocking the opponent.
             moves.addAll(blockingMove(dataset, priorityMoves));
 
@@ -224,12 +224,16 @@ public class AI {
                     }
                 }
                 double movePoint = 0.0;
-                double prioWorth = 0.95;
-                double tileWorth = 0.05;
+                double prioWorth = 0.85;
+                double tileWorth = 0.15;
                 if(prio != 0) {
+                    if(prio == 4) {
+                        movePoint = (0.95 * prio) + (0.05 * playerTiles);
+                    }
                     movePoint = (prioWorth * prio) + (tileWorth * playerTiles);
+                } else {
+                    movePoint = tileWorth * playerTiles;
                 }
-
                 totalTiles += playerTiles;
                 //System.out.println("Total Tiles: " + totalTiles);
 
@@ -315,6 +319,16 @@ public class AI {
         }
 
         return false;
+    }
+
+    private int getTotalTiles(int[] board){
+         int totaltiles = 0;
+         for (int move : board){
+             if(move != 0){
+                 totaltiles++;
+             }
+         }
+         return totaltiles;
     }
 
     private HashMap<Integer, ArrayList<Integer>> getPriotitymoves(int[] pmdataset){
