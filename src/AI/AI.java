@@ -21,7 +21,7 @@ public class AI {
                 break;
             }
             case 1: {
-                move = blockingMove(dataset, getPriotitymoves(pMoves));
+                move = maxTilesMove(dataset, getPriotitymoves(pMoves));
                 break;
             }
             default: {
@@ -82,7 +82,7 @@ public class AI {
      * @return int move The index on the board that is the move made
      */
     private int randomMove(int[] possibleMoves) {
-        System.out.println("AI is making random move");
+        //System.out.println("AI is making random move");
         Random random = new Random();
         ArrayList<Integer> moves = new ArrayList<>(possibleMoves.length);
         for(int i = 0; i < possibleMoves.length; i++) {
@@ -101,95 +101,26 @@ public class AI {
         return move;
     }
 
-    private int blockingMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
+    private int maxTilesMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
         ReversiController controller = new ReversiController();
-        /*ArrayList<Integer> corners = getCorners();
-        ArrayList<Integer> sides = getSides();
-        ArrayList<Integer> softAvoidance = getSoftAvoidance();
-        ArrayList<Integer> hardAvoidance = getHardAvoidance();
 
-        int player = 2;
-        int opponent = 1;
-
-        int opSumTiles = 0;
-        int prevOpSumTiles = 64;
-
-        int playerTiles = 0;
-        int prevPlayerTiles = 0;
-
-        int sumOpPosMoves = 0;
-        int prevOpSumPosMoves = 64;
-
-        ArrayList<Integer> moves = new ArrayList<>();
-
-        int priority;
-        int prevPriority = 5;
-
-        if(dataController.getPlayerOne())
-            player = 1;
-            opponent = 2;
-
-        for(int i = 0; i < possibleMoves.length; i++) {
-            playerTiles = 0;
-            opSumTiles = 0;
-            sumOpPosMoves = 0;
-
-            //System.out.println("Index: " + i + " - " + possibleMoves[i]);
-                int[] newBoard = controller.calculateMove(i, player, dataset);
-
-                for(int x = 0; x < newBoard.length; x++) {
-                    if(newBoard[x] == opponent) {
-                        opSumTiles++;
-                    } else if(newBoard[x] == player) {
-                        playerTiles++;
-                    }
-                }
-
-                int[] opPosMoves = controller.updatePossibleMoves(newBoard,opponent);
-
-                for(int a = 0; a < opPosMoves.length; a++) {
-                    if(opPosMoves[a] == 1) {
-                        sumOpPosMoves++;
-                    }
-                }
-
-                totalTiles += playerTiles;
-
-                if(playerTiles >= prevPlayerTiles) {
-                    if(prevPriority >= priority) {
-                        if (opSumTiles <= prevOpSumTiles) {
-                            //new priority is smaller than prev priority
-                            prevOpSumTiles = opSumTiles;
-                            prevOpSumPosMoves = sumOpPosMoves;
-                            prevPlayerTiles = playerTiles;
-                            moves.add(i);
-                            prevPriority = priority;
-                        }
-                    }
-                }
-        }
-        Random r = new Random();
-        //System.out.println(moves.size());
-        int index = r.nextInt(moves.size());
-        //System.out.println(moves.get(index));
-        //return moves.get(index);
-        */
-        ArrayList<Integer> moves = new ArrayList<>();
-        if(priorityMoves.get(0).size() > 0) {
+        /*if(priorityMoves.get(0).size() > 0) {
             moves = priorityMoves.get(0);
-
-        } else if(priorityMoves.get(1).size() > 0) {
-            moves = priorityMoves.get(1);
-
-        } else if(priorityMoves.get(2).size() > 0) {
-            moves = priorityMoves.get(2);
-
-        } else if(priorityMoves.get(3).size() > 0) {
-            moves = priorityMoves.get(3);
-
-        } else if(priorityMoves.get(4).size() > 0) {
-            moves = priorityMoves.get(4);
         }
+        if(priorityMoves.get(1).size() > 0) {
+            moves.addAll(priorityMoves.get(1));
+
+        }
+        if(priorityMoves.get(2).size() > 0) {
+            moves.addAll(priorityMoves.get(2));
+        }
+        if(priorityMoves.get(3).size() > 0) {
+            moves.addAll(priorityMoves.get(3));
+
+        }
+        if(priorityMoves.get(4).size() > 0) {
+            moves.addAll(priorityMoves.get(4));
+        }*/
         ArrayList<Integer> doableMoves = new ArrayList<>();
 
         int player = 2;
@@ -201,35 +132,49 @@ public class AI {
         }
 
         int prevPlayerTiles = 0;
+        double prevMovePoint = 64.0;
 
-        for(int move : moves) {
-            int playerTiles = 0;
-            int opponentTiles = 0;
+        for(Map.Entry entrySet : priorityMoves.entrySet()) {
+            int prio = (int) entrySet.getKey();
 
+            ArrayList<Integer> moves = (ArrayList) entrySet.getValue();
+            for(int move : moves) {
+                int playerTiles = 0;
+                int opponentTiles = 0;
 
-            int[] newBoard = controller.calculateMove(move, player, dataset);
-            for (int cell : newBoard) {
-                if (cell == player) {
-                    playerTiles++;
-                } else if (cell == opponent) {
-                    opponentTiles++;
+                int[] newBoard = controller.calculateMove(move, player, dataset);
+                for (int cell : newBoard) {
+                    if (cell == player) {
+                        playerTiles++;
+                    } else if (cell == opponent) {
+                        opponentTiles++;
+                    }
+                }
+                double movePoint = 0.0;
+                double prioWorth = 0.95;
+                double tileWorth = 0.05;
+                if(prio != 0) {
+                    movePoint = (prioWorth * prio) + (tileWorth * playerTiles);
+                }
+
+                totalTiles += playerTiles;
+                //System.out.println("Total Tiles: " + totalTiles);
+
+                if (movePoint < prevMovePoint) {
+                    prevMovePoint = movePoint;
+                    doableMoves.clear();
+                    doableMoves.add(move);
+                } else if (movePoint == prevMovePoint) {
+                    doableMoves.add(move);
                 }
             }
-
-            if (playerTiles > prevPlayerTiles) {
-                prevPlayerTiles = playerTiles;
-                doableMoves.clear();
-                doableMoves.add(move);
-            } else if (playerTiles == prevPlayerTiles) {
-                doableMoves.add(move);
-            }
         }
+
         Random r = new Random();
-        //System.out.println(moves.size());
         int index = r.nextInt(doableMoves.size());
-        //System.out.println(moves.get(index));
         return doableMoves.get(index);
     }
+
 
     private int predictOpponent(int[] board, int[] possibleMoves, int opponent) {
         int move = -1;
