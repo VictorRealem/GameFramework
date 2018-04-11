@@ -184,8 +184,9 @@ public class AI {
     }
 
     /**
-     * Combines the number of tiles gained from a move and the priority of the move, the move with the lowest score (low priority is good)
-     * is made, if there are more moves that have the same score a random move is picked from those options
+     * Combines the number of tiles gained from a move and the priority of the move, the move with the highest score
+     * is made, if there are more moves that have the same score a random move is picked from those options.
+     * It also relies on the future opponent tile gain and player tile loss to make a decision
      * @param dataset
      * @param priorityMoves
      * @return
@@ -296,6 +297,13 @@ public class AI {
     }
 
 
+    /**
+     * Predicts the move the opponents is likely to make if they want to get the max tiles
+     * @param board
+     * @param possibleMoves
+     * @param opponent
+     * @return
+     */
     private int predictOpponent(int[] board, ArrayList<Integer> possibleMoves, int opponent) {
         int move = -1;
 
