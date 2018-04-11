@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -64,6 +65,7 @@ class BottomPane extends HBox {
 
     private void setForfeit() {
         Button forfeit = new Button("Give up");
+        forfeit.setEffect(new DropShadow());
         forfeit.setOnAction((ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
             connection.sentCommand("forfeit");
