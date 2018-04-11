@@ -455,6 +455,7 @@ public class ReversiController extends GameController {
     public void updateScore(){
         int[] dataSet = dataController.getData();
 
+
         int playerOneScore = 0;
         int playerTwoScore = 0;
 
