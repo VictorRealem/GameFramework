@@ -3,7 +3,10 @@ package AI;
 import Controllers.DataController;
 import Controllers.ReversiController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class AI {
     private DataController dataController;
@@ -74,18 +77,7 @@ public class AI {
         return move;
     }
 
-
-    
-
-    /**
-     * Combines the number of tiles gained from a move and the priority of the move, the move with the lowest score (low priority is good)
-     * is made, if there are more moves that have the same score a random move is picked from those options
-     * @param dataset
-     * @param priorityMoves
-     * @return
-     */
-    
-     public int hardMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves){
+     private int hardMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves){
         ArrayList<Integer> moves = new ArrayList<>();
 
 
@@ -111,6 +103,7 @@ public class AI {
             moves.addAll(this.maxPrioMove(dataset,priorityMoves));
         }
 
+        System.out.println("Line:103 move size " + moves.size());
         Random r = new Random();
         int index = r.nextInt(moves.size());
         return moves.get(index);
@@ -190,7 +183,13 @@ public class AI {
 
     }
 
-
+    /**
+     * Combines the number of tiles gained from a move and the priority of the move, the move with the lowest score (low priority is good)
+     * is made, if there are more moves that have the same score a random move is picked from those options
+     * @param dataset
+     * @param priorityMoves
+     * @return
+     */
     private ArrayList<Integer> maxPrioMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves) {
         ReversiController controller = new ReversiController();
 
@@ -229,21 +228,53 @@ public class AI {
                 if(prio != 0) {
                     if(prio == 4) {
                         movePoint = (0.95 * prio) + (0.05 * playerTiles);
+                    } else {
+                        movePoint = (prioWorth * prio) + (tileWorth * playerTiles);
                     }
-                    movePoint = (prioWorth * prio) + (tileWorth * playerTiles);
                 } else {
-                    movePoint = tileWorth * playerTiles;
+                    movePoint = tileWorth * playerTiles+1;
                 }
                 totalTiles += playerTiles;
                 //System.out.println("Total Tiles: " + totalTiles);
 
-                if (movePoint > prevMovePoint) {
-                    prevMovePoint = movePoint;
-                    doableMoves.clear();
-                    doableMoves.add(move);
-                } else if (movePoint == prevMovePoint) {
+                int opponentMove = predictOpponent(newBoard, moves, opponent);
+
+                int[] secondNewBoard = controller.calculateMove(opponentMove,opponent,newBoard);
+                int newOpponentTiles = 0;
+                int newPlayerTiles = 0;
+
+                for(int tile : secondNewBoard) {
+                    if(tile == opponent) {
+                        newOpponentTiles++;
+                    } else if(tile == player) {
+                        newPlayerTiles++;
+                    }
+                }
+
+                int opponentGain = newOpponentTiles - opponentTiles;
+                int playerLoss = newPlayerTiles - playerTiles;
+
+                System.out.println("Opponent gain for move: " + move + " is: " + opponentGain);
+                System.out.println("Player loss for move: " + move + " is: " + playerLoss);
+
+                //make choice based on thresholds of loss and gain
+                if(opponentGain <= 5 && playerLoss >= -5) {
+                    //make choice based on movepoints
+                    if (movePoint > prevMovePoint) {
+                        prevMovePoint = movePoint;
+                        doableMoves.clear();
+                        System.out.println("List cleared");
+                        doableMoves.add(move);
+                        System.out.println("Move added to list");
+                    } else if (movePoint == prevMovePoint) {
+                        System.out.println("Move added to existing list");
+                        doableMoves.add(move);
+                    }
+                } else if(doableMoves.size() == 0) {
                     doableMoves.add(move);
                 }
+
+
             }
         }
 
@@ -265,26 +296,25 @@ public class AI {
     }
 
 
-    private int predictOpponent(int[] board, int[] possibleMoves, int opponent) {
+    private int predictOpponent(int[] board, ArrayList<Integer> possibleMoves, int opponent) {
         int move = -1;
 
         int numTiles = 0;
         int prevNumTiles = 0;
 
         ReversiController controller = new ReversiController();
-        for(int i = 0; i< possibleMoves.length; i++) {
-            if(possibleMoves[i] == 1) {
-                int[] newBoard = controller.calculateMove(i,opponent,board);
-                for(int a = 0; a< newBoard.length; a++) {
-                    if(newBoard[a] == opponent) {
-                        numTiles++;
-                    }
-                }
-                if(numTiles > prevNumTiles) {
-                    prevNumTiles = numTiles;
-                    move = i;
+        for(int index : possibleMoves) {
+            int[] newBoard = controller.calculateMove(index,opponent,board);
+            for(int a = 0; a< newBoard.length; a++) {
+                if(newBoard[a] == opponent) {
+                    numTiles++;
                 }
             }
+            if(numTiles > prevNumTiles) {
+                prevNumTiles = numTiles;
+                move = index;
+            }
+
         }
 
         return move;
