@@ -261,6 +261,9 @@ public class EventHandler {
     private void ChallengeHandler(String response)
     {
         HashMap<String, String> parameters = parameterConvert(response);
+        if(response.substring(0,9).equals("CANCELLED")) {
+            return;
+        }
         Platform.runLater( () -> {
             synchronized (parameters) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

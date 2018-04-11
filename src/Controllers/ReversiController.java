@@ -418,9 +418,9 @@ public class ReversiController extends GameController {
         if(AI){
             //run AI code.
             AI ai = new AI(this);
-            System.out.println("AI is made");
+            //System.out.println("AI is made");
             int move = ai.makeMove(dataController.getData(), dataController.getPossibleMoves());
-            System.out.println("AI made move " + move);
+            //System.out.println("AI made move " + move);
             /*try {
                 Thread.sleep(2000);
             } catch (InterruptedException ex) {
