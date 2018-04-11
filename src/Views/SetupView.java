@@ -206,16 +206,16 @@ public class SetupView {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 if (slider.getValue() < 0.8){
-                    System.out.println("easy");
+                    //System.out.println("easy");
                     dataController.setAiDifficulty(0);
                 }
                 if (slider.getValue() > 0.9 && slider.getValue() < 1.4){
-                    System.out.println("medium");
+                    //System.out.println("medium");
                     dataController.setAiDifficulty(1);
                 }
                 if (slider.getValue() > 1.6){
-                    System.out.println("hard (medium)");
-                    dataController.setAiDifficulty(1);
+                    //System.out.println("hard (medium)");
+                    dataController.setAiDifficulty(2);
                 }
             }
         });
