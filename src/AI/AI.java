@@ -224,12 +224,16 @@ public class AI {
                     }
                 }
                 double movePoint = 0.0;
-                double prioWorth = 0.95;
-                double tileWorth = 0.05;
+                double prioWorth = 0.85;
+                double tileWorth = 0.15;
                 if(prio != 0) {
+                    if(prio == 4) {
+                        movePoint = (0.95 * prio) + (0.05 * playerTiles);
+                    }
                     movePoint = (prioWorth * prio) + (tileWorth * playerTiles);
+                } else {
+                    movePoint = tileWorth * playerTiles;
                 }
-
                 totalTiles += playerTiles;
                 //System.out.println("Total Tiles: " + totalTiles);
 
