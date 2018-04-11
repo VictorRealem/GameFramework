@@ -17,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.util.StringConverter;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.util.List;
@@ -31,6 +30,8 @@ public class SetupView {
     private GridPane playBox;
     private HBox scnBox;
     private String game;
+    private boolean hasGames = false;
+    private boolean hasPlayers = false;
     private ListView<String> gameListView;
     private ListView<String> playerListView;
     private DataController dataController = DataController.getInstance();
@@ -107,6 +108,7 @@ public class SetupView {
         start.setTooltip(new Tooltip("Play against random player"));
         playerName.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
 
+
         start.setOnAction( (ActionEvent e) -> {
             switch(game) {
                 case "Tic-tac-toe": {
@@ -125,33 +127,34 @@ public class SetupView {
         });
         start.setDisable(true);
 
+
         challenge.setOnAction((ActionEvent e) -> {
-            switch(game) {
-                case "Tic-tac-toe": {
-                    connection.sentCommand("challenge " + "\"" + playerListView.getSelectionModel().getSelectedItem()
-                            + "\" \"" + gameListView.getSelectionModel().getSelectedItem() + "\"");
-                    System.out.println(gameListView.getItems());
-                    break;
+            if (hasPlayers && hasGames) {
+                switch (game) {
+                    case "Tic-tac-toe": {
+                        connection.sentCommand("challenge " + "\"" + playerListView.getSelectionModel().getSelectedItem()
+                                + "\" \"" + gameListView.getSelectionModel().getSelectedItem() + "\"");
+                        System.out.println(gameListView.getItems());
+                        break;
+                    }
+                    case "Reversi": {
+                        connection.sentCommand("challenge " + "\"" + playerListView.getSelectionModel().getSelectedItem()
+                                + "\" \"" + gameListView.getSelectionModel().getSelectedItem() + "\"");
+                        System.out.println(gameListView.getItems());
+                        break;
+                    }
+                    default: {
+                        System.out.println("challenge failed");
+                        start.setDisable(true);
+                    }
                 }
-                case "Reversi": {
-                    connection.sentCommand("challenge " + "\"" + playerListView.getSelectionModel().getSelectedItem()
-                            + "\" \"" + gameListView.getSelectionModel().getSelectedItem() + "\"");
-                    System.out.println(gameListView.getItems());
-                    break;
-                }
-                default: {
-                    System.out.println("challenge failed");
-                    start.setDisable(true);
-                }
-            }
-        });
+            } });
 
         logout.setOnAction((ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
             connection.logout();
             controller.setScene(controller.InitializeLogin());
         });
-
 
         pane.add(playerName,0,0);
         pane.add(start,0,3);
@@ -212,7 +215,7 @@ public class SetupView {
                 }
                 if (slider.getValue() > 1.6){
                     System.out.println("hard (medium)");
-                    dataController.setAiDifficulty(1);
+                    dataController.setAiDifficulty(2);
                 }
             }
         });
@@ -242,11 +245,13 @@ public class SetupView {
                     case "Tic-tac-toe": {
                         dataController.setDatasetType(GameType.Tictactoe);
                         start.setDisable(false);
+                        hasGames = true;
                         break;
                     }
                     case "Reversi": {
                         dataController.setDatasetType(GameType.Reversi);
                         start.setDisable(false);
+                        hasGames = true;
                         break;
                     }
                     default: {
@@ -270,6 +275,7 @@ public class SetupView {
      */
     private void setupPlayerList() {
         scnBox.getChildren().remove(playBox);
+
         Label player = new Label("PLAYERS");
         player.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         BorderPane stylePane = new BorderPane();
@@ -299,7 +305,8 @@ public class SetupView {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 String player = playerListView.getSelectionModel().getSelectedItem();
-                //System.out.println(player);
+                hasPlayers = true;
+
             }
         });
 
