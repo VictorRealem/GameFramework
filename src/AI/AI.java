@@ -95,11 +95,14 @@ public class AI {
          }
 
 
-        if(this.getTotalTiles(dataset) < 24){
+        //if(this.getTotalTiles(dataset) < 24){
             //try blocking the opponent.
-            moves.addAll(blockingMove(dataset, priorityMoves));
+            //moves.addAll(blockingMove(dataset, priorityMoves));
+          //  if(moves.size() > 0){
+                //return this.getMostTileMove(dataset, moves);
+            //}
 
-        }
+        //}
         // get max tiles based on priority
         moves.addAll(this.maxPrioMove(dataset,priorityMoves));
 
@@ -302,8 +305,8 @@ public class AI {
                 if(avoid.contains(pmmove)){
                     continue;
                 }
-
-                HashMap<Integer, ArrayList<Integer>> opponentPriorityMoves = this.getPriotitymoves(this.calculateOpponentmoves(dataset, pmmove));
+                int [] opponentboard = this.calculateOpponentmoves(dataset, pmmove);
+                HashMap<Integer, ArrayList<Integer>> opponentPriorityMoves = this.getPriotitymoves(opponentboard);
                 if(opponentPriorityMoves.get(4).size() == 0){
                     moves.add(pmmove);
                 }
@@ -315,6 +318,7 @@ public class AI {
     private ArrayList<Integer> checkSoftAv(int[] dataset, HashMap<Integer, ArrayList<Integer>> priorityMoves) {
         ArrayList<Integer> moves = new ArrayList<>();
         ReversiController controller = new ReversiController();
+
         boolean equal = false;
         int player = 2;
         int opponent = 1;
@@ -323,10 +327,13 @@ public class AI {
             player = 1;
             opponent = 2;
         }
+
+
         if(priorityMoves.get(3).size() > 0){
+            HashMap<Integer, ArrayList<Integer>> oldmoves = this.getPriotitymoves(controller.updatePossibleMoves(dataset, opponent));
             for(int sidemove : priorityMoves.get(3)){
                 HashMap<Integer, ArrayList<Integer>> newmoves = this.getPriotitymoves(controller.updatePossibleMoves(controller.calculateMove(sidemove, player, dataset), opponent));
-                if(newmoves.get(4).size() == 0 || newmoves.get(3).size() == 0){
+                if(newmoves.get(4).size() == 0 || newmoves.get(3).size() < oldmoves.get(3).size()){
                     moves.add(sidemove);
                 }
             }
