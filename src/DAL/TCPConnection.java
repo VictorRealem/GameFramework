@@ -109,14 +109,12 @@ public class TCPConnection extends Thread {
         EventHandler handler = new EventHandler();
         //System.out.println("Listen con bf: " + checkMadeConnection());
         while (checkMadeConnection()) {
-            if(!clientSocket.isClosed()) {
-                //System.out.println("Listening");
-                //System.out.println("Listen con: " + checkMadeConnection());
-                String response = inFromServer.readLine();
-                // For testing purposes.
-                //System.out.println("server: " + response);
-                handler.HandleCommand(response);
-            }
+            //System.out.println("Listening");
+            //System.out.println("Listen con: " + checkMadeConnection());
+            String response = inFromServer.readLine();
+            // For testing purposes.
+            //System.out.println("server: " + response);
+            handler.HandleCommand(response);
         }
     }
 

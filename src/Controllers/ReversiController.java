@@ -422,7 +422,6 @@ public class ReversiController extends GameController {
             int move = ai.makeMove(dataController.getData(), dataController.getPossibleMoves());
             //System.out.println("AI made move " + move);
             /*try {
-                Thread.sleep(3000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }*/
@@ -454,6 +453,7 @@ public class ReversiController extends GameController {
     }
     public void updateScore(){
         int[] dataSet = dataController.getData();
+
 
         int playerOneScore = 0;
         int playerTwoScore = 0;
