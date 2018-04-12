@@ -255,19 +255,20 @@ public class AI {
                 int opponentGain = newOpponentTiles - opponentTiles;
                 int playerLoss = newPlayerTiles - playerTiles;
 
-                int tilePoints = (-1 * playerLoss) + opponentGain;
+                //int tilePoints = (-1 * playerLoss) + opponentGain;
                 int threshhold = opponentTiles / 3;
                 //make choice based on thresholds of loss and gain
                 System.out.println("Move " + move);
                 System.out.println("Priority " + prio);
                 System.out.println("Opponentgain " + opponentGain);
                 System.out.println("PlayerLoss " + playerLoss);
-                System.out.println("TilePoints " + tilePoints );
+                System.out.println("Threshold " + threshhold);
+                //System.out.println("TilePoints " + tilePoints );
                 System.out.println("MovePoints " + movePoint);
 
-                //if(opponentGain < threshhold && playerLoss > -threshhold) {
-                if(tilePoints <= prevTilePoints) {
-                    prevTilePoints = tilePoints;
+                if(opponentGain < threshhold && playerLoss > -threshhold) {
+                //if(tilePoints <= prevTilePoints) {
+                    //prevTilePoints = tilePoints;
                     //make choice based on movepoints
                     if (movePoint >= prevMovePoint) {
                         prevMovePoint = movePoint;
