@@ -85,25 +85,24 @@ public class AI {
         // check if hardAV move is good
         moves.addAll(this.checkHardAv(dataset,priorityMoves));
         if(moves.size() > 0){
-            Random r = new Random();
-            int index = r.nextInt(moves.size());
-            return moves.get(index);
+            return this.getMostTileMove(dataset, moves);
         }
 
          // check if hardAV move is good
          moves.addAll(this.checkSoftAv(dataset,priorityMoves));
          if(moves.size() > 0){
-             Random r = new Random();
-             int index = r.nextInt(moves.size());
-             return moves.get(index);
+             return this.getMostTileMove(dataset, moves);
          }
 
 
-        if(this.getTotalTiles(dataset) < 32 && this.aheadOfOpponent(dataset)){
-            // try blocking the opponent.
-            moves.addAll(blockingMove(dataset, priorityMoves));
+        //if(this.getTotalTiles(dataset) < 24){
+            //try blocking the opponent.
+            //moves.addAll(blockingMove(dataset, priorityMoves));
+          //  if(moves.size() > 0){
+                //return this.getMostTileMove(dataset, moves);
+            //}
 
-        }
+        //}
         // get max tiles based on priority
         moves.addAll(this.maxPrioMove(dataset,priorityMoves));
 
@@ -298,14 +297,17 @@ public class AI {
     private ArrayList<Integer> checkHardAv(int[] dataset, HashMap<Integer, ArrayList<Integer>> priorityMoves){
         ArrayList<Integer> moves = new ArrayList<>();
         ArrayList<Integer> avoid = this.getHardDiagonalAvoidance();
+        if(priorityMoves.get(4).size() > 0){
+            return priorityMoves.get(4);
+        }
         if(priorityMoves.get(0).size() > 0){
             ArrayList<Integer> hardAv = priorityMoves.get(0);
             for(int pmmove : hardAv){
                 if(avoid.contains(pmmove)){
                     continue;
                 }
-
-                HashMap<Integer, ArrayList<Integer>> opponentPriorityMoves = this.getPriotitymoves(this.calculateOpponentmoves(dataset, pmmove));
+                int [] opponentboard = this.calculateOpponentmoves(dataset, pmmove);
+                HashMap<Integer, ArrayList<Integer>> opponentPriorityMoves = this.getPriotitymoves(opponentboard);
                 if(opponentPriorityMoves.get(4).size() == 0){
                     moves.add(pmmove);
                 }
@@ -317,6 +319,7 @@ public class AI {
     private ArrayList<Integer> checkSoftAv(int[] dataset, HashMap<Integer, ArrayList<Integer>> priorityMoves) {
         ArrayList<Integer> moves = new ArrayList<>();
         ReversiController controller = new ReversiController();
+
         boolean equal = false;
         int player = 2;
         int opponent = 1;
@@ -326,22 +329,34 @@ public class AI {
             opponent = 2;
         }
 
+
+        if(priorityMoves.get(3).size() > 0){
+            HashMap<Integer, ArrayList<Integer>> oldmoves = this.getPriotitymoves(controller.updatePossibleMoves(dataset, opponent));
+            for(int sidemove : priorityMoves.get(3)){
+                HashMap<Integer, ArrayList<Integer>> newmoves = this.getPriotitymoves(controller.updatePossibleMoves(controller.calculateMove(sidemove, player, dataset), opponent));
+                if(newmoves.get(4).size() == 0 || newmoves.get(3).size() < oldmoves.get(3).size()){
+                    moves.add(sidemove);
+                }
+            }
+            return moves;
+        }
+
         HashMap<Integer, ArrayList<Integer>> opponentmoves = this.getPriotitymoves(controller.updatePossibleMoves(dataset, opponent));
         int opponentprio1moves = opponentmoves.get(1).size();
 
-        for(int move : priorityMoves.get(3)) {
+        for(int move : priorityMoves.get(1)) {
             HashMap<Integer, ArrayList<Integer>> newmoves = this.getPriotitymoves(controller.updatePossibleMoves(controller.calculateMove(move, player, dataset), opponent));
-            if(newmoves.get(1).size() > opponentprio1moves){
+            if(newmoves.get(3).size() > opponentprio1moves){
                 continue;
             }
-            if(newmoves.get(1).size() < opponentprio1moves){
+            if(newmoves.get(3).size() < opponentprio1moves){
                 if(equal){
                     moves.clear();
                     equal = false;
                 }
                 moves.add(move);
             }
-            if(newmoves.get(1).size() == opponentprio1moves){
+            if(newmoves.get(3).size() == opponentprio1moves){
                 moves.add(move);
                 equal = true;
             }
@@ -476,6 +491,30 @@ public class AI {
         int[] newboard = controller.calculateMove(move, player, board);
 
         return controller.updatePossibleMoves(newboard, opponent);
+    }
+
+    private int getMostTileMove(int[] dataset, ArrayList<Integer> goodmoves){
+         int mostTiles = 0;
+         int bestmove = -1;
+
+        int player = 2;
+        int opponent = 1;
+
+        if(dataController.getPlayerOne()){
+            player = 1;
+            opponent = 2;
+        }
+
+         ReversiController controller = new ReversiController();
+         for(int i : goodmoves){
+             int[] newboard = controller.calculateMove(i,player, dataset);
+             int total = this.getTotalTiles(newboard);
+             if(total >= mostTiles){
+                 mostTiles = total;
+                 bestmove = i;
+             }
+         }
+         return bestmove;
     }
 
     private int getplayer(){
