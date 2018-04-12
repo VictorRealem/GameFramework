@@ -42,7 +42,6 @@ public class LoginView {
         GridPane gridPane = new GridPane();
         bp.setTop(gridPane);
         setStyling(gridPane,bp);
-        //setLabels(gridPane);
         setbutton(gridPane);
         setTextboxes(gridPane);
         setEventHandlers();
@@ -86,24 +85,7 @@ public class LoginView {
         });
     }
 
-    /**
-     * Sets the labels name/serverURl and port
-     * @param grid the grid to which the labels need to be added
-     */
-    private void setLabels(GridPane grid)
-    {
-        Label nameLabel = new Label("Name:");
-        grid.add(nameLabel, 0, 0);
-        //77.162.40.81      Pi server
-        //145.33.225.170    School server
-        nameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        Label serverUrlLabel = new Label("Server address:");
-        serverUrlLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        grid.add(serverUrlLabel, 0, 1);
-        Label portLabel = new Label("Port:");
-        portLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        grid.add(portLabel, 0, 2);
-    }
+
 
     /**
      * Sets the textboxes name, server address and port
@@ -115,7 +97,7 @@ public class LoginView {
         name.setPrefColumnCount(20);
         name.setPromptText("Username");
 
-        String[] namesuggestions = {"Jelmer","Wisse","Arjen","Woute","oldAI","newAI"};
+        String[] namesuggestions = {"Jelmer","Wisse","Arjen","Wouter","oldAI","newAI"};
         TextFields.bindAutoCompletion(name,namesuggestions);
 
 
