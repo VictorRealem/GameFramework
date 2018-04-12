@@ -66,7 +66,7 @@ public class EventHandler {
         String command = response.split(" ")[0];
         if("HELP".equals(command))
         {
-            System.out.println("Server gave help information:");
+            //System.out.println("Server gave help information:");
             System.out.println(response);
         }
         if("PLAYERLIST".equals(command))
@@ -85,7 +85,7 @@ public class EventHandler {
             {
                 case "MATCH" :
                     this.MatchHandler(response.substring(6));
-                    System.out.println("Match started.");
+                    //System.out.println("Match started.");
                     break;
                 case "YOURTURN" :
                     this.TurnHandler(response.substring(9));
