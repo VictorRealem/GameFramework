@@ -104,8 +104,17 @@ public class AI {
 
         //}
         // get max tiles based on priority
-        moves.addAll(this.maxPrioMove(dataset,priorityMoves));
+         try{
+             moves.addAll(this.maxPrioMove(dataset,priorityMoves));
+         }catch(Exception e){
 
+         }
+
+
+         if(moves.size() == 0){
+             ReversiController controller = new ReversiController();
+             return this.randomMove(controller.updatePossibleMoves(dataset, getplayer()));
+         }
         System.out.println("Line:103 move size " + moves.size());
         Random r = new Random();
         int index = r.nextInt(moves.size());
@@ -209,6 +218,7 @@ public class AI {
         int prevPlayerTiles = 0;
         double prevMovePoint = 0;
         int prevTilePoints = 0;
+        int lastAmount = 0;
 
         for(Map.Entry entrySet : priorityMoves.entrySet()) {
             int prio = (int) entrySet.getKey();
@@ -226,6 +236,22 @@ public class AI {
                         opponentTiles++;
                     }
                 }
+                int[] opponentPM = controller.updatePossibleMoves(newBoard, opponent);
+                ArrayList<Integer> opponentPmlist = new ArrayList<>();
+                for(int i = 0; i < opponentPM.length;i++){
+                    if(opponentPM[i] == 1){
+                        opponentPmlist.add(i);
+                    }
+                }
+                int predictionMove = this.predictOpponent(newBoard, opponentPmlist, opponent);
+                int size = this.getPriotitymoves(controller.updatePossibleMoves(controller.calculateMove(predictionMove,opponent,newBoard),opponent)).get(4).size();
+                if(size > 0){
+                    if(size > lastAmount ){
+                        lastAmount = size;
+                        continue;
+                    }
+                }
+
                 double movePoint = 0.0;
                 double prioWorth = 0.85;
                 double tileWorth = 0.15;
