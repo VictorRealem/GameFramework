@@ -176,7 +176,6 @@ class LeftPane extends VBox {
 
     public LeftPane(GameController controller){
         if (controller.getPlayer1()) {
-
             String player1 = controller.getNamePlayer1();
             p1 = new Label(player1 + " \n  score");
         }else {
@@ -199,6 +198,7 @@ class LeftPane extends VBox {
     }
 
     private void setLayout(){
+        setMaxWidth(50.0);
         setAlignment(Pos.TOP_CENTER);
         setSpacing(5.0);
         setStyle("-fx-background-color: #005b96");
@@ -215,7 +215,7 @@ class RightPane extends VBox{
 
     public RightPane(GameController controller){
         if (controller.getPlayer1()) {
-            System.out.println("right" + controller.getPlayer1());
+            //System.out.println("right" + controller.getPlayer1());
             String oppenent = controller.getNameOppenent();
             p2 = new Label(oppenent + " \n  score");
         }else {
