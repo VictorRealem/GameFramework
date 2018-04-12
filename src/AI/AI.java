@@ -271,7 +271,7 @@ public class AI {
                 if(tilePoints <= prevTilePoints) {
                     prevTilePoints = tilePoints;
                     //make choice based on movepoints
-                    if (movePoint > prevMovePoint) {
+                    if (movePoint >= prevMovePoint) {
                         prevMovePoint = movePoint;
                         doableMoves.clear();
                         //System.out.println("List cleared");
