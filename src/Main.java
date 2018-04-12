@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 public class Main extends Application {
     protected Stage primaryStage;
@@ -23,6 +24,7 @@ public class Main extends Application {
         primaryStage.setScene(setupController.InitializeLogin());
 
         primaryStage.setTitle("Project 2.3");
+        primaryStage.getIcons().add(new Image("/Images/GC.png"));
         primaryStage.show();
     }
 
