@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import org.controlsfx.control.textfield.TextFields;
 
 /**
  * Class LoginView
@@ -41,12 +42,12 @@ public class LoginView {
         GridPane gridPane = new GridPane();
         bp.setTop(gridPane);
         setStyling(gridPane,bp);
-        setLabels(gridPane);
-        setTextboxes(gridPane);
+        //setLabels(gridPane);
         setbutton(gridPane);
+        setTextboxes(gridPane);
         setEventHandlers();
 
-        bp.setPadding(new Insets(20,0,0,10));
+        bp.setPadding(new Insets(40,0,0,40));
         bp.setStyle("-fx-background-image: url(\"/Images/water2.jpg\");-fx-background-size: 600, 300;-fx-background-repeat: no-repeat;");
         return new Scene(bp,585,300);
     }
@@ -112,23 +113,34 @@ public class LoginView {
     {
         name = new TextField();
         name.setPrefColumnCount(20);
+        name.setPromptText("Username");
+
+        String[] namesuggestions = {"Jelmer","Wisse","Arjen","Woute","oldAI","newAI"};
+        TextFields.bindAutoCompletion(name,namesuggestions);
+
 
         serverUrl = new TextField();
         serverUrl.setPrefColumnCount(20);
-        serverUrl.setText("Localhost");
+        serverUrl.setPromptText("Server address");
+        //serverUrl.setText("Localhost");
+
+        String[] suggestions = {"77.162.40.81","Localhost","145.33.225.170"};
+        TextFields.bindAutoCompletion(serverUrl,suggestions);
 
         port = new TextField();
         port.setPrefColumnCount(20);
+        port.setPromptText("Port");
         port.setText("7789");
+        grid.setVgap(8.0);
 
 
-        GridPane.setConstraints(name, 1, 0);
+        GridPane.setConstraints(name, 0, 0);
         grid.getChildren().add(name);
 
-        GridPane.setConstraints(serverUrl, 1, 1);
+        GridPane.setConstraints(serverUrl, 0, 1);
         grid.getChildren().add(serverUrl);
 
-        GridPane.setConstraints(port, 1, 2);
+        GridPane.setConstraints(port, 0, 2);
         grid.getChildren().add(port);
     }
 
@@ -138,12 +150,17 @@ public class LoginView {
      */
     private void setbutton(GridPane grid)
     {
-        login = new Button("Login");
+        grid.setVgap(5.0);
+        login = new Button();
         login.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+        Image loginPic = new Image("/Images/login2.jpg");
+        login.setGraphic(new ImageView(loginPic));
+        login.setStyle("-fx-background-color: transparent;");
+
         HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.setAlignment(Pos.CENTER);
         hbBtn.getChildren().add(login);
-        grid.add(hbBtn, 1, 3);
+        grid.add(hbBtn, 0, 3);
     }
 
     private void setStyling(GridPane grid,BorderPane bp){
