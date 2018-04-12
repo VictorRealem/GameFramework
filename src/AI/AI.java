@@ -32,6 +32,7 @@ public class AI {
             case 1: {
                 ArrayList<Integer> moves = maxPrioMove(dataset, getPriotitymoves(pMoves));
                 move = moves.get(new Random().nextInt(moves.size()));
+                System.out.println("Making move " + move);
                 break;
             }
             case 2:{
@@ -206,6 +207,7 @@ public class AI {
 
         int prevPlayerTiles = 0;
         double prevMovePoint = 0;
+        int prevTilePoints = 0;
 
         for(Map.Entry entrySet : priorityMoves.entrySet()) {
             int prio = (int) entrySet.getKey();
@@ -255,18 +257,28 @@ public class AI {
                 int opponentGain = newOpponentTiles - opponentTiles;
                 int playerLoss = newPlayerTiles - playerTiles;
 
+                int tilePoints = (-1 * playerLoss) + opponentGain;
                 int threshhold = opponentTiles / 3;
                 //make choice based on thresholds of loss and gain
-                if(opponentGain <= threshhold && playerLoss >= -threshhold) {
+                System.out.println("Move " + move);
+                System.out.println("Priority " + prio);
+                System.out.println("Opponentgain " + opponentGain);
+                System.out.println("PlayerLoss " + playerLoss);
+                System.out.println("TilePoints " + tilePoints );
+                System.out.println("MovePoints " + movePoint);
+
+                //if(opponentGain < threshhold && playerLoss > -threshhold) {
+                if(tilePoints <= prevTilePoints) {
+                    prevTilePoints = tilePoints;
                     //make choice based on movepoints
                     if (movePoint > prevMovePoint) {
                         prevMovePoint = movePoint;
                         doableMoves.clear();
-                        System.out.println("List cleared");
+                        //System.out.println("List cleared");
                         doableMoves.add(move);
-                        System.out.println("Move added to list");
+                        //System.out.println("Move added to list");
                     } else if (movePoint == prevMovePoint) {
-                        System.out.println("Move added to existing list");
+                        //System.out.println("Move added to existing list");
                         doableMoves.add(move);
                     }
                 } else if(doableMoves.size() == 0) {
