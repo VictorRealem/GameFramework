@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -63,11 +64,15 @@ class BottomPane extends HBox {
         setAlignment(Pos.CENTER);
         setForfeit();
         setLayout();
+        setId("bottomPane");
     }
 
     private void setForfeit() {
-        Button forfeit = new Button("Give up");
-        forfeit.setEffect(new DropShadow());
+        Button forfeit = new Button();
+        Image loginPic = new Image("/Images/closeRed2.png");
+        forfeit.setGraphic(new ImageView(loginPic));
+        forfeit.setStyle("-fx-background-color: transparent;");
+        forfeit.setPadding(new Insets(0, 0, 10, 0));
         forfeit.setOnAction((ActionEvent e) -> {
             TCPConnection connection = TCPConnection.getInstance();
             connection.sentCommand("forfeit");
