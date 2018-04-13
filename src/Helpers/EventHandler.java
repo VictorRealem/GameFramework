@@ -193,6 +193,7 @@ public class EventHandler {
             Yourturn = false;
             playerOne = false;
         }
+        System.out.println("Current dataset + " + dataController.getDataSet());
         if(dataController.getDataSet() == null) {
             if(parameters.get("GAMETYPE").equals("Reversi")) {
                 dataController.setDatasetType(GameType.Reversi);
@@ -308,6 +309,7 @@ public class EventHandler {
     {
         String headerText = "";
         String contentText = "" ;
+        DataController.getInstance().setDatasetType(GameType.Reversi);
 
         switch(state)
         {

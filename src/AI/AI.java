@@ -75,22 +75,23 @@ public class AI {
      * @return int move The index on the board that is the move made
      */
     private int randomMove(int[] possibleMoves) {
-        //System.out.println("AI is making random move");
+        System.out.println("AI is making random move");
         Random random = new Random();
         ArrayList<Integer> moves = new ArrayList<>(possibleMoves.length);
         for(int i = 0; i < possibleMoves.length; i++) {
+            System.out.println("searching possible move: " + possibleMoves[i]);
             if(possibleMoves[i] == 1) {
-                //System.out.println("Empty cell found: " + i);
+                System.out.println("Empty cell found: " + i);
                 moves.add(i);
             }
         }
         moves.trimToSize();
-        //System.out.println(moves.size());
+        System.out.println(moves.size());
         int index = random.nextInt(moves.size());
-        //System.out.println("Random index: " + index);
+        System.out.println("Random index: " + index);
         int move = moves.get(index);
 
-        //System.out.println("Made up move: " + move);
+        System.out.println("Made up move: " + move);
         return move;
     }
 
@@ -128,6 +129,7 @@ public class AI {
 
 
         if(moves.size() == 0){
+            System.out.println("moves size = 0");
             ReversiController controller = new ReversiController();
             return this.randomMove(controller.updatePossibleMoves(dataset, getplayer()));
         }
