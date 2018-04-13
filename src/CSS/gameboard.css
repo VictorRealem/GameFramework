@@ -18,9 +18,13 @@
 
 #rightPane{
 
--fx-background-color: linear-gradient(to top, #932d27, #f7483d);
+-fx-background-color: linear-gradient(to top, #7f2b26, #f7483d);
 }
 
 #centerPane{
 -fx-background-color: linear-gradient(to top, #efefef, #FAFAFA);
+}
+
+#bottomPane{
+-fx-background-color: #E8E8E8;
 }
