@@ -71,7 +71,9 @@ public class EventHandler {
         }
         if("PLAYERLIST".equals(command))
         {
-            this.PlayerlistHandler(response.substring(11));
+            if(!response.substring(11).equals("[]")) {
+                this.PlayerlistHandler(response.substring(11));
+            }
         }
         if("GAMELIST".equals(command))
         {
