@@ -24,15 +24,31 @@ public class AI {
      */
     public int makeMove(int[] dataset, int[] pMoves) {
         int move;
+        int amountofmoves = 0;
+        int lastmove = -1;
+        for(int i = 0 ; i < pMoves.length;i++){
+            if(pMoves[i] == 1){
+                amountofmoves++;
+                lastmove = i;
+            }
+        }
+        if(amountofmoves == 1){
+            return lastmove;
+        }
         switch (dataController.getAiDifficulty()) {
             case 0: {
                 move = randomMove(pMoves);
                 break;
             }
             case 1: {
-                ArrayList<Integer> moves = maxPrioMove(dataset, getPriotitymoves(pMoves));
-                move = moves.get(new Random().nextInt(moves.size()));
-                System.out.println("Making move " + move);
+                try{
+                    ArrayList<Integer> moves = maxPrioMove(dataset, getPriotitymoves(pMoves));
+                    move = moves.get(new Random().nextInt(moves.size()));
+                    System.out.println("Making move " + move);
+                }catch(Exception e){
+                    move = randomMove(pMoves);
+                }
+
                 break;
             }
             case 2:{
