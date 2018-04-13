@@ -105,21 +105,13 @@ public class AI {
             return this.getMostTileMove(dataset, moves);
         }
 
-        // check if hardAV move is good
+        // check if softAV move is good
         moves.addAll(this.checkSoftAv(dataset,priorityMoves));
         if(moves.size() > 0){
             return this.getMostTileMove(dataset, moves);
         }
 
 
-        //if(this.getTotalTiles(dataset) < 24){
-        //try blocking the opponent.
-        //moves.addAll(blockingMove(dataset, priorityMoves));
-        //  if(moves.size() > 0){
-        //return this.getMostTileMove(dataset, moves);
-        //}
-
-        //}
         // get max tiles based on priority
         try{
             moves.addAll(this.maxPrioMove(dataset,priorityMoves));
@@ -127,13 +119,12 @@ public class AI {
 
         }
 
-
         if(moves.size() == 0){
-            System.out.println("moves size = 0");
+            //System.out.println("moves size = 0");
             ReversiController controller = new ReversiController();
             return this.randomMove(controller.updatePossibleMoves(dataset, getplayer()));
         }
-        System.out.println("Line:103 move size " + moves.size());
+        //System.out.println("Line:103 move size " + moves.size());
         Random r = new Random();
         int index = r.nextInt(moves.size());
         return moves.get(index);
@@ -207,9 +198,7 @@ public class AI {
                 blockingMoves.add(move);
             }
         }
-
         return blockingMoves;
-
     }
 
     /**
