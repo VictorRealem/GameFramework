@@ -445,7 +445,7 @@ public class ReversiController extends GameController {
         dataController.setScene(new GameBoardView(this, dataController.getData().length, dataController.getYourTurn()).createBoardScene(dataController.getData()));
         if(AI){
             //run AI code.
-            AI ai = new AI(this);
+            AI ai = new AI();
             //System.out.println("AI is made");
             System.out.println("Possible moves");
             int move = ai.makeMove(dataController.getData(), dataController.getPossibleMoves());
