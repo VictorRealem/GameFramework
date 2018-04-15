@@ -126,6 +126,11 @@ public class LoginView {
         grid.add(hbBtn, 0, 3);
     }
 
+    /**
+     * Sets the styling of the gridpane
+     * @param grid
+     * @param bp
+     */
     private void setStyling(GridPane grid,BorderPane bp){
        /* Image image = new Image("Images/loginLine.png");
         bp.setBottom(new ImageView(image));*/
