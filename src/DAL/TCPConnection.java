@@ -81,7 +81,7 @@ public class TCPConnection extends Thread {
 
     /***
      * Send command to the server
-     * @param command
+     * @param command the command to be send
      */
     public void sentCommand(String command)
     {
@@ -102,7 +102,7 @@ public class TCPConnection extends Thread {
     /***
      * Recieves messages from the server.
      * sents the messages to the eventHandler
-     * @throws Exception
+     * @throws Exception if it can't listen
      */
     public void Listen() throws Exception
     {
@@ -129,7 +129,7 @@ public class TCPConnection extends Thread {
         try {
             this.Listen();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

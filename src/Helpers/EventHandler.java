@@ -26,7 +26,7 @@ public class EventHandler {
     /**
      * Handles the server response
      * If the response is a SVR response it gives it to the SVR handler
-     * @param response
+     * @param response tbe response from the server
      */
     public void HandleCommand(String response)
     {
