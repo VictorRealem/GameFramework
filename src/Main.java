@@ -12,7 +12,7 @@ public class Main extends Application {
 
     /**
      * Starts the javafx application
-     * @param primaryStage
+     * @param primaryStage the primary stage
      */
     @Override
     public void start(Stage primaryStage) {
