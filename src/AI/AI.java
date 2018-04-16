@@ -74,6 +74,7 @@ public class AI {
      * @return int move The index on the board that is the move made
      */
     private int randomMove(int[] possibleMoves) {
+        System.out.println("Making random move");
         Random random = new Random();
         ArrayList<Integer> moves = new ArrayList<>(possibleMoves.length);
         for(int i = 0; i < possibleMoves.length; i++) {
@@ -82,7 +83,7 @@ public class AI {
             }
         }
         moves.trimToSize();
-        System.out.println(moves.size());
+        //System.out.println(moves.size());
         int index = random.nextInt(moves.size());
         int move = moves.get(index);
 
@@ -97,7 +98,7 @@ public class AI {
      */
     private int hardMove(int[] dataset ,HashMap<Integer, ArrayList<Integer>> priorityMoves){
         ArrayList<Integer> moves = new ArrayList<>();
-
+        System.out.println("Making hard move");
 
         // check if hardAV move is good
         moves.addAll(this.checkHardAv(dataset,priorityMoves));
@@ -124,7 +125,6 @@ public class AI {
             ReversiController controller = new ReversiController();
             return this.randomMove(controller.updatePossibleMoves(dataset, getplayer()));
         }
-        //System.out.println("Line:103 move size " + moves.size());
         Random r = new Random();
         int index = r.nextInt(moves.size());
         return moves.get(index);
