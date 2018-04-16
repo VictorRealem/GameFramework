@@ -287,7 +287,7 @@ public class DataController {
 
     /**
      * Sets the scene on the primary stage
-     * @param scene
+     * @param scene the scene to be set
      */
     public void setScene(Scene scene) {
         Platform.runLater( () -> {primaryStage.setScene(scene);});
